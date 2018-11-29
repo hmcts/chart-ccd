@@ -1,0 +1,30 @@
+name: Azure DevOPs
+trigger:
+  branches:
+    include:
+    - refs/tags/*
+pr:
+  branches:
+    include:
+    - master
+resources:
+  repositories:
+  - repository: cnp-library
+    type: github
+    name: hmcts/cnp-azuredevops-libraries
+    endpoint: 'HMCTS Github'
+
+jobs:
+- ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/')  }}:
+  - template: jobs/charts/validate.yaml@cnp-library
+    parameters:
+      chartName: ccd
+      chartReleaseName: chart-ccd-ci-test
+      chartNamespace: chart-tests
+
+- ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/') }}:
+  - template: jobs/charts/release.yaml@cnp-library
+    parameters:
+      chartName: ccd
+      chartReleaseName: chart-ccd
+      chartNamespace: chart-tests

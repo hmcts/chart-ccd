@@ -1,0 +1,7 @@
+dependencies:
+  - name: java
+    version: 0.0.5
+    repository: '@hmctssandbox'
+  - name: postgresql
+    version: ~2.6.5
+    repository: '@stable'

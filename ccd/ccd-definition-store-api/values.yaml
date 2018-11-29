@@ -1,0 +1,21 @@
+java:
+  image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
+  applicationPort: 4453
+  environment:
+    IDAM_S2S_URL: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    ENABLE_DB_MIGRATE: "false"
+    USER_PROFILE_S2S_AUTHORISED_SERVICES: "ccd_data,ccd_definition,ccd_admin"
+    APPINSIGHTS_INSTRUMENTATIONKEY: 'fake-key'
+    POSTGRES_HOST: postgresql
+    POSTGRES_SSL_MODE: disable
+    POSTGRES_DATABASE: hmcts
+    POSTGRES_USER: hmcts
+    POSTGRES_PASSWORD: hmcts
+  # Don't modify below here
+  #serviceName: ${SERVICE_NAME}
+  #ingressHost: 
+  
+postgresql:
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
+  postgresqlDatabase: hmcts
