@@ -13,6 +13,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: {{ .Values.applicationPort }}
+      targetPort: {{ .Values.userProfile.applicationPort }}
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}

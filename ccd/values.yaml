@@ -1,12 +1,19 @@
-applicationPort: 4550
-image: hmctssandbox.azurecr.io/hmcts/spring-boot-template
-environment:
-configmap:
+userProfile:
+    image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
+    applicationPort: 4453
+    authorisedServices: "ccd_data,ccd_definition,ccd_admin"
+    memoryRequests:
+    cpuRequests:
+    memoryLimits:
+    cpuLimits:
+s2sUrl: "http://rpe-service-auth-provider-saat.service.core-compute-saat.internal"
+appInsightsKey: "fake-key"
+
 memoryRequests: "512Mi"
 cpuRequests: "100m"
 memoryLimits: "1024Mi"
 cpuLimits: "2500m"
-ingressHost: chart-java.service.core-compute-saat.internal
+
 readinessPath: "/health"
 readinessDelay: 30
 readinessTimeout: 3

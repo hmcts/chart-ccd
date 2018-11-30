@@ -18,6 +18,6 @@ java:
 postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
-  postgresqlDatabase: hmcts
+  postgresqlDatabase: user-profile-db
   persistence:
     enabled: false
