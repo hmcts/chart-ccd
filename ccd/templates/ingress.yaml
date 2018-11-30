@@ -17,5 +17,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: {{ .Release.Name }}
+          serviceName: {{ .Release.Name }}-user-profile-api
           servicePort: 80
