@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := all
 CHART := ccd
 RELEASE := chart-${CHART}-release
-NAMESPACE := chart-${CHART}-tests
+NAMESPACE := chart-tests
 TEST := ${RELEASE}-test-service
 ACR := hmctssandbox
 AKS_RESOURCE_GROUP := cnp-aks-sandbox-rg
