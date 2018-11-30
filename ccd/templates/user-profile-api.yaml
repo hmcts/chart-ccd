@@ -28,11 +28,11 @@ spec:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: USER_PROFILE_DB_HOST
-          value: {{ .Release.Name }}-user-profile-db
+          value: {{ .Release.Name }}-postgresql
         - name: USER_PROFILE_DB_PORT
-          value: 5432
+          value: '5432'
         - name: USER_PROFILE_DB_NAME
-          value: user-profile-db
+          value: user-profile
         - name: USER_PROFILE_DB_USERNAME
           value: hmcts
         - name: USER_PROFILE_DB_PASSWORD
@@ -52,18 +52,18 @@ spec:
         {{- end }}
         resources:
           requests:
-            memory: {{ .Values.userProfile.memoryRequests }}
-            cpu: {{ .Values.userProfile.cpuRequests }}
+            memory: {{ .Values.memoryRequests }}
+            cpu: {{ .Values.cpuRequests }}
           limits:
-            memory: {{ .Values.userProfile.memoryLimits }}
-            cpu: {{ .Values.userProfile.cpuLimits }}
+            memory: {{ .Values.memoryLimits }}
+            cpu: {{ .Values.cpuLimits }}
         ports:
         - containerPort: {{ .Values.userProfile.applicationPort }}
           name: http
         livenessProbe:
           httpGet:
             path: {{ .Values.livenessPath }}
-            port: {{ .Values.applicationPort }}
+            port: {{ .Values.userProfile.applicationPort }}
           initialDelaySeconds: {{ .Values.livenessDelay }}
           timeoutSeconds: {{ .Values.livenessTimeout }}
           periodSeconds: {{ .Values.livenessPeriod }}
@@ -71,7 +71,7 @@ spec:
         readinessProbe:
           httpGet:
             path: {{ .Values.readinessPath }}
-            port: {{ .Values.applicationPort }}
+            port: {{ .Values.userProfile.applicationPort }}
           initialDelaySeconds: {{ .Values.readinessDelay }}
           timeoutSeconds: {{ .Values.readinessTimeout }}
           periodSeconds: {{ .Values.readinessPeriod }}

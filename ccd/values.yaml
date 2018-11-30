@@ -23,3 +23,13 @@ livenessDelay: 30
 livenessTimeout: 3
 livenessPeriod: 15
 livenessFailureThreshold: 3
+
+# must be overridden
+ingressHost: cmc-claim-store-pr-1.service.core-compute-preview.internal
+
+postgresql:
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
+  postgresqlDatabase: user-profile
+  persistence:
+    enabled: false
