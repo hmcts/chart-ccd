@@ -45,11 +45,6 @@ spec:
           value: {{ $val | quote }}
           {{- end}}
         {{- end }}
-        {{- if .Values.userProfile.configmap }}
-        envFrom:
-          - configMapRef:
-              name: {{ .Release.Name }}-user-profile-api
-        {{- end }}
         resources:
           requests:
             memory: {{ .Values.memoryRequests }}
