@@ -1,11 +1,7 @@
 userProfile:
-    image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
-    applicationPort: 4453
-    authorisedServices: "ccd_data,ccd_definition,ccd_admin"
-    memoryRequests:
-    cpuRequests:
-    memoryLimits:
-    cpuLimits:
+  image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
+  applicationPort: 4453
+  authorisedServices: "ccd_data,ccd_definition,ccd_admin"
 s2sUrl: "http://rpe-service-auth-provider-saat.service.core-compute-saat.internal"
 appInsightsKey: "fake-key"
 
