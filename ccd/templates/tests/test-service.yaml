@@ -10,6 +10,6 @@ spec:
     image: busybox
     env:
       - name: SERVICE_NAME
-        value: {{ .Release.Name }}
+        value: {{ .Release.Name }}-user-profile-api
     command: ["sh", "-c", "httpstatuscode=$(wget -S http://$SERVICE_NAME/health 2>&1 | grep HTTP/ | awk 'END{print $2}') && [ \"$httpstatuscode\" = \"200\" ]"]
   restartPolicy: Never
