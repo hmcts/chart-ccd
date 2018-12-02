@@ -21,7 +21,7 @@ jobs:
   steps:
   - template: steps/charts/validate.yaml@cnp-library
     parameters:
-      chartName: java
+      chartName: ccd
       chartReleaseName: chart-ccd-ci-test
       chartNamespace: chart-tests
 
@@ -38,6 +38,6 @@ jobs:
   steps:
   - template: steps/charts/release.yaml@cnp-library
     parameters:
-      chartName: java
+      chartName: ccd
       chartReleaseName: chart-ccd
       chartNamespace: chart-tests
