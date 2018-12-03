@@ -11,6 +11,7 @@ resources:
   repositories:
   - repository: cnp-library
     type: github
+    ref: feature/RPE-871-chart-with-deps
     name: hmcts/cnp-azuredevops-libraries
     endpoint: 'HMCTS Github'
 
