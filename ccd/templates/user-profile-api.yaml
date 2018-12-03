@@ -18,13 +18,13 @@ spec:
         app.kubernetes.io/name: {{ .Release.Name }}-user-profile-api
     spec:
       containers:
-      - image: {{ .Values.userProfile.image }}
+      - image: {{ .Values.userProfileApi.image }}
         name: {{ .Release.Name }}-user-profile-api
         env:
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
         - name: USER_PROFILE_S2S_AUTHORISED_SERVICES
-          value: {{ .Values.userProfile.authorisedServices }}
+          value: {{ .Values.userProfileApi.authorisedServices }}
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: USER_PROFILE_DB_HOST
@@ -39,8 +39,8 @@ spec:
           value: hmcts
         - name: USER_PROFILE_DB_USE_SSL
           value: 'false'
-        {{- if .Values.userProfile.environment }}
-          {{- range $key, $val := .Values.userProfile.environment }}
+        {{- if .Values.userProfileApi.environment }}
+          {{- range $key, $val := .Values.userProfileApi.environment }}
         - name: {{ $key }}
           value: {{ $val | quote }}
           {{- end}}
@@ -53,12 +53,12 @@ spec:
             memory: {{ .Values.memoryLimits }}
             cpu: {{ .Values.cpuLimits }}
         ports:
-        - containerPort: {{ .Values.userProfile.applicationPort }}
+        - containerPort: {{ .Values.userProfileApi.applicationPort }}
           name: http
         livenessProbe:
           httpGet:
             path: {{ .Values.livenessPath }}
-            port: {{ .Values.userProfile.applicationPort }}
+            port: {{ .Values.userProfileApi.applicationPort }}
           initialDelaySeconds: {{ .Values.livenessDelay }}
           timeoutSeconds: {{ .Values.livenessTimeout }}
           periodSeconds: {{ .Values.livenessPeriod }}
@@ -66,7 +66,7 @@ spec:
         readinessProbe:
           httpGet:
             path: {{ .Values.readinessPath }}
-            port: {{ .Values.userProfile.applicationPort }}
+            port: {{ .Values.userProfileApi.applicationPort }}
           initialDelaySeconds: {{ .Values.readinessDelay }}
           timeoutSeconds: {{ .Values.readinessTimeout }}
           periodSeconds: {{ .Values.readinessPeriod }}

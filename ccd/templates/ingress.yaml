@@ -19,3 +19,11 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-user-profile-api
           servicePort: 80
+# TODO only enable if flag set
+  - host: case-management-web-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-case-management-web
+          servicePort: 80
