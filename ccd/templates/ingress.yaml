@@ -27,3 +27,10 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-case-management-web
           servicePort: 80
+  - host: data-store-api-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-data-store-api
+          servicePort: 80

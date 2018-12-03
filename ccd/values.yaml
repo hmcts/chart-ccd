@@ -6,6 +6,7 @@ userProfileApi:
 dataStoreApi:
   image: hmcts.azurecr.io/hmcts/ccd-data-store-api:latest
   applicationPort: 4452
+  s2sAuthorisedServices: ccd_data,ccd_gw,ccd_ps,probate_backend,divorce_ccd_submission,sscs,cmc,cmc_claim_store,jui_webapp,pui_webapp,bulk_scan_orchestrator,fpl_case_service
 
 definitionStoreApi:
   image: hmcts.azurecr.io/hmcts/ccd-definition-store-api:latest
