@@ -24,42 +24,45 @@ spec:
         env:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
-        - name: IDAM_LOGIN_URL
-          value: {{ .Values.idamUrl }}/login
-        - name: CCD_GW_LOGOUT_URL
-          value: http://gateway-{{ .Values.ingressHost }}/logout
-        - name: CCD_API_URL
-          value: http://gateway-{{ .Values.ingressHost }}/aggregated
-        - name: CCD_DATA_URL
-          value: http://gateway-{{ .Values.ingressHost }}/data
-        - name: CCD_GW_OAUTH2_URL
-          value: http://gateway-{{ .Values.ingressHost }}/oauth2
-        - name: CCD_GW_OAUTH2_CLIENT_ID
+        - name: IDAM_BASE_URL
+          value: {{ .Values.idamUrl }}
+        - name: IDAM_OAUTH2_TOKEN_ENDPOINT
+          value: {{ .Values.idamUrl }}/oauth2/token
+        - name: IDAM_OAUTH2_LOGOUT_ENDPOINT
+          value: {{ .Values.idamUrl }}/session/:token
+        - name: IDAM_OAUTH2_CLIENT_ID
+          value: 'ccd_gateway'
+        - name: IDAM_OAUTH2_CLIENT_SECRET
+          value: {{ .Values.apiGateway.idamClientSecret }}
+        # S2S
+        - name: IDAM_S2S_URL
+          value: {{ .Values.s2sUrl }}
+        - name: IDAM_SERVICE_KEY
+          value: {{ .Values.apiGateway.s2sKey }}
+        - name: IDAM_SERVICE_NAME # Actually S2S
+          value: 'ccd_gw'
+       # - name: ADDRESS_LOOKUP_TOKEN
+       #   value: 'TODO add ability to enable this and pass it in'
+        - name: CORS_ORIGIN_METHODS
+          value: 'GET,POST,OPTIONS,PUT,DELETE'
+        - name: CORS_ORIGIN_WHITELIST
           value: ccd_gateway
-        - name: DM_URL
-          value: http://gateway-{{ .Values.ingressHost }}/oauth2
-       # - name: DM_URL_REMOTE TODO look at this
-       #   value: 'false'
-        - name: CCD_PAGE_SIZE
-          value: '25'
-        - name: POSTCODE_LOOKUP_URL
-          value: http://gateway-{{ .Values.ingressHost }}/addresses?postcode=$${postcode}
-        - name: PRINT_SERVICE_URL
-          value: http://gateway-{{ .Values.ingressHost }}/print
-       # - name: PRINT_SERVICE_URL_REMOTE TODO look at this
-       #   value:
-        - name: CCD_ACTIVITY_URL
-          value: http://gateway-{{ .Values.ingressHost }}/activity
-        - name: CCD_ACTIVITY_NEXT_POLL_REQUEST_MS
-          value: '5000'
-        - name: CCD_ACTIVITY_RETRY
-          value: '5'
-        - name: CCD_ACTIVITY_BATCH_COLLECTION_DELAY_MS
-          value: '1'
-        - name: CCD_ACTIVITY_MAX_REQUEST_PER_BATCH
-          value: '25'
-        - name: PAYMENTS_URL
-          value: http://gateway-{{ .Values.ingressHost }}/payments
+        - name: PROXY_AGGREGATED
+          value: http://{{ .Release.Name }}-data-store-api
+       # - name: PROXY_CASE_ACTIVITY TODO: not deployed currently
+       #   value: http://{{ .Release.Name }}-case-activity-api
+        - name: PROXY_DATA
+          value: http://{{ .Release.Name }}-data-store-api
+        - name: PROXY_DEFINITION_IMPORT
+          value: http://{{ .Release.Name }}-definition-store-api
+       # - name: PROXY_DOCUMENT_MANAGEMENT TODO not added yet
+       #   value: 'http://{{ .Release.Name }}-document-management-api'
+       # - name: PROXY_PRINT_SERVICE TODO not deployed currently
+       #   value: 'http://{{ .Release.Name }}-case-print-service'
+        - name: PROXY_PAYMENTS
+          value: {{ .Values.paymentsUrl }}
+        - name: SECURE_AUTH_COOKIE_ENABLED
+          value: 'true'
         {{- if .Values.apiGateway.environment }}
           {{- range $key, $val := .Values.apiGateway.environment }}
         - name: {{ $key }}

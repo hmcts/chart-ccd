@@ -23,6 +23,7 @@ apiGateway:
 
 s2sUrl: "http://rpe-service-auth-provider-saat.service.core-compute-saat.internal"
 idamUrl: "https://idam.preprod.ccidam.reform.hmcts.net3"
+paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
 appInsightsKey: "fake-key"
 
 memoryRequests: "512Mi"
@@ -41,7 +42,7 @@ livenessPeriod: 15
 livenessFailureThreshold: 3
 
 # must be overridden
-ingressHost: cmc-claim-store-pr-1.service.core-compute-preview.internal
+ingressHost: rhubarb-recipes-service-pr-1.service.core-compute-preview.internal
 
 postgresql:
   postgresqlUsername: hmcts

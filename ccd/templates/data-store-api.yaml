@@ -36,9 +36,9 @@ spec:
         - name: ENABLE_DB_MIGRATE
           value: 'true'
         - name: DEFINITION_STORE_HOST
-          value: http://definition-store-api-{{ .Values.ingressHost }}
+          value: http://{{ .Release.Name }}-definition-store-api
         - name: USER_PROFILE_HOST
-          value: http://user-profile-api-{{ .Values.ingressHost }}
+          value: http://{{ .Release.Name }}-user-profile-api
        # - name: CCD_DM_DOMAIN
        #   value: 'false'
         - name: IDAM_USER_URL
