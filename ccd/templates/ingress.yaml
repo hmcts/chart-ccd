@@ -34,3 +34,10 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-data-store-api
           servicePort: 80
+  - host: definition-store-api-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-definition-store-api
+          servicePort: 80

@@ -31,6 +31,8 @@ spec:
           value: hmcts
         - name: DATA_STORE_DB_PASSWORD
           value: 'hmcts'
+        - name: DATA_STORE_DB_USE_SSL
+          value: 'false'
         - name: ENABLE_DB_MIGRATE
           value: 'true'
         - name: DEFINITION_STORE_HOST
@@ -44,7 +46,7 @@ spec:
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
         - name: DATA_STORE_IDAM_KEY
-          value: {{ .Values.s2sKey }}
+          value: {{ .Values.dataStoreApi.s2sKey }}
        # - name: CCD_DRAFT_STORE_URL
        #   value: {{ .Release.Name }}-postgresql
         - name: CCD_DRAFT_TTL_DAYS

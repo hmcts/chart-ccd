@@ -11,6 +11,7 @@ dataStoreApi:
 definitionStoreApi:
   image: hmcts.azurecr.io/hmcts/ccd-definition-store-api:latest
   applicationPort: 4451
+  s2sAuthorisedServices: ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp
 
 caseManagementWeb:
   image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
