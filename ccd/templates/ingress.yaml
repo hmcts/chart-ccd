@@ -41,3 +41,10 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-definition-store-api
           servicePort: 80
+  - host: api-gateway-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-api-gateway
+          servicePort: 80

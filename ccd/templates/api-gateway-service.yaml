@@ -1,10 +1,11 @@
 ---
+# TODO only enable if flag set
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-data-store-api
+  name: {{ .Release.Name }}-api-gateway
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}-data-store-api
+    app.kubernetes.io/name: {{ .Release.Name }}-api-gateway
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -13,6 +14,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: {{ .Values.dataStoreApi.applicationPort }}
+      targetPort: {{ .Values.apiGateway.applicationPort }}
   selector:
-    app.kubernetes.io/name: {{ .Release.Name }}-data-store-api
+    app.kubernetes.io/name: {{ .Release.Name }}-api-gateway

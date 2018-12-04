@@ -17,6 +17,10 @@ caseManagementWeb:
   image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
   applicationPort: 3451
 
+apiGateway:
+  image: hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest
+  applicationPort: 3453
+
 s2sUrl: "http://rpe-service-auth-provider-saat.service.core-compute-saat.internal"
 idamUrl: "https://idam.preprod.ccidam.reform.hmcts.net3"
 appInsightsKey: "fake-key"

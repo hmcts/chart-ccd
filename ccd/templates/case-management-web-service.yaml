@@ -14,6 +14,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: {{ .Values.userProfileApi.applicationPort }}
+      targetPort: {{ .Values.caseManagementWeb.applicationPort }}
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}-case-management-web

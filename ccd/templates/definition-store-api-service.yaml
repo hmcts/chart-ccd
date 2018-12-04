@@ -13,6 +13,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: {{ .Values.userProfileApi.applicationPort }}
+      targetPort: {{ .Values.definitionStoreApi.applicationPort }}
   selector:
     app.kubernetes.io/name: {{ .Release.Name }}-definition-store-api
