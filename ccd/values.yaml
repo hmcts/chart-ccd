@@ -22,7 +22,7 @@ apiGateway:
   applicationPort: 3453
 
 s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-idamUrl: "https://idam.preprod.ccidam.reform.hmcts.net3"
+idamUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
 paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
 appInsightsKey: "fake-key"
 

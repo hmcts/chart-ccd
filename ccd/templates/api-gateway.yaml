@@ -46,7 +46,7 @@ spec:
         - name: CORS_ORIGIN_METHODS
           value: 'GET,POST,OPTIONS,PUT,DELETE'
         - name: CORS_ORIGIN_WHITELIST
-          value: ccd_gateway
+          value: https://case-management-web-{{ .Values.ingressHost }}
         - name: PROXY_AGGREGATED
           value: http://{{ .Release.Name }}-data-store-api
        # - name: PROXY_CASE_ACTIVITY TODO: not deployed currently
