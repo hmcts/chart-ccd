@@ -34,7 +34,7 @@ spec:
         - name: DEFINITION_STORE_DB_PORT
           value: '5432'
         - name: DEFINITION_STORE_DB_NAME
-          value: user-profile
+          value: definition-store
         - name: DEFINITION_STORE_DB_USERNAME
           value: hmcts
         - name: DEFINITION_STORE_DB_PASSWORD

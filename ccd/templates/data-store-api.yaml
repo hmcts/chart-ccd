@@ -35,6 +35,8 @@ spec:
           value: 'false'
         - name: ENABLE_DB_MIGRATE
           value: 'true'
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: {{ .Values.appInsightsKey }}
         - name: DEFINITION_STORE_HOST
           value: http://{{ .Release.Name }}-definition-store-api
         - name: USER_PROFILE_HOST
