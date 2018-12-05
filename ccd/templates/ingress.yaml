@@ -12,7 +12,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: user-profile-api-{{ .Values.ingressHost }}
+  - host: user-profile-api-{{ required "`ingressHost` must be present" .Values.ingressHost }}
     http:
       paths:
       - path: /

@@ -41,9 +41,6 @@ livenessTimeout: 3
 livenessPeriod: 15
 livenessFailureThreshold: 3
 
-# must be overridden
-ingressHost: rhubarb-recipes-service-pr-1.service.core-compute-preview.internal
-
 postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
