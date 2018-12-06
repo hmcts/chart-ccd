@@ -44,7 +44,7 @@ spec:
         - name: ENABLE_DB_MIGRATE
           value: 'true'
         - name: DEFINITION_STORE_IDAM_KEY
-          value: {{ .Values.definitionStoreApi.s2sKey }}
+          value: {{ required "`definitionStoreApi.s2sKey` must be set in your values.yaml file" .Values.definitionStoreApi.s2sKey }}
         - name: DEFINITION_STORE_S2S_AUTHORISED_SERVICES
           value: {{ .Values.definitionStoreApi.s2sAuthorisedServices }}
         {{- if .Values.definitionStoreApi.environment }}

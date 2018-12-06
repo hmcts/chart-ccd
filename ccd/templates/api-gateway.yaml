@@ -38,7 +38,7 @@ spec:
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
         - name: IDAM_SERVICE_KEY
-          value: {{ .Values.apiGateway.s2sKey }}
+          value: {{ required "`apiGateway.s2sKey` must be set in your values.yaml file" .Values.apiGateway.s2sKey }}
         - name: IDAM_SERVICE_NAME # Actually S2S
           value: 'ccd_gw'
        # - name: ADDRESS_LOOKUP_TOKEN
