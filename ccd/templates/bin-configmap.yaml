@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-bin
+  labels:
+    system: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    type: configuration
+
+data:
+  ccd-dns: |
+{{ include (print .Template.BasePath "/bin/_dns-register.tpl") . | indent 4 }}

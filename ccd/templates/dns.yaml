@@ -1,34 +1,42 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{.Release.Name}}"
+  name: "{{ .Release.Name }}-dns"
   labels:
-    app.kubernetes.io/managed-by: {{.Release.Service | quote }}
-    app.kubernetes.io/instance: {{.Release.Name | quote }}
-    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation
 spec:
   template:
     metadata:
-      name: "{{.Release.Name}}"
+      name: "{{ .Release.Name }}"
       labels:
-        app.kubernetes.io/managed-by: {{.Release.Service | quote }}
-        app.kubernetes.io/instance: {{.Release.Name | quote }}
-        helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     spec:
-      restartPolicy: Never
+      volumes:
+        - name: container-init
+          configMap:
+            name: {{ .Release.Name }}-bin
+            defaultMode: 0755
       containers:
-      - name: post-install-job
-        image: "alpine:3.8"
-        command: ["for", "service", "in", "$@;", "do", "wget", "-S", "--header='Content-Type: application/json'",  "--post-data",  "{\"Name\":\"${service}\",\"Service\":\"${service}\",\"Address\":\"\{{ .Values.ingressIP }}\",\"Port\":80}", "http://{{ .Values.consulIP }}:8500/v1/agent/service/register", ";", "done"]
-        args: 
-          - {{ .Release.Name }}-user-profile-api
-          - {{ .Release.Name }}-case-management-web
-          - {{ .Release.Name }}-data-store-api
-          - {{ .Release.Name }}-definition-store-api
-          - {{ .Release.Name }}-api-gateway
+        - name: {{ .Release.Name }}-dns
+          image: alpine:3.8
+          volumeMounts:
+            - name: container-init
+              mountPath: /container.init
+          command: [ "/bin/sh" ]
+          args: 
+            - /container.init/ccd-dns
+            - {{ .Release.Name }}-user-profile-api
+            - {{ .Release.Name }}-case-management-web
+            - {{ .Release.Name }}-data-store-api
+            - {{ .Release.Name }}-definition-store-api
+            - {{ .Release.Name }}-api-gateway
+      restartPolicy: Never
