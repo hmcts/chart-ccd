@@ -2,6 +2,7 @@ ingressHost: rhubarb-recipes-service-pr-1.service.core-compute-preview.internal
 
 apiGateway:
   s2sKey: AAAAAAAAAAAAAAAA
+  idamClientSecret: 123456
 
 dataStoreApi:
   s2sKey: AAAAAAAAAAAAAAAA
