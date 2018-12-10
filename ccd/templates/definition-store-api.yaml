@@ -41,6 +41,8 @@ spec:
           value: hmcts
         - name: DEFINITION_STORE_DB_USE_SSL
           value: 'false'
+        - name: USER_PROFILE_HOST
+          value: http://{{ .Release.Name }}-user-profile-api
         - name: ENABLE_DB_MIGRATE
           value: 'true'
         - name: DEFINITION_STORE_IDAM_KEY
