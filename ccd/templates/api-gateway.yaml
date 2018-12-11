@@ -33,7 +33,7 @@ spec:
         - name: IDAM_OAUTH2_CLIENT_ID
           value: 'ccd_gateway'
         - name: IDAM_OAUTH2_CLIENT_SECRET
-          value: {{ .Values.apiGateway.idamClientSecret }}
+          value: {{ .Values.apiGateway.idamClientSecret | quote }}
         # S2S
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
