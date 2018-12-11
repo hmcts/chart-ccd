@@ -1,8 +1,30 @@
-userProfile:
+userProfileApi:
   image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
   applicationPort: 4453
   authorisedServices: "ccd_data,ccd_definition,ccd_admin"
-s2sUrl: "http://rpe-service-auth-provider-saat.service.core-compute-saat.internal"
+
+dataStoreApi:
+  image: hmcts.azurecr.io/hmcts/ccd-data-store-api:latest
+  applicationPort: 4452
+  s2sAuthorisedServices: ccd_data,ccd_gw,ccd_ps,probate_backend,divorce_ccd_submission,sscs,cmc,cmc_claim_store,jui_webapp,pui_webapp,bulk_scan_orchestrator,fpl_case_service
+
+definitionStoreApi:
+  image: hmcts.azurecr.io/hmcts/ccd-definition-store-api:latest
+  applicationPort: 4451
+  s2sAuthorisedServices: ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp
+
+caseManagementWeb:
+  image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
+  applicationPort: 3451
+
+apiGateway:
+  image: hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest
+  applicationPort: 3453
+
+s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+idamWebUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
+idamApiUrl: "https://preprod-idamapi.reform.hmcts.net:3511"
+paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
 appInsightsKey: "fake-key"
 
 memoryRequests: "512Mi"
@@ -20,12 +42,14 @@ livenessTimeout: 3
 livenessPeriod: 15
 livenessFailureThreshold: 3
 
-# must be overridden
-ingressHost: cmc-claim-store-pr-1.service.core-compute-preview.internal
-
 postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
+  nameOverride: ccd-postgres
+  initdbScripts:
+    init.sql: |-
+      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   persistence:
     enabled: false

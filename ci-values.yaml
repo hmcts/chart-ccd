@@ -1,2 +1,13 @@
+ingressHost: rhubarb-recipes-service-pr-1.service.core-compute-preview.internal
 ingressIP: "10.97.16.227"
 consulIP: "10.97.11.254"
+
+apiGateway:
+  s2sKey: "AAAAAAAAAAAAAAAA"
+  idamClientSecret: "123456"
+
+dataStoreApi:
+  s2sKey: "AAAAAAAAAAAAAAAA"
+
+definitionStoreApi:
+  s2sKey: "AAAAAAAAAAAAAAAA"

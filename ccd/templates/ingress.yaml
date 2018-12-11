@@ -2,20 +2,49 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-ccd
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Release.Name }}-ccd
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-ccd
+    app.kubernetes.io/instance: {{ .Release.Name }}-ccd
   annotations:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: user-profile-api-{{ .Values.ingressHost }}
+  - host: user-profile-api-{{ required "`ingressHost` must be set in your values.yaml file" .Values.ingressHost }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ .Release.Name }}-user-profile-api
+          servicePort: 80
+# TODO only enable if flag set
+  - host: case-management-web-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-case-management-web
+          servicePort: 80
+  - host: data-store-api-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-data-store-api
+          servicePort: 80
+  - host: definition-store-api-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-definition-store-api
+          servicePort: 80
+  - host: gateway-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-api-gateway
           servicePort: 80

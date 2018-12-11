@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-data-store-api
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-data-store-api
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-data-store-api
+    app.kubernetes.io/instance: {{ .Release.Name }}-data-store-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}-data-store-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}-data-store-api
+    spec:
+      containers:
+      - image: {{ .Values.dataStoreApi.image }}
+        name: {{ .Release.Name }}-data-store-api
+        env:
+        - name: DATA_STORE_DB_HOST
+          value: {{ .Release.Name }}-ccd-postgres
+        - name: DATA_STORE_DB_PORT
+          value: '5432'
+        - name: DATA_STORE_DB_NAME
+          value: 'data-store'
+        - name: DATA_STORE_DB_USERNAME
+          value: hmcts
+        - name: DATA_STORE_DB_PASSWORD
+          value: 'hmcts'
+        - name: DATA_STORE_DB_USE_SSL
+          value: 'false'
+        - name: ENABLE_DB_MIGRATE
+          value: 'true'
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: {{ .Values.appInsightsKey }}
+        - name: DEFINITION_STORE_HOST
+          value: http://{{ .Release.Name }}-definition-store-api
+        - name: USER_PROFILE_HOST
+          value: http://{{ .Release.Name }}-user-profile-api
+       # - name: CCD_DM_DOMAIN
+       #   value: 'false'
+        - name: IDAM_USER_URL
+          value: {{ .Values.idamApiUrl }}
+        - name: IDAM_S2S_URL
+          value: {{ .Values.s2sUrl }}
+        - name: DATA_STORE_IDAM_KEY
+          value: {{ required "`dataStoreApi.s2sKey` must be set in your values.yaml file" .Values.dataStoreApi.s2sKey }}
+       # - name: CCD_DRAFT_STORE_URL
+       #   value: {{ .Release.Name }}-postgresql
+        - name: CCD_DRAFT_TTL_DAYS
+          value: '180'
+        - name: CCD_DRAFT_ENCRYPTION_KEY
+          value: 'not-a-real-primary-secret'
+        - name: DATA_STORE_S2S_AUTHORISED_SERVICES
+          value: {{ .Values.dataStoreApi.s2sAuthorisedServices }}
+       # - name: CCD_DEFAULTPRINTURL
+       #   value: hmcts
+        {{- if .Values.dataStoreApi.environment }}
+          {{- range $key, $val := .Values.dataStoreApi.environment }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+          {{- end}}
+        {{- end }}
+        resources:
+          requests:
+            memory: {{ .Values.memoryRequests }}
+            cpu: {{ .Values.cpuRequests }}
+          limits:
+            memory: {{ .Values.memoryLimits }}
+            cpu: {{ .Values.cpuLimits }}
+        ports:
+        - containerPort: {{ .Values.dataStoreApi.applicationPort }}
+          name: http
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessPath }}
+            port: {{ .Values.dataStoreApi.applicationPort }}
+          initialDelaySeconds: {{ .Values.livenessDelay }}
+          timeoutSeconds: {{ .Values.livenessTimeout }}
+          periodSeconds: {{ .Values.livenessPeriod }}
+          failureThreshold: {{ .Values.livenessFailureThreshold }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessPath }}
+            port: {{ .Values.dataStoreApi.applicationPort }}
+          initialDelaySeconds: {{ .Values.readinessDelay }}
+          timeoutSeconds: {{ .Values.readinessTimeout }}
+          periodSeconds: {{ .Values.readinessPeriod }}
+        imagePullPolicy: IfNotPresent
