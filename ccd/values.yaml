@@ -22,7 +22,8 @@ apiGateway:
   applicationPort: 3453
 
 s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-idamUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
+idamWebUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
+idamApiUrl: "https://preprod-idamapi.reform.hmcts.net:3511"
 paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
 appInsightsKey: "fake-key"
 
@@ -45,6 +46,7 @@ postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
+  nameOverride: ccd-postgres
   initdbScripts:
     init.sql: |-
       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;

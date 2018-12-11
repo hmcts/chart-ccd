@@ -25,11 +25,11 @@ spec:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: IDAM_BASE_URL
-          value: {{ .Values.idamUrl }}
+          value: {{ .Values.idamApiUrl }}
         - name: IDAM_OAUTH2_TOKEN_ENDPOINT
-          value: {{ .Values.idamUrl }}/oauth2/token
+          value: {{ .Values.idamApiUrl }}/oauth2/token
         - name: IDAM_OAUTH2_LOGOUT_ENDPOINT
-          value: {{ .Values.idamUrl }}/session/:token
+          value: {{ .Values.idamApiUrl }}/session/:token
         - name: IDAM_OAUTH2_CLIENT_ID
           value: 'ccd_gateway'
         - name: IDAM_OAUTH2_CLIENT_SECRET

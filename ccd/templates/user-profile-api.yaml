@@ -28,7 +28,7 @@ spec:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: USER_PROFILE_DB_HOST
-          value: {{ .Release.Name }}-postgresql
+          value: {{ .Release.Name }}-ccd-postgres
         - name: USER_PROFILE_DB_PORT
           value: '5432'
         - name: USER_PROFILE_DB_NAME

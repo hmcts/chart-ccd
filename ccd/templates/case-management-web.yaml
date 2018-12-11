@@ -25,7 +25,7 @@ spec:
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: IDAM_LOGIN_URL
-          value: {{ .Values.idamUrl }}/login
+          value: {{ .Values.idamWebUrl }}/login
         - name: CCD_GW_LOGOUT_URL
           value: https://gateway-{{ .Values.ingressHost }}/logout
         - name: CCD_API_URL

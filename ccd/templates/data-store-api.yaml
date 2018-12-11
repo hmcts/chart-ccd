@@ -22,7 +22,7 @@ spec:
         name: {{ .Release.Name }}-data-store-api
         env:
         - name: DATA_STORE_DB_HOST
-          value: {{ .Release.Name }}-postgresql
+          value: {{ .Release.Name }}-ccd-postgres
         - name: DATA_STORE_DB_PORT
           value: '5432'
         - name: DATA_STORE_DB_NAME
@@ -44,7 +44,7 @@ spec:
        # - name: CCD_DM_DOMAIN
        #   value: 'false'
         - name: IDAM_USER_URL
-          value: {{ .Values.idamUrl }}
+          value: {{ .Values.idamApiUrl }}
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
         - name: DATA_STORE_IDAM_KEY

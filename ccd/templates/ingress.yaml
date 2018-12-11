@@ -2,12 +2,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-ccd
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Release.Name }}-ccd
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-ccd
+    app.kubernetes.io/instance: {{ .Release.Name }}-ccd
   annotations:
     kubernetes.io/ingress.class: traefik
 spec:

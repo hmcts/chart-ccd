@@ -24,13 +24,13 @@ spec:
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
         - name: IDAM_USER_URL
-          value: {{ .Values.idamUrl }}
+          value: {{ .Values.idamApiUrl }}
         - name: USER_PROFILE_S2S_AUTHORISED_SERVICES
           value: {{ .Values.definitionStoreApi.authorisedServices }}
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: DEFINITION_STORE_DB_HOST
-          value: {{ .Release.Name }}-postgresql
+          value: {{ .Release.Name }}-ccd-postgres
         - name: DEFINITION_STORE_DB_PORT
           value: '5432'
         - name: DEFINITION_STORE_DB_NAME
