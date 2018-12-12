@@ -32,11 +32,13 @@ spec:
             - name: container-init
               mountPath: /container.init
           command: [ "/bin/sh" ]
-          args: 
+          args:
             - /container.init/ccd-dns
-            - {{ .Release.Name }}-user-profile-api
-            - {{ .Release.Name }}-case-management-web
-            - {{ .Release.Name }}-data-store-api
-            - {{ .Release.Name }}-definition-store-api
-            - {{ .Release.Name }}-api-gateway
+            {{- if .Values.caseManagementWeb.enabled }}
+            - case-management-web-{{ .Release.Name }}
+            - gateway-{{ .Release.Name }}
+            {{- end }}
+            - user-profile-api-{{ .Release.Name }}
+            - data-store-api-{{ .Release.Name }}
+            - definition-store-api-{{ .Release.Name }}
       restartPolicy: Never

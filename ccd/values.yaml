@@ -14,6 +14,7 @@ definitionStoreApi:
   s2sAuthorisedServices: ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp
 
 caseManagementWeb:
+  enabled: false
   image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
   applicationPort: 3451
 
