@@ -19,7 +19,7 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-user-profile-api
           servicePort: 80
-# TODO only enable if flag set
+  {{- if .Values.caseManagementWeb.enabled }}
   - host: case-management-web-{{ .Values.ingressHost }}
     http:
       paths:
@@ -27,6 +27,14 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-case-management-web
           servicePort: 80
+  - host: gateway-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-api-gateway
+          servicePort: 80
+    {{- end }}
   - host: data-store-api-{{ .Values.ingressHost }}
     http:
       paths:
@@ -41,10 +49,4 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-definition-store-api
           servicePort: 80
-  - host: gateway-{{ .Values.ingressHost }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: {{ .Release.Name }}-api-gateway
-          servicePort: 80
+
