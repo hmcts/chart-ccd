@@ -56,6 +56,7 @@ postgresql:
     enabled: false
 
 ccdImporter:
+  image: hmcts/ccd-definition-importer:latest
   definitions: >
     https://github.com/hmcts/bulk-scan-shared-infrastructure/raw/master/docker/ccd-definition-import/data/CCD_Definition_Exception_Record.template.xlsx,
     https://github.com/hmcts/bulk-scan-shared-infrastructure/blob/master/docker/ccd-definition-import/data/CCD_Definition_BULK_SCAN.template.xlsx    
