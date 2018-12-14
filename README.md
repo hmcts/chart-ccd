@@ -49,7 +49,23 @@ The idam secret and s2s keys need to be loaded in the pipeline,
 example config:
 
 ```
-TBD
+def secrets = [
+  'your-vault-${env}': [
+    secret('idam-client-secret', 'IDAM_CLIENT_SECRET') // optional, this is an example
+  ],
+  's2s-${env}'      : [
+    secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
+    secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
+    secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
+  ],
+  'ccd-${env}'      : [
+    secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
+  ]
+]
+
+withPipeline(type, product, component) {
+  loadVaultSecrets(secrets)
+}
 ```
 
 ## Configuration
