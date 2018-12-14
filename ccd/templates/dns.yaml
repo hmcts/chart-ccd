@@ -17,9 +17,7 @@ spec:
     metadata:
       name: "{{ .Release.Name }}"
       labels:
-        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-        app.kubernetes.io/instance: {{ .Release.Name | quote }}
-        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        app.kubernetes.io/name: {{ .Release.Name }}-dns
     spec:
       volumes:
         - name: container-init
