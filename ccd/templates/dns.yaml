@@ -15,7 +15,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: "{{ .Release.Name }}"
+      name: "{{ .Release.Name }}-dns"
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}-dns
     spec:
