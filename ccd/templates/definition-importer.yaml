@@ -61,7 +61,7 @@ spec:
           - name: CCD_ROLE
             value: {{ .Values.importer.ccdRole }}
           - name: MICROSERVICE_BASE_URL
-            value: {{ .Values.importer.microserviceUri }}
+            value: {{ required "A valid ingressHost is required." .Values.ingressHost }}
           - name: AUTH_PROVIDER_BASE_URL
             value: {{ .Values.s2sUrl }}
           - name: MICROSERVICE

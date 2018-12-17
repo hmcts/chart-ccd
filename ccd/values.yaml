@@ -67,5 +67,4 @@ importer:
   waitHosts: "" 
   waitHostsTimeout: 300
   ccdRole: caseworker-bulkscan
-  microserviceUri: http://bulk-scan-orchestrator-pr-151:8582
-  microservice: bulk_scan_orchestrator
+  microservice: ccd_gw
