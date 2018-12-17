@@ -58,8 +58,8 @@ spec:
             value: "ccd_gateway"
           - name: CLIENT_SECRET
             value: {{ .Values.apiGateway.idamClientSecret | quote }}
-          - name: CCD_ROLE
-            value: {{ .Values.importer.ccdRole }}
+          - name: USER_ROLES
+            value: {{- join "," .Values.importer.userRoles }}
           - name: MICROSERVICE_BASE_URL
             value: {{ required "A valid ingressHost is required." .Values.ingressHost }}
           - name: AUTH_PROVIDER_BASE_URL

@@ -66,5 +66,6 @@ importer:
     https://github.com/hmcts/bulk-scan-shared-infrastructure/blob/master/docker/ccd-definition-import/data/CCD_Definition_BULK_SCAN.template.xlsx    
   waitHosts: "" 
   waitHostsTimeout: 300
-  ccdRole: caseworker-bulkscan
+  userRoles: 
+    - caseworker-bulkscan 
   microservice: ccd_gw
