@@ -43,6 +43,10 @@ ccd:
   caseManagementWeb:
    # enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
 
+global:
+  subscriptionId: ${SUBSCRIPTION_ID}
+  tenantId: ${TENANT_ID}
+
 ```
 
 The idam secret and s2s keys need to be loaded in the pipeline,
