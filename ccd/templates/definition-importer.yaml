@@ -30,7 +30,8 @@ spec:
               usepodidentity: "false"
               subscriptionid: {{ .Values.global.subscriptionId }}
               tenantid: {{ .Values.global.tenantId }}
-              {{- include "importer.vault" . | nindent 14 }}  # keyvaultname, resourcegroup
+              keyvaultname: {{ include "importer.vault" . | quote }}
+              resourcegroup: {{ include "importer.resourcegroup" . | quote }}
               keyvaultobjectnames: "ccd-as-a-pr-importer-username;ccd-as-a-pr-importer-password"
               keyvaultobjecttypes: "secret;secret" # OPTIONS: secret, key, cert
       containers:
@@ -53,13 +54,14 @@ spec:
             value: "/kvmnt"
           - name: IDAM_URI
             value: {{ .Values.idamApiUrl }}
-          {{- include "importer.redirect" . | nindent 12 }}  # REDIRECT_URI
+          - name: REDIRECT_URI  
+            value: {{ include "importer.redirect" . | quote }}
           - name: CLIENT_ID
             value: "ccd_gateway"
           - name: CLIENT_SECRET
             value: {{ .Values.apiGateway.idamClientSecret | quote }}
           - name: USER_ROLES
-            value: {{- join "," .Values.importer.userRoles }}
+            value: {{ join "," .Values.importer.userRoles }}
           - name: MICROSERVICE_BASE_URL
             value: {{ required "A valid ingressHost is required." .Values.ingressHost }}
           - name: AUTH_PROVIDER_BASE_URL
