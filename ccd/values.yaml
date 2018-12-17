@@ -55,18 +55,17 @@ postgresql:
   persistence:
     enabled: false
 
-ccdImporter:
+global:
+  subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
+  tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+
+importer:
   image: hmcts/ccd-definition-importer:latest
   definitions: >
     https://github.com/hmcts/bulk-scan-shared-infrastructure/raw/master/docker/ccd-definition-import/data/CCD_Definition_Exception_Record.template.xlsx,
     https://github.com/hmcts/bulk-scan-shared-infrastructure/blob/master/docker/ccd-definition-import/data/CCD_Definition_BULK_SCAN.template.xlsx    
   waitHosts: "" 
   waitHostsTimeout: 300
-  keyVaultName: "ccd-saat"
-  resourceGroup: "ccd-shared-saat"
-  subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
-  tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
-  redirectUri: http://localhost:3000/receiver
   ccdRole: caseworker-bulkscan
   microserviceUri: http://bulk-scan-orchestrator-pr-151:8582
   microservice: bulk_scan_orchestrator

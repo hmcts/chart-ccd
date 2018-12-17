@@ -1,4 +1,4 @@
----
+{{- if .Values.importer.definitions }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -28,46 +28,45 @@ spec:
               name: kvcreds 
             options:
               usepodidentity: "false"
-              keyvaultname: {{ .Values.ccdImporter.keyVaultName }}
+              subscriptionid: {{ .Values.global.subscriptionId }}
+              tenantid: {{ .Values.global.tenantId }}
+              {{- include "importer.vault" . | nindent 14 }}  # keyvaultname, resourcegroup
               keyvaultobjectnames: "ccd-as-a-pr-importer-username;ccd-as-a-pr-importer-password"
               keyvaultobjecttypes: "secret;secret" # OPTIONS: secret, key, cert
-              resourcegroup: {{ .Values.ccdImporter.resourceGroup }}
-              subscriptionid: {{ .Values.ccdImporter.subscriptionId }}
-              tenantid: {{ .Values.ccdImporter.tenantId }}
       containers:
         - name: {{ .Release.Name }}-definition-importer
-          image: {{ .Values.ccdImporter.image }} 
+          image: {{ .Values.importer.image }} 
           volumeMounts:
           - name: kvcreds
             mountPath: /kvmnt
             readOnly: true
           env:
           - name: CCD_DEF_URLS
-            value: {{ .Values.ccdImporter.definitions | quote }}
+            value: {{ .Values.importer.definitions | quote }}
           - name: WAIT_HOSTS
-            value: {{ .Values.ccdImporter.waitHosts }}
+            value: {{ .Values.importer.waitHosts }}
           - name: WAIT_HOSTS_TIMEOUT
-            value: {{ .Values.ccdImporter.waitHostsTimeout }}
+            value: {{ .Values.importer.waitHostsTimeout }}
           - name: CREATE_IMPORTER_USER
             value: false
           - name: IMPORTER_CREDS_MOUNT
             value: "/kvmnt"
           - name: IDAM_URI
             value: {{ .Values.idamApiUrl }}
-          - name: REDIRECT_URI
-            value: {{ .Values.ccdImporter.redirectUri }}
+          {{- include "importer.redirect" . | nindent 12 }}  # REDIRECT_URI
           - name: CLIENT_ID
             value: "ccd_gateway"
           - name: CLIENT_SECRET
             value: {{ .Values.apiGateway.idamClientSecret | quote }}
           - name: CCD_ROLE
-            value: {{ .Values.ccdImporter.ccdRole }}
+            value: {{ .Values.importer.ccdRole }}
           - name: MICROSERVICE_BASE_URL
-            value: {{ .Values.ccdImporter.microserviceUri }}
+            value: {{ .Values.importer.microserviceUri }}
           - name: AUTH_PROVIDER_BASE_URL
             value: {{ .Values.s2sUrl }}
           - name: MICROSERVICE
-            value: {{ .Values.ccdImporter.microservice }}
+            value: {{ .Values.importer.microservice }}
           - name: CCD_STORE_BASE_URL
             value: http://definition-store-api-{{ .Release.Name }}:{{ .Values.definitionStoreApi.applicationPort }}
       restartPolicy: Never
+{{- end }}
