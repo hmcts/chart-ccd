@@ -58,11 +58,11 @@ postgresql:
 importer:
   image: hmcts/ccd-definition-importer:latest
   definitions: >-
-    https://github.com/hmcts/chart-ccd/blob/definitions-importer/data/CCD_Definition_Exception_Record.template.xlsx,
-    https://github.com/hmcts/chart-ccd/blob/definitions-importer/data/CCD_Definition_BULK_SCAN.template.xlsx
+    https://github.com/hmcts/chart-ccd/raw/definitions-importer/data/CCD_Definition_Exception_Record.template.xlsx,
+    https://github.com/hmcts/chart-ccd/raw/definitions-importer/data/CCD_Definition_BULK_SCAN.template.xlsx
   waitHosts: "" 
   waitHostsTimeout: 300
   userRoles: 
     - caseworker-bulkscan 
   microservice: ccd_gw
-  verbose: "true"
+  verbose: "false"
