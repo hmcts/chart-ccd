@@ -65,3 +65,4 @@ importer:
   userRoles: 
     - caseworker-bulkscan 
   microservice: ccd_gw
+  verbose: "true"

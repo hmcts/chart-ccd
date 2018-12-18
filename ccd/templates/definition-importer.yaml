@@ -69,7 +69,9 @@ spec:
           - name: MICROSERVICE
             value: {{ .Values.importer.microservice }}
           - name: CCD_STORE_BASE_URL
-            value: http://definition-store-api-{{ .Release.Name }}:{{ .Values.definitionStoreApi.applicationPort }}
+            value: http://{{ .Release.Name }}-definition-store-api:{{ .Values.definitionStoreApi.applicationPort }}
+          - name: VERBOSE
+            value: {{ .Values.importer.verbose | quote }}
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}
