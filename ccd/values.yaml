@@ -57,9 +57,9 @@ postgresql:
 
 importer:
   image: hmcts/ccd-definition-importer:latest
-  definitions: >
+  definitions: >-
     https://github.com/hmcts/chart-ccd/blob/master/data/CCD_Definition_Exception_Record.template.xlsx,
-    https://github.com/hmcts/chart-ccd/blob/master/data/CCD_Definition_BULK_SCAN.template.xlsx    
+    https://github.com/hmcts/chart-ccd/blob/master/data/CCD_Definition_BULK_SCAN.template.xlsx
   waitHosts: "" 
   waitHostsTimeout: 300
   userRoles: 
