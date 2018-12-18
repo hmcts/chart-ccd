@@ -45,11 +45,11 @@ spec:
           - name: CCD_DEF_URLS
             value: {{ .Values.importer.definitions | quote }}
           - name: WAIT_HOSTS
-            value: {{ .Values.importer.waitHosts }}
+            value: {{ .Values.importer.waitHosts | quote }}
           - name: WAIT_HOSTS_TIMEOUT
-            value: {{ .Values.importer.waitHostsTimeout }}
+            value: {{ .Values.importer.waitHostsTimeout | quote }}
           - name: CREATE_IMPORTER_USER
-            value: false
+            value: "false"
           - name: IMPORTER_CREDS_MOUNT
             value: "/kvmnt"
           - name: IDAM_URI
@@ -70,5 +70,12 @@ spec:
             value: {{ .Values.importer.microservice }}
           - name: CCD_STORE_BASE_URL
             value: http://definition-store-api-{{ .Release.Name }}:{{ .Values.definitionStoreApi.applicationPort }}
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
       restartPolicy: Never
 {{- end }}

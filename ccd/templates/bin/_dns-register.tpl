@@ -6,7 +6,7 @@ echo "Registering Consul DNS entries"
 for service in $@ 
 do
   echo "Registering service: ${service}"
-  wget -S -O- --header='Content-Type: application/json' \
-    --post-data  "{\"Name\":\"${service}\",\"Service\":\"${service}\",\"Address\":\"{{ required "`ingressIP` must be set in your values.yaml file" .Values.ingressIP }}\",\"Port\":80}" \
+  curl -X PUT -H 'Content-Type: application/json' \
+    -d "{\"Name\":\"${service}\",\"Service\":\"${service}\",\"Address\":\"{{ required "`ingressIP` must be set in your values.yaml file" .Values.ingressIP }}\",\"Port\":80}" \
     http://{{ required "`consulIP` must be set in your values.yaml file" .Values.consulIP }}:8500/v1/agent/service/register
 done
