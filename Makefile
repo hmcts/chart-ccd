@@ -21,7 +21,7 @@ lint:
 	helm lint ${CHART} --namespace ${NAMESPACE} -f ci-values.yaml
 
 deploy:
-	helm install ${CHART} --name ${RELEASE} --namespace ${NAMESPACE} -f ci-values.yaml 
+	helm install ${CHART} --name ${RELEASE} --namespace ${NAMESPACE} -f ci-values.yaml  --wait
 
 test:
 	helm test ${RELEASE}
