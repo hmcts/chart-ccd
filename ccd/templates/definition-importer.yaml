@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: "{{ .Release.Name }}-definition-importer"
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/name: "{{ .Release.Name }}-definition-importer"
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
