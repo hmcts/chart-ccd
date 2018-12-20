@@ -26,7 +26,7 @@ spec:
             defaultMode: 0755
       containers:
         - name: {{ .Release.Name }}-dns
-          image: alpine:3.8
+          image: hmcts/curl
           volumeMounts:
             - name: container-init
               mountPath: /container.init
@@ -40,4 +40,11 @@ spec:
             - user-profile-api-{{ .Release.Name }}
             - data-store-api-{{ .Release.Name }}
             - definition-store-api-{{ .Release.Name }}
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
       restartPolicy: Never

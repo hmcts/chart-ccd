@@ -1,0 +1,84 @@
+{{- if .Values.importer.definitions }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-definition-importer"
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "5"
+    helm.sh/hook-delete-policy: before-hook-creation  # Move to hook-succeeded after first charts are done 
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-definition-importer"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      volumes:
+        - name: kvcreds
+          flexVolume:
+            driver: "azure/kv"
+            secretRef:
+              name: kvcreds 
+            options:
+              usepodidentity: "false"
+              subscriptionid: {{ .Values.global.subscriptionId }}
+              tenantid: {{ .Values.global.tenantId }}
+              keyvaultname: {{ include "importer.vault" . | quote }}
+              resourcegroup: {{ include "importer.resourcegroup" . | quote }}
+              keyvaultobjectnames: "ccd-as-a-pr-importer-username;ccd-as-a-pr-importer-password"
+              keyvaultobjecttypes: "secret;secret" # OPTIONS: secret, key, cert
+      containers:
+        - name: {{ .Release.Name }}-definition-importer
+          image: {{ .Values.importer.image }} 
+          volumeMounts:
+          - name: kvcreds
+            mountPath: /kvmnt
+            readOnly: true
+          env:
+          - name: CCD_DEF_URLS
+            value: {{ join "," .Values.importer.definitions | quote }}
+          - name: WAIT_HOSTS
+            value: {{ .Values.importer.waitHosts | quote }}
+          - name: WAIT_HOSTS_TIMEOUT
+            value: {{ .Values.importer.waitHostsTimeout | quote }}
+          - name: CREATE_IMPORTER_USER
+            value: "false"
+          - name: IMPORTER_CREDS_MOUNT
+            value: "/kvmnt"
+          - name: IDAM_URI
+            value: {{ .Values.idamApiUrl }}
+          - name: REDIRECT_URI  
+            value: {{ include "importer.redirect" . | quote }}
+          - name: CLIENT_ID
+            value: "ccd_gateway"
+          - name: CLIENT_SECRET
+            value: {{ .Values.apiGateway.idamClientSecret | quote }}
+          - name: USER_ROLES
+            value: {{ join "," .Values.importer.userRoles }}
+          - name: MICROSERVICE_BASE_URL
+            value: {{ required "A valid ingressHost is required." .Values.ingressHost }}
+          - name: AUTH_PROVIDER_BASE_URL
+            value: {{ .Values.s2sUrl }}
+          - name: MICROSERVICE
+            value: {{ .Values.importer.microservice }}
+          - name: CCD_STORE_BASE_URL
+            value: http://{{ .Release.Name }}-definition-store-api
+          - name: VERBOSE
+            value: {{ .Values.importer.verbose | quote }}
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
+      restartPolicy: Never   # Move to "OnFailure" after first charts are done 
+{{- end }}
