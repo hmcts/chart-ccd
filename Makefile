@@ -20,6 +20,9 @@ clean:
 lint:
 	helm lint ${CHART} --namespace ${NAMESPACE} -f ci-values.yaml
 
+inspect:
+	helm inspect chart ${CHART}
+
 deploy:
 	helm install ${CHART} --name ${RELEASE} --namespace ${NAMESPACE} -f ci-values.yaml  --wait
 
