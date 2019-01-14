@@ -28,6 +28,8 @@ spec:
           value: {{ .Values.s2sUrl }}
         - name: IDAM_API_URL
           value: {{ .Values.idamApiUrl }}
+        - name: IDAM_PRINT_SERVICE_KEY
+          value: {{ required "`printApi.s2sKey` must be set in your values.yaml file" .Values.printApi.s2sKey }}
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: APPLICATION_INSIGHTS_IKEY
@@ -35,7 +37,7 @@ spec:
         - name: CASE_DATA_STORE_URL
           value: http://{{ .Release.Name }}-data-store-api
         - name: CASE_DATA_PROBATE_TEMPLATE_URL
-          value: {{ .Values.printApi.probateTemplateUrl }}
+          value: {{ required "`printApi.probateTemplateUrl` must be set in your values.yaml file" .Values.printApi.probateTemplateUrl }}
         - name: HPKP_MAX_AGE
           values: "2592000"
         - name: HPKP_SHA256S
@@ -46,6 +48,10 @@ spec:
           value: {{ .Values.idamApiUrl }}
         - name: IDAM_SERVICE_NAME
           value: ccd_ps
+        - name: SECURITY_REFERRER_POLICY
+          value: origin
+        - name: USE_CSRF_PROTECTION
+          value: "true"
         {{- if .Values.printApi.environment }}
           {{- range $key, $val := .Values.printApi.environment }}
         - name: {{ $key }}
