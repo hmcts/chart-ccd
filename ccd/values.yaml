@@ -22,6 +22,11 @@ apiGateway:
   image: hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest
   applicationPort: 3453
 
+printApi:
+  enabled: true
+  image: hmcts.azurecr.io/hmcts/ccd-case-print-service:latest
+  applicationPort: 3100
+
 s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
 idamWebUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
