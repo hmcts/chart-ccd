@@ -35,12 +35,28 @@ spec:
               resourcegroup: {{ include "importer.resourcegroup" . | quote }}
               keyvaultobjectnames: "ccd-as-a-pr-importer-username;ccd-as-a-pr-importer-password"
               keyvaultobjecttypes: "secret;secret" # OPTIONS: secret, key, cert
+        - name: gitcreds
+          flexVolume:
+            driver: "azure/kv"
+            secretRef:
+              name: gitcreds 
+            options:
+              usepodidentity: "false"
+              subscriptionid: {{ .Values.global.subscriptionId }}
+              tenantid: {{ .Values.global.tenantId }}
+              keyvaultname: {{ include "importer.vaultGit" . | quote }}
+              resourcegroup: "cnp-core-infra"
+              keyvaultobjectnames: "hmcts-github-apikey"
+              keyvaultobjecttypes: "secret" # OPTIONS: secret, key, cert
       containers:
         - name: {{ .Release.Name }}-definition-importer
           image: {{ .Values.importer.image }} 
           volumeMounts:
           - name: kvcreds
             mountPath: /kvmnt
+            readOnly: true
+          - name: gitcreds
+            mountPath: /gitmnt
             readOnly: true
           env:
           - name: CCD_DEF_URLS
@@ -53,6 +69,8 @@ spec:
             value: "false"
           - name: IMPORTER_CREDS_MOUNT
             value: "/kvmnt"
+          - name: GITHUB_CREDS_MOUNT
+            value: "/gitmnt"
           - name: IDAM_URI
             value: {{ .Values.idamApiUrl }}
           - name: REDIRECT_URI  

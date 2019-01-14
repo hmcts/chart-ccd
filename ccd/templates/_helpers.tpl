@@ -14,6 +14,14 @@
   {{- end }}
 {{- end }}
 
+{{- define "importer.vaultGit" }}
+  {{- if eq .Values.global.subscriptionId "bf308a5c-0624-4334-8ff8-8dca9fd43783"}}
+  {{- "infra-vault-sandbox" -}}
+  {{- else }}
+  {{- "infra-vault-nonprod" -}}
+  {{- end }}
+{{- end }}
+
 {{- define "importer.redirect" }}
   {{- if eq .Values.global.subscriptionId "bf308a5c-0624-4334-8ff8-8dca9fd43783"}}
   {{- "https://ccd-case-management-web-saat-staging.service.core-compute-saat.internal/oauth2redirect" -}}
