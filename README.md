@@ -94,8 +94,10 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `apiGateway.s2sKey`                    | S2S key | `nil` (required must be set by user) |
 | `apiGateway.idamClientSecret`                    | Idam OAuth client secret | `nil` (required must be set by user) |
 | `printApi.image`          | Case print service's image version | `hmcts.azurecr.io/hmcts/ccd-case-print-service:latest`|
+| `printApi.enabled`          | If case print service will be deployed | `false`
 | `printApi.applicationPort`                    | Port definition case print service runs on | `3100` |
 | `printApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
+| `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
 | `s2sUrl`                | S2S api url | `http://rpe-service-auth-provider-aat.service.core-compute-aat.internal`|
 | `idamWebUrl`                | Idam web url | `https://idam.preprod.ccidam.reform.hmcts.net`|
 | `idamApiUrl`                | Idam api url | `https://preprod-idamapi.reform.hmcts.net:3511`|
