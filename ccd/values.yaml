@@ -23,6 +23,7 @@ apiGateway:
   applicationPort: 3453
 
 s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
 idamWebUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
 idamApiUrl: "https://preprod-idamapi.reform.hmcts.net:3511"
 paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
@@ -62,9 +63,9 @@ importer:
   # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
   # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
   definitions:
-  waitHosts: "" 
+  waitHosts: ""
   waitHostsTimeout: 300
-  userRoles: 
-    - caseworker-bulkscan 
+  userRoles:
+    - caseworker-bulkscan
   microservice: ccd_gw
   verbose: "false"

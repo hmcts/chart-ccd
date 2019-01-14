@@ -49,8 +49,8 @@ spec:
           value: {{ .Values.s2sUrl }}
         - name: DATA_STORE_IDAM_KEY
           value: {{ required "`dataStoreApi.s2sKey` must be set in your values.yaml file" .Values.dataStoreApi.s2sKey }}
-       # - name: CCD_DRAFT_STORE_URL
-       #   value: {{ .Release.Name }}-postgresql
+        - name: CCD_DRAFT_STORE_URL
+          value: {{ .Values.draftStoreUrl }}
         - name: CCD_DRAFT_TTL_DAYS
           value: '180'
         - name: CCD_DRAFT_ENCRYPTION_KEY
