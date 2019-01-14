@@ -23,7 +23,7 @@ apiGateway:
   applicationPort: 3453
 
 printApi:
-  enabled: true
+  enabled: false
   image: hmcts.azurecr.io/hmcts/ccd-case-print-service:latest
   applicationPort: 3100
 
