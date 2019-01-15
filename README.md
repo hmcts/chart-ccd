@@ -6,6 +6,7 @@ Including:
 * user-profile-api
 * definition-store-api
 * case-management-web (optional, enabled with a flag)
+* print-api (aka case-print-service which is optional, enabled with a flag)
 
 We will take small PRs and small features to this chart but more complicated needs should be handled in your own chart.
 
@@ -42,6 +43,12 @@ ccd:
 
   caseManagementWeb:
    # enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
+
+   printApi:
+    # enabled: true # if you need access to the case print service then enable this
+    s2sKey: ${PRINT_S2S_KEY}
+    probateTemplateUrl: http://${SERVICE_NAME}-probate-app
+
 ```
 
 The idam secret and s2s keys need to be loaded in the pipeline,
@@ -56,6 +63,7 @@ def secrets = [
     secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
     secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
     secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
+    secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
   ],
   'ccd-${env}'      : [
     secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
@@ -93,6 +101,11 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `apiGateway.applicationPort`                    | Port definition store api runs on | `3453` |
 | `apiGateway.s2sKey`                    | S2S key | `nil` (required must be set by user) |
 | `apiGateway.idamClientSecret`                    | Idam OAuth client secret | `nil` (required must be set by user) |
+| `printApi.image`          | Case print service's image version | `hmcts.azurecr.io/hmcts/ccd-case-print-service:latest`|
+| `printApi.enabled`          | If case print service will be deployed | `false`
+| `printApi.applicationPort`                    | Port definition case print service runs on | `3100` |
+| `printApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
+| `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
 | `s2sUrl`                | S2S api url | `http://rpe-service-auth-provider-aat.service.core-compute-aat.internal`|
 | `idamWebUrl`                | Idam web url | `https://idam.preprod.ccidam.reform.hmcts.net`|
 | `idamApiUrl`                | Idam api url | `https://preprod-idamapi.reform.hmcts.net:3511`|

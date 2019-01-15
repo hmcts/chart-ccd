@@ -1,0 +1,87 @@
+{{- if .Values.printApi.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-print-api
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-print-api
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-print-api
+    app.kubernetes.io/instance: {{ .Release.Name }}-print-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}-print-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}-print-api
+    spec:
+      containers:
+      - image: {{ .Values.printApi.image }}
+        name: {{ .Release.Name }}-print-api
+        env:
+        - name: IDAM_S2S_URL
+          value: {{ .Values.s2sUrl }}
+        - name: IDAM_S2S_AUTH
+          value: {{ .Values.s2sUrl }}
+        - name: IDAM_API_URL
+          value: {{ .Values.idamApiUrl }}
+        - name: IDAM_PRINT_SERVICE_KEY
+          value: {{ required "`printApi.s2sKey` must be set in your values.yaml file" .Values.printApi.s2sKey }}
+        - name: APPINSIGHTS_INSTRUMENTATIONKEY
+          value: {{ .Values.appInsightsKey }}
+        - name: APPLICATION_INSIGHTS_IKEY
+          value: {{ .Values.appInsightsKey }}
+        - name: CASE_DATA_STORE_URL
+          value: http://{{ .Release.Name }}-data-store-api
+        - name: CASE_DATA_PROBATE_TEMPLATE_URL
+          value: {{ required "`printApi.probateTemplateUrl` must be set in your values.yaml file" .Values.printApi.probateTemplateUrl }}
+        - name: HPKP_MAX_AGE
+          values: "2592000"
+        - name: HPKP_SHA256S
+          values: "Set-proper-SHA256s" 
+        - name: IDAM_AUTHENTICATION_WEB_URL
+          values: {{ .Values.idamWebUrl }}
+        - name: IDAM_BASE_URL
+          value: {{ .Values.idamApiUrl }}
+        - name: IDAM_SERVICE_NAME
+          value: ccd_ps
+        - name: SECURITY_REFERRER_POLICY
+          value: origin
+        - name: USE_CSRF_PROTECTION
+          value: "true"
+        {{- if .Values.printApi.environment }}
+          {{- range $key, $val := .Values.printApi.environment }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+          {{- end}}
+        {{- end }}
+        resources:
+          requests:
+            memory: {{ .Values.memoryRequests }}
+            cpu: {{ .Values.cpuRequests }}
+          limits:
+            memory: {{ .Values.memoryLimits }}
+            cpu: {{ .Values.cpuLimits }}
+        ports:
+        - containerPort: {{ .Values.printApi.applicationPort }}
+          name: http
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessPath }}
+            port: {{ .Values.printApi.applicationPort }}
+          initialDelaySeconds: {{ .Values.livenessDelay }}
+          timeoutSeconds: {{ .Values.livenessTimeout }}
+          periodSeconds: {{ .Values.livenessPeriod }}
+          failureThreshold: {{ .Values.livenessFailureThreshold }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessPath }}
+            port: {{ .Values.printApi.applicationPort }}
+          initialDelaySeconds: {{ .Values.readinessDelay }}
+          timeoutSeconds: {{ .Values.readinessTimeout }}
+          periodSeconds: {{ .Values.readinessPeriod }}
+        imagePullPolicy: IfNotPresent
+{{- end }}
