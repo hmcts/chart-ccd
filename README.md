@@ -45,10 +45,10 @@ ccd:
    # enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
 
    printApi:
-    enabled: true # if you need access to the case print service then enable this
+    # enabled: true # if you need access to the case print service then enable this
     s2sKey: ${PRINT_S2S_KEY}
     probateTemplateUrl: http://${SERVICE_NAME}-probate-app
-    
+
 ```
 
 The idam secret and s2s keys need to be loaded in the pipeline,
@@ -63,6 +63,7 @@ def secrets = [
     secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
     secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
     secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
+    secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY'),
   ],
   'ccd-${env}'      : [
     secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
