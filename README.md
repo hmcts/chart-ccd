@@ -6,6 +6,7 @@ Including:
 * user-profile-api
 * definition-store-api
 * case-management-web (optional, enabled with a flag)
+* print-api (aka case-print-service which is optional, enabled with a flag)
 
 We will take small PRs and small features to this chart but more complicated needs should be handled in your own chart.
 
@@ -42,6 +43,12 @@ ccd:
 
   caseManagementWeb:
    # enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
+
+   printApi:
+    enabled: true # if you need access to the case print service then enable this
+    s2sKey: ${PRINT_S2S_KEY}
+    probateTemplateUrl: http://${SERVICE_NAME}-probate-app
+    
 ```
 
 The idam secret and s2s keys need to be loaded in the pipeline,
