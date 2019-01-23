@@ -37,6 +37,9 @@ spec:
             - case-management-web-{{ .Release.Name }}
             - gateway-{{ .Release.Name }}
             {{- end }}
+            {{- if .Values.printApi.enabled }}
+            - print-api-{{ .Release.Name }}
+            {{- end }}
             - user-profile-api-{{ .Release.Name }}
             - data-store-api-{{ .Release.Name }}
             - definition-store-api-{{ .Release.Name }}
