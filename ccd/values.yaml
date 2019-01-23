@@ -40,14 +40,14 @@ memoryLimits: "1024Mi"
 cpuLimits: "2500m"
 
 readinessPath: "/health"
-readinessDelay: 30
+readinessDelay: 60
 readinessTimeout: 3
 readinessPeriod: 15
 livenessPath: "/health"
-livenessDelay: 30
+livenessDelay: 60
 livenessTimeout: 3
 livenessPeriod: 15
-livenessFailureThreshold: 3
+livenessFailureThreshold: 5
 
 postgresql:
   postgresqlUsername: hmcts
