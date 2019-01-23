@@ -25,7 +25,7 @@ jobs:
       chartName: ccd
       chartReleaseName: chart-ccd-ci-test
       chartNamespace: chart-tests
-      helmInstallTimeout: "300"
+      helmInstallTimeout: "500"
 
 - job: Release
   # Make sure we have a tag to run this job
