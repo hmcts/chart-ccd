@@ -34,7 +34,16 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-api-gateway
           servicePort: 80
-    {{- end }}
+  {{- end }}
+  {{- if .Values.printApi.enabled }}
+  - host: print-api-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-print-api
+          servicePort: 80
+  {{- end }}
   - host: data-store-api-{{ .Values.ingressHost }}
     http:
       paths:
