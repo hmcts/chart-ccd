@@ -75,6 +75,17 @@ withPipeline(type, product, component) {
 }
 ```
 
+## Accessing an app using this chart on a pull request
+
+DNS will be automatically registered for most of the CCD pods, the ccd component will be prefixed to the regular url,
+The prefixes can be found here:
+https://github.com/hmcts/chart-ccd/blob/master/ccd/templates/ingress.yaml#L23
+
+An example url for accessing case management web would be:
+```
+https://case-management-web-sscs-cor-backend-pr-189.service.core-compute-preview.internal/
+```
+
 ## Configuration
 
 The following table lists the configurable parameters of the CCD chart and their default values.
