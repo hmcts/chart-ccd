@@ -1,5 +1,5 @@
 ingressHost: chart-ccd-release.service.core-compute-preview.internal
-ingressIP: "10.97.16.227"
+ingressIP: "10.97.17.51"
 consulIP: "10.97.11.254"
 
 apiGateway:
