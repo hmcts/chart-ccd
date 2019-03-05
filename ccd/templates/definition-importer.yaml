@@ -26,7 +26,7 @@ spec:
           flexVolume:
             driver: "azure/kv"
             secretRef:
-              name: kvcreds 
+              name: {{ default "kvcreds" .Values.importer.kvSecretRef }} 
             options:
               usepodidentity: "false"
               subscriptionid: {{ .Values.global.subscriptionId }}
@@ -39,7 +39,7 @@ spec:
           flexVolume:
             driver: "azure/kv"
             secretRef:
-              name: gitcreds 
+              name: {{ default "kvcreds" .Values.importer.gitSecretRef }} 
             options:
               usepodidentity: "false"
               subscriptionid: {{ .Values.global.subscriptionId }}
