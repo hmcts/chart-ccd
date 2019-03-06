@@ -63,6 +63,8 @@ postgresql:
 
 importer:
   image: hmcts/ccd-definition-importer:latest
+  kvSecretRef: kvcreds
+  gitSecretRef: kvcreds
   # Definitions is a list. For example:
   # definitions:
   # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
