@@ -61,6 +61,8 @@ spec:
           env:
           - name: CCD_DEF_URLS
             value: {{ join "," .Values.importer.definitions | quote }}
+          - name: CCD_DEF_FILENAME
+            value: {{ .Values.importer.definitionFilename | quote }}
           - name: WAIT_HOSTS
             value: {{ .Values.importer.waitHosts | quote }}
           - name: WAIT_HOSTS_TIMEOUT
