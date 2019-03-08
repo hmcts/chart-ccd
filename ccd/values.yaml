@@ -18,6 +18,11 @@ caseManagementWeb:
   image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
   applicationPort: 3451
 
+adminWeb:
+  enabled: false
+  image: hmcts.azurecr.io/hmcts/ccd-admin-web:latest
+  applicationPort: 3100
+
 apiGateway:
   image: hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest
   applicationPort: 3453

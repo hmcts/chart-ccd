@@ -35,6 +35,15 @@ spec:
           serviceName: {{ .Release.Name }}-api-gateway
           servicePort: 80
   {{- end }}
+  {{- if .Values.adminWeb.enabled }}
+  - host: admin-web-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-admin-web
+          servicePort: 80
+  {{- end }}
   {{- if .Values.printApi.enabled }}
   - host: print-api-{{ .Values.ingressHost }}
     http:

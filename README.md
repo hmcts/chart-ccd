@@ -44,7 +44,10 @@ ccd:
   caseManagementWeb:
    # enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
 
-   printApi:
+  adminWeb:
+   # enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
+
+  printApi:
     # enabled: true # if you need access to the case print service then enable this
     s2sKey: ${PRINT_S2S_KEY}
     probateTemplateUrl: http://${SERVICE_NAME}-probate-app
@@ -108,6 +111,12 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `caseManagementWeb.enabled`          | If case management web (and api gateway) will be deployed | `false`
 | `caseManagementWeb.image`          | Case management web image version | `hmcts.azurecr.io/hmcts/ccd-case-management-web:latest`|
 | `caseManagementWeb.applicationPort`                    | Port case management web runs on | `3451` |
+| `adminWeb.enabled`          | If admin web will be deployed | `false`
+| `adminWeb.image`          | Admin web image version | `hmcts.azurecr.io/hmcts/ccd-admin-web:latest`|
+| `adminWeb.applicationPort`                    | Port admin web runs on | `3100` |
+| `adminWeb.s2sKey`                    | S2S key | `nil` (required must be set by user) |
+| `adminWeb.idamClientSecret`                    | Idam OAuth client secret key | `nil` (required must be set by user) |
+| `adminWeb.environment`                    | Environment | `nil` see https://github.com/hmcts/ccd-admin-web |
 | `apiGateway.image`          | Api gateway's image version | `hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest`|
 | `apiGateway.applicationPort`                    | Port definition store api runs on | `3453` |
 | `apiGateway.s2sKey`                    | S2S key | `nil` (required must be set by user) |

@@ -33,6 +33,9 @@ spec:
           command: [ "/bin/sh" ]
           args:
             - /container.init/ccd-dns
+            {{- if .Values.adminWeb.enabled }}
+            - admin-web-{{ .Release.Name }}
+            {{- end }}          
             {{- if .Values.caseManagementWeb.enabled }}
             - case-management-web-{{ .Release.Name }}
             - gateway-{{ .Release.Name }}
