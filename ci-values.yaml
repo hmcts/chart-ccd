@@ -2,6 +2,9 @@ ingressHost: chart-ccd-release.service.core-compute-preview.internal
 ingressIP: "10.97.17.51"
 consulIP: "10.97.11.254"
 
+readinessDelay: 120
+livenessDelay: 120
+
 apiGateway:
   s2sKey: "AAAAAAAAAAAAAAAA"
   idamClientSecret: "123456"
