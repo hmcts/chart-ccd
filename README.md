@@ -46,6 +46,8 @@ ccd:
 
   adminWeb:
    # enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
+   # s2sKey: ${ADMIN_WEB_S2S_KEY}
+   # idamClientSecret: ${ADMIN_WEB_IDAM_SECRET}
 
   printApi:
     # enabled: true # if you need access to the case print service then enable this
