@@ -25,7 +25,7 @@ spec:
         - name: IDAM_OAUTH2_CLIENT_ID
           value: ccd_admin
         - name: HPKP_MAX_AGE
-          value: 2592000
+          value: '2592000'
         - name: HPKP_SHA256S
           value: Set-proper-SHA256s
         - name: IDAM_SERVICE_NAME
@@ -39,9 +39,9 @@ spec:
         - name: TS_BASE_URL
           value: ./src/main
         - name: USE_CSRF_PROTECTION
-          value: true
+          value: 'true'
         - name: UV_THREADPOOL_SIZE
-          value: 64
+          value: '64'
         - name: ADMIN_ALL_USER_ROLES_URL
           value: https://definition-store-api-{{ .Values.ingressHost }}/api/user-roles
         - name: ADMINWEB_AUTHORIZATION_URL
