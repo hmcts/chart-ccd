@@ -116,7 +116,6 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `adminWeb.applicationPort`                    | Port admin web runs on | `3100` |
 | `adminWeb.s2sKey`                    | S2S key | `nil` (required must be set by user) |
 | `adminWeb.idamClientSecret`                    | Idam OAuth client secret key | `nil` (required must be set by user) |
-| `adminWeb.environment`                    | Environment | `nil` see https://github.com/hmcts/ccd-admin-web |
 | `apiGateway.image`          | Api gateway's image version | `hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest`|
 | `apiGateway.applicationPort`                    | Port definition store api runs on | `3453` |
 | `apiGateway.s2sKey`                    | S2S key | `nil` (required must be set by user) |
