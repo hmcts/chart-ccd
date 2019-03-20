@@ -1,3 +1,6 @@
+tags:
+  postgresql-pod: true
+  
 userProfileApi:
   image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
   applicationPort: 4453
