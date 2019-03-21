@@ -1,0 +1,66 @@
+{{- if .Values.importer.userprofile.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-user-profile-importer"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}-user-profile-importer"
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "5"
+    helm.sh/hook-delete-policy: before-hook-creation  # Move to hook-succeeded after first charts are done 
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-user-profile-importer"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-user-profile-importer
+          image: {{ .Values.importer.userprofile.image }} 
+          env:
+          - name: CCD_USER_PROFILE_URL
+            value: http://{{ .Release.Name }}-user-profile-api
+          - name: AUTH_PROVIDER_BASE_URL
+            value: {{ .Values.s2sUrl }}
+          - name: MICROSERVICE
+            value: {{ .Values.importer.userprofile.microservice }}
+          - name: CCD_USERS
+            value: {{ join "," .Values.importer.userprofile.users | quote }}
+          - name: WAIT_HOSTS
+            value: {{ .Values.importer.userprofile.waitHosts | quote }}
+          - name: WAIT_HOSTS_TIMEOUT
+            value: {{ .Values.importer.userprofile.waitHostsTimeout | quote }}
+          - name: CCD_USER_PROFILE_DB_HOST
+            value: {{ .Values.importer.userprofile.userProfileDatabaseHost | quote }}
+          - name: CCD_USER_PROFILE_DB_PORT
+            value: {{ .Values.importer.userprofile.userProfileDatabasePort | quote }}
+          - name: CCD_USER_PROFILE_DB_USERNAME
+            value: {{ .Values.importer.userprofile.userProfileDatabaseUser | quote }}
+          - name: CCD_USER_PROFILE_DB_PASSWORD
+            value: {{ .Values.importer.userprofile.userProfileDatabasePassword | quote }}
+          - name: CCD_USER_PROFILE_DB_DATABASE
+            value: {{ .Values.importer.userprofile.userProfileDatabaseName | quote }}
+          - name: JURISDICTION
+            value: {{ .Values.importer.userprofile.jurisdiction | quote }}
+          - name: DEFAULT_CASE_TYPE
+            value: {{ .Values.importer.userprofile.defaultCaseType | quote }}
+          - name: DEFAULT_CASE_STATE
+            value: {{ .Values.importer.userprofile.defaultCaseState | quote }}
+          - name: VERBOSE
+            value: {{ .Values.importer.userprofile.verbose | quote }}
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
+      restartPolicy: Never   # Move to "OnFailure" after first charts are done 
+{{- end }}

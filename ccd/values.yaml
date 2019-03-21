@@ -70,17 +70,39 @@ postgresql:
     enabled: false
 
 importer:
-  image: hmcts/ccd-definition-importer:latest
-  kvSecretRef: kvcreds
-  gitSecretRef: kvcreds
-  # Definitions is a list. For example:
-  # definitions:
-  # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
-  # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
-  definitions:
-  waitHosts: ""
-  waitHostsTimeout: 300
-  userRoles:
-    - caseworker-bulkscan
-  microservice: ccd_gw
-  verbose: "false"
+  userprofile:
+    enabled: false
+    image: hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest
+    # Users is a list of IDAM emails. For example:
+    # users:
+    # - me@example.com
+    # - you@example.com
+    users: 
+    waitHosts: ""
+    waitHostsTimeout: 300
+    microservice: ccd_definition
+    verbose: "false"
+    jurisdiction: ""
+    defaultCaseType: ""
+    defaultCaseState: ""
+    userProfileDatabaseHost: ""
+    userProfileDatabasePort: ""
+    userProfileDatabaseUser: ""
+    userProfileDatabasePassword: ""
+    userProfileDatabaseName: ""
+  definition:
+    enabled: false
+    image: hmcts/ccd-definition-importer:latest
+    kvSecretRef: kvcreds
+    gitSecretRef: kvcreds
+    # Definitions is a list. For example:
+    # definitions:
+    # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
+    # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
+    definitions:
+    waitHosts: ""
+    waitHostsTimeout: 300
+    userRoles:
+      - caseworker-bulkscan
+    microservice: ccd_gw
+    verbose: "false"
