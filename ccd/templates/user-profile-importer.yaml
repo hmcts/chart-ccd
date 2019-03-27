@@ -58,5 +58,4 @@ spec:
             limits:
               memory: {{ .Values.memoryLimits }}
               cpu: {{ .Values.cpuLimits }}
-      restartPolicy: Never   # Move to "OnFailure" after first charts are done 
 {{- end }}
