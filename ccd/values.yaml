@@ -73,7 +73,7 @@ importer:
   userprofile:
     enabled: false
     image: hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest
-    # Users is a list of delimted strings in format: idamEmail|ccdJurisdiction|ccdDefaultCaseType|ccdDefaultCaseState. For example:
+    # Users is a list of delimited strings in format: idamEmail|ccdJurisdiction|ccdDefaultCaseType|ccdDefaultCaseState. For example:
     # users:
     # - mryan321.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
     # - mryan321.hmcts.claimant+2@gmail.com|SSCS|SSCS|open
