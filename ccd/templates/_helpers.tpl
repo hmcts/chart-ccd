@@ -1,4 +1,4 @@
-{{- define "importer.vault" }}
+{{- define "importer.definition.vault" }}
   {{- if eq .Values.global.subscriptionId "bf308a5c-0624-4334-8ff8-8dca9fd43783"}}
   {{- "ccd-saat" -}}
   {{- else }}
@@ -6,7 +6,7 @@
   {{- end }}
 {{- end }}
 
-{{- define "importer.resourcegroup" }}
+{{- define "importer.definition.resourcegroup" }}
   {{- if eq .Values.global.subscriptionId "bf308a5c-0624-4334-8ff8-8dca9fd43783"}}
   {{- "ccd-shared-saat" -}}
   {{- else }}
@@ -14,7 +14,7 @@
   {{- end }}
 {{- end }}
 
-{{- define "importer.vaultGit" }}
+{{- define "importer.definition.vaultGit" }}
   {{- if eq .Values.global.subscriptionId "bf308a5c-0624-4334-8ff8-8dca9fd43783"}}
   {{- "infra-vault-sandbox" -}}
   {{- else }}
@@ -22,7 +22,7 @@
   {{- end }}
 {{- end }}
 
-{{- define "importer.redirect" }}
+{{- define "importer.definition.redirect" }}
   {{- if eq .Values.global.subscriptionId "bf308a5c-0624-4334-8ff8-8dca9fd43783"}}
   {{- "https://ccd-case-management-web-saat-staging.service.core-compute-saat.internal/oauth2redirect" -}}
   {{- else }}

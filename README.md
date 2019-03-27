@@ -57,6 +57,44 @@ ccd:
 
 ```
 
+## Importers
+
+In addition to the core services you can include some helper pods to import definitions and user profiles:
+
+- definitions: https://github.com/hmcts/ccd-docker-definition-importer
+- user profiles: https://github.com/hmcts/ccd-docker-user-profile-importer
+
+values.template.yaml
+```yaml
+ccd:
+  # above config for core services
+
+  importer:
+    userprofile:
+      enabled: true
+      users:
+        - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|Open
+      jurisdictions:
+        - CMC
+      waitHosts: ${SERVICE_NAME}-user-profile-api
+      userProfileDatabaseHost: ${SERVICE_NAME}-claim-store-postgres
+      userProfileDatabasePort: 5432
+      userProfileDatabaseUser: hmcts
+      userProfileDatabasePassword: hmcts
+      userProfileDatabaseName: user-profile
+    definition:
+      enabled: true
+      definitions:
+        - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
+      userRoles:
+        - citizen
+        - caseworker-cmc
+        - caseworker-cmc-solicitor
+        - caseworker-cmc-systemupdate
+        - letter-holder
+        - caseworker-autotest1
+```
+
 The idam secret and s2s keys need to be loaded in the pipeline,
 example config:
 
@@ -100,6 +138,27 @@ If you need to change from the defaults consider sending a PR to the chart inste
 
 | Parameter                  | Description                                | Default  |
 | -------------------------- | ------------------------------------------ | ----- |
+| `appInsightsKey`                | Application insights key for full CCD stack | `fake-key`|
+| `memoryRequests`           | Requests for memory | `512Mi`|
+| `cpuRequests`              | Requests for cpu | `100m`|
+| `memoryLimits`             | Memory limits| `1024Mi`|
+| `cpuLimits`                | CPU limits | `2500m`|
+| `ingressHost`              | Host for ingress controller to map the container to | `nil` (required, provided by the pipeline)  |
+| `ingressIP`              | Ingress controllers IP address | `nil` (required, provided by the pipeline)  |
+| `consulIP`              | Consul servers IP address | `nil` (required, provided by the pipeline) |
+| `readinessPath`            | Path of HTTP readiness probe | `/health`|
+| `readinessDelay`           | Readiness probe inital delay (seconds)| `30`|
+| `readinessTimeout`         | Readiness probe timeout (seconds)| `3`|
+| `readinessPeriod`          | Readiness probe period (seconds) | `15`|
+| `livenessPath`             | Path of HTTP liveness probe | `/health`|
+| `livenessDelay`            | Liveness probe inital delay (seconds)  | `30`|
+| `livenessTimeout`          | Liveness probe timeout (seconds) | `3`|
+| `livenessPeriod`           | Liveness probe period (seconds) | `15`|
+| `livenessFailureThreshold` | Liveness failure threshold | `3` |
+| `s2sUrl`                | S2S api url | `http://rpe-service-auth-provider-aat.service.core-compute-aat.internal`|
+| `idamWebUrl`                | Idam web url | `https://idam.preprod.ccidam.reform.hmcts.net`|
+| `idamApiUrl`                | Idam api url | `https://preprod-idamapi.reform.hmcts.net:3511`|
+| `paymentsUrl`                | Payments api url | `http://payment-api-aat.service.core-compute-aat.internal`|
 | `userProfileApi.image`          | User profile api's image version | `hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest`|
 | `userProfileApi.applicationPort`                    | Port user profile api runs on | `4453` |
 | `userProfileApi.authorisedServices`              |  A list of services allowed to contact user profile api | `ccd_data,ccd_definition,ccd_admin`|
@@ -128,27 +187,31 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `printApi.applicationPort`                    | Port definition case print service runs on | `3100` |
 | `printApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
 | `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
-| `s2sUrl`                | S2S api url | `http://rpe-service-auth-provider-aat.service.core-compute-aat.internal`|
-| `idamWebUrl`                | Idam web url | `https://idam.preprod.ccidam.reform.hmcts.net`|
-| `idamApiUrl`                | Idam api url | `https://preprod-idamapi.reform.hmcts.net:3511`|
-| `paymentsUrl`                | Payments api url | `http://payment-api-aat.service.core-compute-aat.internal`|
-| `appInsightsKey`                | Application insights key for full CCD stack | `fake-key`|
-| `memoryRequests`           | Requests for memory | `512Mi`|
-| `cpuRequests`              | Requests for cpu | `100m`|
-| `memoryLimits`             | Memory limits| `1024Mi`|
-| `cpuLimits`                | CPU limits | `2500m`|
-| `ingressHost`              | Host for ingress controller to map the container to | `nil` (required, provided by the pipeline)  |
-| `ingressIP`              | Ingress controllers IP address | `nil` (required, provided by the pipeline)  |
-| `consulIP`              | Consul servers IP address | `nil` (required, provided by the pipeline) |
-| `readinessPath`            | Path of HTTP readiness probe | `/health`|
-| `readinessDelay`           | Readiness probe inital delay (seconds)| `30`|
-| `readinessTimeout`         | Readiness probe timeout (seconds)| `3`|
-| `readinessPeriod`          | Readiness probe period (seconds) | `15`|
-| `livenessPath`             | Path of HTTP liveness probe | `/health`|
-| `livenessDelay`            | Liveness probe inital delay (seconds)  | `30`|
-| `livenessTimeout`          | Liveness probe timeout (seconds) | `3`|
-| `livenessPeriod`           | Liveness probe period (seconds) | `15`|
-| `livenessFailureThreshold` | Liveness failure threshold | `3` |
+| `importer.definition.enabled` | Enabling Definition importer | `false` |
+| `importer.definition.image` | Definition importer image to use | `hmcts/ccd-definition-importer:latest` |
+
+| `importer.definition.kvSecretRef` | Secret with credentials for accessing necessary key vaults in Azure | `kvcreds` |
+| `importer.definition.gitSecretRef` | Secret with gitlab credentials for accessing defined defintions, if using gitlab urls | `kvcreds` |
+| `importer.definition.definitions` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_URLS` | `nil` |
+| `importer.definition.definitionFilename` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_FILENAME` | `nil` |
+| `importer.definition.waitHosts` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS` | `nil` |
+| `importer.definition.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS_TIMEOUT` | `300` |
+| `importer.definition.userRoles` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`USER_ROLES` | `- caseworker-bulkscan` |
+| `importer.definition.microservice` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`MICROSERVICE` | `ccd_gw` |
+| `importer.definition.verbose` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`VERBOSE` | `false` |
+| `importer.userprofile.enabled` | Enabling User Profile importer | `false` |
+| `importer.userprofile.image` | User Profile importer image to use | `hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest` |
+| `importer.userprofile.users` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USERS` | `nil` |
+| `importer.userprofile.jurisdictions` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_JURISDICTIONS` | `nil` |
+| `importer.userprofile.microservice` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`MICROSSERVICE` | `ccd_definition` |
+| `importer.userprofile.waitHosts` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS` | `nil` |
+| `importer.userprofile.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
+| `importer.userprofile.userProfileDatabaseHost` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_HOST` | `nil` |
+| `importer.userprofile.userProfileDatabasePort` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PORT` | `nil` |
+| `importer.userprofile.userProfileDatabaseUser` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_USERNAME` | `nil` |
+| `importer.userprofile.userProfileDatabasePassword` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PASSWORD` | `nil` |
+| `importer.userprofile.userProfileDatabaseName` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_DATABASE` | `nil` |
+| `importer.userprofile.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
 
 ## Development and Testing
 

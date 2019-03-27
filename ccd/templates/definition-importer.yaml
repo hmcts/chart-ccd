@@ -1,4 +1,4 @@
-{{- if .Values.importer.definitions }}
+{{- if .Values.importer.definition.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -26,31 +26,31 @@ spec:
           flexVolume:
             driver: "azure/kv"
             secretRef:
-              name: {{ default "kvcreds" .Values.importer.kvSecretRef }} 
+              name: {{ default "kvcreds" .Values.importer.definition.kvSecretRef }} 
             options:
               usepodidentity: "false"
               subscriptionid: {{ .Values.global.subscriptionId }}
               tenantid: {{ .Values.global.tenantId }}
-              keyvaultname: {{ include "importer.vault" . | quote }}
-              resourcegroup: {{ include "importer.resourcegroup" . | quote }}
+              keyvaultname: {{ include "importer.definition.vault" . | quote }}
+              resourcegroup: {{ include "importer.definition.resourcegroup" . | quote }}
               keyvaultobjectnames: "ccd-as-a-pr-importer-username;ccd-as-a-pr-importer-password"
               keyvaultobjecttypes: "secret;secret" # OPTIONS: secret, key, cert
         - name: gitcreds
           flexVolume:
             driver: "azure/kv"
             secretRef:
-              name: {{ default "kvcreds" .Values.importer.gitSecretRef }} 
+              name: {{ default "kvcreds" .Values.importer.definition.gitSecretRef }} 
             options:
               usepodidentity: "false"
               subscriptionid: {{ .Values.global.subscriptionId }}
               tenantid: {{ .Values.global.tenantId }}
-              keyvaultname: {{ include "importer.vaultGit" . | quote }}
+              keyvaultname: {{ include "importer.definition.vaultGit" . | quote }}
               resourcegroup: "cnp-core-infra"
               keyvaultobjectnames: "hmcts-github-apikey"
               keyvaultobjecttypes: "secret" # OPTIONS: secret, key, cert
       containers:
         - name: {{ .Release.Name }}-definition-importer
-          image: {{ .Values.importer.image }} 
+          image: {{ .Values.importer.definition.image }} 
           volumeMounts:
           - name: kvcreds
             mountPath: /kvmnt
@@ -60,13 +60,13 @@ spec:
             readOnly: true
           env:
           - name: CCD_DEF_URLS
-            value: {{ join "," .Values.importer.definitions | quote }}
+            value: {{ join "," .Values.importer.definition.definitions | quote }}
           - name: CCD_DEF_FILENAME
-            value: {{ .Values.importer.definitionFilename | quote }}
+            value: {{ .Values.importer.definition.definitionFilename | quote }}
           - name: WAIT_HOSTS
-            value: {{ .Values.importer.waitHosts | quote }}
+            value: {{ .Values.importer.definition.waitHosts | quote }}
           - name: WAIT_HOSTS_TIMEOUT
-            value: {{ .Values.importer.waitHostsTimeout | quote }}
+            value: {{ .Values.importer.definition.waitHostsTimeout | quote }}
           - name: CREATE_IMPORTER_USER
             value: "false"
           - name: IMPORTER_CREDS_MOUNT
@@ -76,23 +76,23 @@ spec:
           - name: IDAM_URI
             value: {{ .Values.idamApiUrl }}
           - name: REDIRECT_URI  
-            value: {{ include "importer.redirect" . | quote }}
+            value: {{ include "importer.definition.redirect" . | quote }}
           - name: CLIENT_ID
             value: "ccd_gateway"
           - name: CLIENT_SECRET
             value: {{ .Values.apiGateway.idamClientSecret | quote }}
           - name: USER_ROLES
-            value: {{ join "," .Values.importer.userRoles }}
+            value: {{ join "," .Values.importer.definition.userRoles }}
           - name: MICROSERVICE_BASE_URL
             value: http://{{ required "A valid ingressHost is required." .Values.ingressHost }}
           - name: AUTH_PROVIDER_BASE_URL
             value: {{ .Values.s2sUrl }}
           - name: MICROSERVICE
-            value: {{ .Values.importer.microservice }}
+            value: {{ .Values.importer.definition.microservice }}
           - name: CCD_STORE_BASE_URL
             value: http://{{ .Release.Name }}-definition-store-api
           - name: VERBOSE
-            value: {{ .Values.importer.verbose | quote }}
+            value: {{ .Values.importer.definition.verbose | quote }}
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}
@@ -100,5 +100,5 @@ spec:
             limits:
               memory: {{ .Values.memoryLimits }}
               cpu: {{ .Values.cpuLimits }}
-      restartPolicy: Never   # Move to "OnFailure" after first charts are done 
+      restartPolicy: Never
 {{- end }}
