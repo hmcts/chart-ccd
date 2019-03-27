@@ -58,4 +58,5 @@ spec:
             limits:
               memory: {{ .Values.memoryLimits }}
               cpu: {{ .Values.cpuLimits }}
+      restartPolicy: Never
 {{- end }}
