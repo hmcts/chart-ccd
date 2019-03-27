@@ -189,7 +189,6 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
 | `importer.definition.enabled` | Enabling Definition importer | `false` |
 | `importer.definition.image` | Definition importer image to use | `hmcts/ccd-definition-importer:latest` |
-
 | `importer.definition.kvSecretRef` | Secret with credentials for accessing necessary key vaults in Azure | `kvcreds` |
 | `importer.definition.gitSecretRef` | Secret with gitlab credentials for accessing defined defintions, if using gitlab urls | `kvcreds` |
 | `importer.definition.definitions` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_URLS` | `nil` |
