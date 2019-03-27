@@ -61,7 +61,7 @@ ccd:
 
 In addition to the core services you can include some helper pods to import definitions and user profiles:
 
-- defintions: https://github.com/hmcts/ccd-docker-definition-importer
+- definitions: https://github.com/hmcts/ccd-docker-definition-importer
 - user profiles: https://github.com/hmcts/ccd-docker-user-profile-importer
 
 values.template.yaml
