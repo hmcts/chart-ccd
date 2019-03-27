@@ -33,6 +33,8 @@ spec:
             value: {{ .Values.importer.userprofile.microservice }}
           - name: CCD_USERS
             value: {{ join "," .Values.importer.userprofile.users | quote }}
+          - name: CCD_JURISDICTIONS
+            value: {{ join "," .Values.importer.userprofile.jurisdictions | quote }}
           - name: WAIT_HOSTS
             value: {{ .Values.importer.userprofile.waitHosts | quote }}
           - name: WAIT_HOSTS_TIMEOUT
@@ -47,12 +49,6 @@ spec:
             value: {{ .Values.importer.userprofile.userProfileDatabasePassword | quote }}
           - name: CCD_USER_PROFILE_DB_DATABASE
             value: {{ .Values.importer.userprofile.userProfileDatabaseName | quote }}
-          - name: JURISDICTION
-            value: {{ .Values.importer.userprofile.jurisdiction | quote }}
-          - name: DEFAULT_CASE_TYPE
-            value: {{ .Values.importer.userprofile.defaultCaseType | quote }}
-          - name: DEFAULT_CASE_STATE
-            value: {{ .Values.importer.userprofile.defaultCaseState | quote }}
           - name: VERBOSE
             value: {{ .Values.importer.userprofile.verbose | quote }}
           resources:

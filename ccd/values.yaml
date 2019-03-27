@@ -73,18 +73,20 @@ importer:
   userprofile:
     enabled: false
     image: hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest
-    # Users is a list of IDAM emails. For example:
+    # Users is a list of delimted strings in format: idamEmail|ccdJurisdiction|ccdDefaultCaseType|ccdDefaultCaseState. For example:
     # users:
-    # - me@example.com
-    # - you@example.com
+    # - mryan321.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
+    # - mryan321.hmcts.claimant+2@gmail.com|SSCS|SSCS|open
     users: 
+    # Jurisdictions is a list of jurisdictions referenced in above users. For example:
+    # jurisdictions:
+    # - CMC
+    # - SSCS
+    jurisdictions:
     waitHosts: ""
     waitHostsTimeout: 300
     microservice: ccd_definition
     verbose: "false"
-    jurisdiction: ""
-    defaultCaseType: ""
-    defaultCaseState: ""
     userProfileDatabaseHost: ""
     userProfileDatabasePort: ""
     userProfileDatabaseUser: ""
@@ -100,6 +102,7 @@ importer:
     # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
     # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
     definitions:
+    definitionFilename: ""
     waitHosts: ""
     waitHostsTimeout: 300
     userRoles:
