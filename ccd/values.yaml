@@ -1,5 +1,7 @@
 tags:
   postgresql-pod: true
+  case-mgmt-web-idam-pr: false
+  admin-web-idam-pr: false
   
 userProfileApi:
   image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
