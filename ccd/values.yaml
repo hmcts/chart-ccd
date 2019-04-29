@@ -36,10 +36,10 @@ printApi:
   image: hmcts.azurecr.io/hmcts/ccd-case-print-service:latest
   applicationPort: 3100
 
+idamApiUrl: https://idam-api.aat.platform.hmcts.net
+idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
 s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
-idamWebUrl: "https://idam.preprod.ccidam.reform.hmcts.net"
-idamApiUrl: "https://preprod-idamapi.reform.hmcts.net:3511"
 paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
 appInsightsKey: "fake-key"
 

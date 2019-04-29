@@ -66,6 +66,10 @@ spec:
           value: https://user-profile-api-{{ .Values.ingressHost }}/users/save
         - name: ADMINWEB_USER_PROFILE_URL
           value: https://user-profile-api-{{ .Values.ingressHost }}/users
+        - name: ADMINWEB_DELETE_DEFINITION_URL
+          value: http://definition-store-api-{{ .Values.ingressHost }}/api/draft
+        - name: ADMINWEB_ROLES_WHITELIST
+          value: 'ccd-import,ccd-import-validate'
         - name: ADMINWEB_LOGIN_URL
           value: {{ .Values.idamWebUrl }}/login
         - name: IDAM_LOGOUT_URL
