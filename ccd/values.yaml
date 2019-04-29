@@ -1,5 +1,6 @@
 tags:
   postgresql-pod: true
+  ccd-idam-pr: false
   
 userProfileApi:
   image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest

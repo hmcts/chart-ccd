@@ -130,6 +130,27 @@ An example url for accessing case management web would be:
 https://case-management-web-sscs-cor-backend-pr-189.service.core-compute-preview.internal/
 ```
 
+### IDAM whitelisting for web components
+
+Managed using https://github.com/hmcts/chart-idam-pr (version 2.0.0 and above).
+
+To enable add following to your values.preview.template.yaml:
+```
+tags:
+  ccd-idam-pr: true
+
+ccd:
+  # other ccd config
+
+  idam-pr:
+    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
+    redirect_uris:
+      CCD:
+        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
+      CCD Admin:
+        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
+```
+
 ## Configuration
 
 The following table lists the configurable parameters of the CCD chart and their default values.
