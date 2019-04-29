@@ -5,17 +5,8 @@ dependencies:
     tags:
       - postgresql-pod
   - name: idam-pr
-    alias: case-mgmt-web-idam-pr
-    version: ~1.0.0
-#    repository: '@hmcts'
-    repository: file:///Users/markry/workspace/hmcts/chart-idam-pr/idam-pr
+    version: ~2.0.0
+    repository: '@hmcts'
     tags:
-      - case-mgmt-web-idam-pr
-  - name: idam-pr
-    alias: admin-web-idam-pr
-    version: ~1.0.0
-#    repository: '@hmcts'
-    repository: file:///Users/markry/workspace/hmcts/chart-idam-pr/idam-pr
-    tags:
-      - admin-web-idam-pr
+      - ccd-idam-pr
 
