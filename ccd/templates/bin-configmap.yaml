@@ -1,3 +1,4 @@
+{{- if and (.Values.consulIP ) (.Values.ingressIP) -}}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -10,3 +11,4 @@ metadata:
 data:
   ccd-dns: |
 {{ include (print .Template.BasePath "/bin/_dns-register.tpl") . | indent 4 }}
+{{- end -}}

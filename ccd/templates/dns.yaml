@@ -1,3 +1,4 @@
+{{- if and (.Values.consulIP ) (.Values.ingressIP) -}}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -54,3 +55,4 @@ spec:
               memory: {{ .Values.memoryLimits }}
               cpu: {{ .Values.cpuLimits }}
       restartPolicy: Never
+{{- end -}}
