@@ -83,7 +83,7 @@ spec:
         - name: IDAM_ADMIN_WEB_SERVICE_KEY
           value: {{ required "`adminWeb.s2sKey` must be set in your values.yaml file" .Values.adminWeb.s2sKey }}
         - name: IDAM_OAUTH2_AW_CLIENT_SECRET
-          value: {{ required "`adminWeb.idamClientSecret` must be set in your values.yaml file" .Values.adminWeb.idamClientSecret }}
+          value: {{ required "`adminWeb.idamClientSecret` must be set in your values.yaml file" .Values.adminWeb.idamClientSecret | quote }}
         {{- if .Values.adminWeb.environment }}
           {{- range $key, $val := .Values.adminWeb.environment }}
         - name: {{ $key }}
