@@ -24,6 +24,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}-user-profile-importer
           image: {{ .Values.importer.userprofile.image }} 
+          imagePullPolicy: IfNotPresent
           env:
           - name: CCD_USER_PROFILE_URL
             value: http://{{ .Release.Name }}-user-profile-api
