@@ -19,42 +19,53 @@ requirements.yaml
 ```yaml
 dependencies:
   - name: ccd
-    version: '0.1.0'
+    version: '2.0.0'
     repository: '@hmcts'
 ```
 
-The `SERVICE_FQDN`, `INGRESS_IP` and `CONSUL_LB_IP` are all provided by the pipeline, but require you to pass them through
+The `SERVICE_FQDN`, `INGRESS_IP` and `CONSUL_LB_IP` are all provided by the pipeline, but require you to pass them through for preview environments.
 
-values.template.yaml
+values.preview.template.yaml
 ```yaml
 ccd:
   ingressHost: ${SERVICE_FQDN}
   ingressIP: ${INGRESS_IP}
   consulIP: ${CONSUL_LB_IP}
 
+  idam-pr:
+    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
+    redirect_uris:
+      CCD:
+        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
+      CCD Admin:
+        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
+
   apiGateway:
     s2sKey: ${API_GATEWAY_S2S_KEY}
     idamClientSecret: ${API_GATEWAY_IDAM_SECRET}
 
+  userProfileApi:
+    authorisedServices: ccd_admin,ccd_data,ccd_definition,cmc_claim_store
+
   dataStoreApi:
     s2sKey: ${DATA_STORE_S2S_KEY}
+    s2sAuthorisedServices: cmc_claim_store,ccd_gw
 
   definitionStoreApi:
     s2sKey: ${DEFINITION_STORE_S2S_KEY}
+    s2sAuthorisedServices: ccd_admin,ccd_data,cmc_claim_store,ccd_gw
 
   caseManagementWeb:
-   # enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
+    enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
+    environment:
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
 
   adminWeb:
-   # enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
-   s2sKey: ${ADMIN_WEB_S2S_KEY}
-   idamClientSecret: ${ADMIN_WEB_IDAM_SECRET}
-
-  printApi:
-    # enabled: true # if you need access to the case print service then enable this
-    s2sKey: ${PRINT_S2S_KEY}
-    probateTemplateUrl: http://${SERVICE_NAME}-probate-app
-
+    enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
+    s2sKey: ${ADMIN_S2S_KEY}
+    idamClientSecret: ${ADMIN_WEB_IDAM_SECRET}
+    environment:
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
 ```
 
 ## Importers
@@ -64,7 +75,7 @@ In addition to the core services you can include some helper pods to import defi
 - definitions: https://github.com/hmcts/ccd-docker-definition-importer
 - user profiles: https://github.com/hmcts/ccd-docker-user-profile-importer
 
-values.template.yaml
+values.preview.template.yaml
 ```yaml
 ccd:
   # above config for core services
@@ -72,27 +83,25 @@ ccd:
   importer:
     userprofile:
       enabled: true
-      users:
-        - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|Open
       jurisdictions:
         - CMC
-      waitHosts: ${SERVICE_NAME}-user-profile-api
-      userProfileDatabaseHost: ${SERVICE_NAME}-claim-store-postgres
+      users:
+        - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|open
+      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
       userProfileDatabasePort: 5432
       userProfileDatabaseUser: hmcts
       userProfileDatabasePassword: hmcts
       userProfileDatabaseName: user-profile
     definition:
       enabled: true
-      definitions:
-        - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
+      image: hmcts.azurecr.io/hmcts/cmc-ccd-definition-importer:1.2.6
+      definitionFilename: cmc-ccd.xlsx
       userRoles:
         - citizen
         - caseworker-cmc
         - caseworker-cmc-solicitor
         - caseworker-cmc-systemupdate
-        - letter-holder
-        - caseworker-autotest1
+        - caseworker-cmc-anonymouscitizen
 ```
 
 The idam secret and s2s keys need to be loaded in the pipeline,
