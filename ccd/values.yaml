@@ -96,8 +96,8 @@ importer:
   definition:
     enabled: false
     image: hmcts/ccd-definition-importer:latest
-    kvSecretRef: kvcreds
-    gitSecretRef: kvcreds
+    # kvSecretRef: kvcreds
+    # gitSecretRef: kvcreds
     # Definitions is a list. For example:
     # definitions:
     # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
@@ -110,3 +110,4 @@ importer:
       - caseworker-bulkscan
     microservice: ccd_gw
     verbose: "false"
+    redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"

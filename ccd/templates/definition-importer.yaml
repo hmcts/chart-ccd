@@ -21,6 +21,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name | quote }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     spec:
+      {{- if .Values.importer.definition.kvSecretRef }}
       volumes:
         - name: kvcreds
           flexVolume:
@@ -48,9 +49,12 @@ spec:
               resourcegroup: "cnp-core-infra"
               keyvaultobjectnames: "hmcts-github-apikey"
               keyvaultobjecttypes: "secret" # OPTIONS: secret, key, cert
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}-definition-importer
           image: {{ .Values.importer.definition.image }} 
+          imagePullPolicy: IfNotPresent
+          {{- if .Values.importer.definition.kvSecretRef }}
           volumeMounts:
           - name: kvcreds
             mountPath: /kvmnt
@@ -58,6 +62,7 @@ spec:
           - name: gitcreds
             mountPath: /gitmnt
             readOnly: true
+          {{- end }}
           env:
           - name: CCD_DEF_URLS
             value: {{ join "," .Values.importer.definition.definitions | quote }}
@@ -69,14 +74,16 @@ spec:
             value: {{ .Values.importer.definition.waitHostsTimeout | quote }}
           - name: CREATE_IMPORTER_USER
             value: "false"
+          {{- if .Values.importer.definition.kvSecretRef }}
           - name: IMPORTER_CREDS_MOUNT
             value: "/kvmnt"
           - name: GITHUB_CREDS_MOUNT
             value: "/gitmnt"
+          {{- end }}
           - name: IDAM_URI
             value: {{ .Values.idamApiUrl }}
           - name: REDIRECT_URI  
-            value: {{ include "importer.definition.redirect" . | quote }}
+            value: {{ .Values.importer.definition.redirectUri | quote }}
           - name: CLIENT_ID
             value: "ccd_gateway"
           - name: CLIENT_SECRET
@@ -93,6 +100,10 @@ spec:
             value: http://{{ .Release.Name }}-definition-store-api
           - name: VERBOSE
             value: {{ .Values.importer.definition.verbose | quote }}
+          - name: IMPORTER_USERNAME
+            value: {{ .Values.importer.definition.importerUsername | quote }}  # kvcreds takes priority
+          - name: IMPORTER_PASSWORD
+            value: {{ .Values.importer.definition.importerPassword | quote }}  # kvcreds takes priority
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}

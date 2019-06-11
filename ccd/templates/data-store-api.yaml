@@ -22,7 +22,7 @@ spec:
         name: {{ .Release.Name }}-data-store-api
         env:
         - name: DATA_STORE_DB_HOST
-          value: {{ .Release.Name }}-ccd-postgres
+          value: {{ .Release.Name }}-{{ .Values.postgresql.nameOverride }}
         - name: DATA_STORE_DB_PORT
           value: '5432'
         - name: DATA_STORE_DB_NAME
