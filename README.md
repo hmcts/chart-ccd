@@ -272,3 +272,4 @@ A build is triggered when pull requests are created. This build will run `helm l
 
 ### Release Build
 Triggered when the repository is tagged (e.g. when a release is created). Also performs linting and testing, and will publish the chart to ACR on success.
+ 
