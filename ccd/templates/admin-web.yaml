@@ -22,6 +22,16 @@ spec:
       - image: {{ .Values.adminWeb.image }}
         name: {{ .Release.Name }}-admin-web
         env:
+        {{- if .Values.adminWeb.idamClientSecret.fromSecret }}
+        - name: IDAM_OAUTH2_AW_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.adminWeb.idamClientSecret.secretKeyRefName | quote }}
+              key: {{ .Values.adminWeb.idamClientSecret.secretKeyRefKey | quote }}
+        {{- else }}
+        - name: IDAM_OAUTH2_AW_CLIENT_SECRET
+          value: {{ .Values.adminWeb.idamClientSecret.value | quote }}
+        {{- end }}
         - name: IDAM_OAUTH2_CLIENT_ID
           value: ccd_admin
         - name: HPKP_MAX_AGE
@@ -82,8 +92,6 @@ spec:
           value: {{ .Values.s2sUrl }}
         - name: IDAM_ADMIN_WEB_SERVICE_KEY
           value: {{ required "`adminWeb.s2sKey` must be set in your values.yaml file" .Values.adminWeb.s2sKey }}
-        - name: IDAM_OAUTH2_AW_CLIENT_SECRET
-          value: {{ required "`adminWeb.idamClientSecret` must be set in your values.yaml file" .Values.adminWeb.idamClientSecret | quote }}
         {{- if .Values.adminWeb.environment }}
           {{- range $key, $val := .Values.adminWeb.environment }}
         - name: {{ $key }}

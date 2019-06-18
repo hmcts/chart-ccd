@@ -79,6 +79,27 @@ spec:
             value: "/kvmnt"
           - name: GITHUB_CREDS_MOUNT
             value: "/gitmnt"
+          {{- else }}
+            {{- if .Values.importer.definition.importerFromSecret }}
+          - name: IMPORTER_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.importer.definition.importerUsername.secretKeyRefName | quote }}
+                key: {{ .Values.importer.definition.importerUsername.secretKeyRefKey | quote }}
+            {{- else }}
+          - name: IMPORTER_USERNAME
+            value: {{.Values.importer.definition.importerUsername.value | quote }}
+            {{- end }} 
+            {{- if .Values.importer.definition.importerFromSecret }}
+          - name: IMPORTER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.importer.definition.importerPassword.secretKeyRefName | quote }}
+                key: {{ .Values.importer.definition.importerPassword.secretKeyRefKey | quote }}
+            {{- else }}
+          - name: IMPORTER_PASSWORD
+            value: {{.Values.importer.definition.importerPassword.value | quote }}
+            {{- end }} 
           {{- end }}
           - name: IDAM_URI
             value: {{ .Values.idamApiUrl }}
@@ -86,8 +107,16 @@ spec:
             value: {{ .Values.importer.definition.redirectUri | quote }}
           - name: CLIENT_ID
             value: "ccd_gateway"
+          {{- if .Values.apiGateway.idamClientSecret.fromSecret }}
           - name: CLIENT_SECRET
-            value: {{ .Values.apiGateway.idamClientSecret | quote }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.apiGateway.idamClientSecret.secretKeyRefName | quote }}
+                key: {{ .Values.apiGateway.idamClientSecret.secretKeyRefKey | quote }}
+          {{- else }}
+          - name: CLIENT_SECRET
+            value: {{ .Values.apiGateway.idamClientSecret.value | quote }}
+          {{- end }} 
           - name: USER_ROLES
             value: {{ join "," .Values.importer.definition.userRoles }}
           - name: MICROSERVICE_BASE_URL
@@ -100,10 +129,6 @@ spec:
             value: http://{{ .Release.Name }}-definition-store-api
           - name: VERBOSE
             value: {{ .Values.importer.definition.verbose | quote }}
-          - name: IMPORTER_USERNAME
-            value: {{ .Values.importer.definition.importerUsername | quote }}  # kvcreds takes priority
-          - name: IMPORTER_PASSWORD
-            value: {{ .Values.importer.definition.importerPassword | quote }}  # kvcreds takes priority
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}

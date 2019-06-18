@@ -22,6 +22,16 @@ spec:
       - image: {{ .Values.apiGateway.image }}
         name: {{ .Release.Name }}-api-gateway
         env:
+        {{- if .Values.apiGateway.idamClientSecret.fromSecret }}
+        - name: IDAM_OAUTH2_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.apiGateway.idamClientSecret.secretKeyRefName | quote }}
+              key: {{ .Values.apiGateway.idamClientSecret.secretKeyRefKey | quote }}
+        {{- else }}
+        - name: IDAM_OAUTH2_CLIENT_SECRET
+          value: {{ .Values.apiGateway.idamClientSecret.value | quote }}
+        {{- end }} 
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: {{ .Values.appInsightsKey }}
         - name: IDAM_BASE_URL
@@ -32,8 +42,6 @@ spec:
           value: {{ .Values.idamApiUrl }}/session/:token
         - name: IDAM_OAUTH2_CLIENT_ID
           value: 'ccd_gateway'
-        - name: IDAM_OAUTH2_CLIENT_SECRET
-          value: {{ .Values.apiGateway.idamClientSecret | quote }}
         # S2S
         - name: IDAM_S2S_URL
           value: {{ .Values.s2sUrl }}
