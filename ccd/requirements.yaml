@@ -6,7 +6,7 @@ dependencies:
       - postgresql-pod
   - name: idam-pr
     version: ~2.1.0
-    repository: '@hmcts'
+    repository: '@hmctspublic'
     tags:
       - ccd-idam-pr
 
