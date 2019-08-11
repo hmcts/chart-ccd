@@ -3,37 +3,37 @@ tags:
   ccd-idam-pr: false
   
 userProfileApi:
-  image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
+  image: hmctspublic.azurecr.io/ccd/user-profile-api:latest  
   applicationPort: 4453
   authorisedServices: "ccd_data,ccd_definition,ccd_admin"
 
 dataStoreApi:
-  image: hmcts.azurecr.io/hmcts/ccd-data-store-api:latest
+  image: hmctspublic.azurecr.io/ccd/data-store-api:latest
   applicationPort: 4452
   s2sAuthorisedServices: ccd_data,ccd_gw,ccd_ps,probate_backend,divorce_ccd_submission,sscs,cmc,cmc_claim_store,jui_webapp,pui_webapp,bulk_scan_orchestrator,fpl_case_service
 
 definitionStoreApi:
-  image: hmcts.azurecr.io/hmcts/ccd-definition-store-api:latest
+  image: hmctspublic.azurecr.io/ccd/definition-store-api:latest
   applicationPort: 4451
   s2sAuthorisedServices: ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp
 
 caseManagementWeb:
   enabled: false
-  image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
+  image: hmctspublic.azurecr.io/ccd/case-management-web:latest
   applicationPort: 3451
 
 adminWeb:
   enabled: false
-  image: hmcts.azurecr.io/hmcts/ccd-admin-web:latest
+  image: hmctspublic.azurecr.io/ccd/admin-web:latest
   applicationPort: 3100
 
 apiGateway:
-  image: hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest
+  image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
   applicationPort: 3453
 
 printApi:
   enabled: false
-  image: hmcts.azurecr.io/hmcts/ccd-case-print-service:latest
+  image: hmctspublic.azurecr.io/ccd/case-print-service:latest
   applicationPort: 3100
 
 idamApiUrl: https://idam-api.aat.platform.hmcts.net
@@ -73,7 +73,7 @@ postgresql:
 importer:
   userprofile:
     enabled: false
-    image: hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest
+    image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     # Users is a list of delimited strings in format: idamEmail|ccdJurisdiction|ccdDefaultCaseType|ccdDefaultCaseState. For example:
     # users:
     # - mryan321.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
