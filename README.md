@@ -20,7 +20,7 @@ requirements.yaml
 dependencies:
   - name: ccd
     version: '2.0.0'
-    repository: '@hmcts'
+    repository: '@hmctspublic'
 ```
 
 The `SERVICE_FQDN`, `INGRESS_IP` and `CONSUL_LB_IP` are all provided by the pipeline, but require you to pass them through for preview environments.
