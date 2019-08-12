@@ -3,7 +3,7 @@ tags:
   ccd-idam-pr: false
   
 userProfileApi:
-  image: hmctspublic.azurecr.io/ccd/user-profile-api:latest  
+  image: hmctspublic.azurecr.io/ccd/user-profile-api:latest
   applicationPort: 4453
   authorisedServices: "ccd_data,ccd_definition,ccd_admin"
 
