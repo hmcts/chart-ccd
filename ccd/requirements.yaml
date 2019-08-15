@@ -9,4 +9,13 @@ dependencies:
     repository: '@hmctspublic'
     tags:
       - ccd-idam-pr
+  - name: draft-store-service
+    version: ~1.0.4
+    repository: '@hmctspublic'
+  - name: rpe-service-auth-provider
+    version: ~0.1.1
+    repository: '@hmctspublic'
+  - name: payment-api
+    version: ~0.0.4
+    repository: '@hmctspublic'  
 
