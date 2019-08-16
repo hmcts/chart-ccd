@@ -42,7 +42,8 @@ ccd:
 
   apiGateway:
     s2sKey: ${API_GATEWAY_S2S_KEY}
-    idamClientSecret: ${API_GATEWAY_IDAM_SECRET}
+    idamClientSecret: 
+      value: ${API_GATEWAY_IDAM_SECRET}
 
   userProfileApi:
     authorisedServices: ccd_admin,ccd_data,ccd_definition,cmc_claim_store
@@ -63,7 +64,8 @@ ccd:
   adminWeb:
     enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
     s2sKey: ${ADMIN_S2S_KEY}
-    idamClientSecret: ${ADMIN_WEB_IDAM_SECRET}
+    idamClientSecret: 
+      value: ${ADMIN_WEB_IDAM_SECRET}
     environment:
       NODE_TLS_REJECT_UNAUTHORIZED: 0
 ```
