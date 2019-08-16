@@ -115,6 +115,7 @@ importer:
     redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
 rpe-service-auth-provider:
+  enabled: false
   java:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     readinessDelay: 180
