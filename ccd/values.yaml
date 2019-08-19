@@ -1,6 +1,8 @@
 tags:
   postgresql-pod: true
   ccd-idam-pr: false
+  rpe-service-auth-provider: false
+
   
 userProfileApi:
   image: hmctspublic.azurecr.io/ccd/user-profile-api:latest
@@ -111,3 +113,21 @@ importer:
     microservice: ccd_gw
     verbose: "false"
     redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+
+rpe-service-auth-provider:
+  enabled: false
+  java:
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      TESTING_SUPPORT_ENABLED: 'true'
+      MICROSERVICEKEYS_CCD_ADMIN: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_GATEWAY: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_FPL_CASE_SERVICE: AAAAAAAAAAAAAAAA    
