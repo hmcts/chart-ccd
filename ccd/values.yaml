@@ -1,133 +1,63 @@
 tags:
-  postgresql-pod: true
-  ccd-idam-pr: false
+  # ccd-idam-pr: false
   rpe-service-auth-provider: false
 
-  
-userProfileApi:
-  image: hmctspublic.azurecr.io/ccd/user-profile-api:latest
-  applicationPort: 4453
-  authorisedServices: "ccd_data,ccd_definition,ccd_admin"
 
-dataStoreApi:
-  image: hmctspublic.azurecr.io/ccd/data-store-api:latest
-  applicationPort: 4452
-  s2sAuthorisedServices: ccd_data,ccd_gw,ccd_ps,probate_backend,divorce_ccd_submission,sscs,cmc,cmc_claim_store,jui_webapp,pui_webapp,bulk_scan_orchestrator,fpl_case_service
-
-definitionStoreApi:
-  image: hmctspublic.azurecr.io/ccd/definition-store-api:latest
-  applicationPort: 4451
-  s2sAuthorisedServices: ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp
-
-caseManagementWeb:
-  enabled: false
-  image: hmctspublic.azurecr.io/ccd/case-management-web:latest
-  applicationPort: 3451
-
-adminWeb:
-  enabled: false
-  image: hmctspublic.azurecr.io/ccd/admin-web:latest
-  applicationPort: 3100
-
-apiGateway:
-  image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
-  applicationPort: 3453
-
-printApi:
-  enabled: false
-  image: hmctspublic.azurecr.io/ccd/case-print-service:latest
-  applicationPort: 3100
-
-idamApiUrl: https://idam-api.aat.platform.hmcts.net
-idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
-paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
-appInsightsKey: "fake-key"
-
-memoryRequests: "512Mi"
-cpuRequests: "25m"
-memoryLimits: "1024Mi"
-cpuLimits: "2500m"
-
-readinessPath: "/health"
-readinessDelay: 60
-readinessTimeout: 3
-readinessPeriod: 15
-livenessPath: "/health"
-livenessDelay: 60
-livenessTimeout: 3
-livenessPeriod: 15
-livenessFailureThreshold: 5
-
-postgresql:
-  postgresqlUsername: hmcts
-  postgresqlPassword: hmcts
-  postgresqlDatabase: user-profile
-  nameOverride: ccd-postgres
-  initdbScripts:
-    init.sql: |-
-      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  persistence:
-    enabled: false
-
-importer:
-  userprofile:
-    enabled: false
-    image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
-    # Users is a list of delimited strings in format: idamEmail|ccdJurisdiction|ccdDefaultCaseType|ccdDefaultCaseState. For example:
-    # users:
-    # - mryan321.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
-    # - mryan321.hmcts.claimant+2@gmail.com|SSCS|SSCS|open
-    users: 
-    # Jurisdictions is a list of jurisdictions referenced in above users. For example:
-    # jurisdictions:
-    # - CMC
-    # - SSCS
-    jurisdictions:
-    waitHosts: ""
-    waitHostsTimeout: 300
-    microservice: ccd_definition
-    verbose: "false"
-    userProfileDatabaseHost: ""
-    userProfileDatabasePort: ""
-    userProfileDatabaseUser: ""
-    userProfileDatabasePassword: ""
-    userProfileDatabaseName: ""
-  definition:
-    enabled: false
-    image: hmcts/ccd-definition-importer:latest
-    # kvSecretRef: kvcreds
-    # gitSecretRef: kvcreds
-    # Definitions is a list. For example:
-    # definitions:
-    # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
-    # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
-    definitions:
-    definitionFilename: ""
-    waitHosts: ""
-    waitHostsTimeout: 300
-    userRoles:
-      - caseworker-bulkscan
-    microservice: ccd_gw
-    verbose: "false"
-    redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
-
-rpe-service-auth-provider:
-  enabled: false
+ccd-user-profile-api:
   java:
-    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
-    readinessDelay: 180
-    livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
-    keyVaults:
-    environment:
-      TESTING_SUPPORT_ENABLED: 'true'
-      MICROSERVICEKEYS_CCD_ADMIN: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_GATEWAY: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_FPL_CASE_SERVICE: AAAAAAAAAAAAAAAA    
+  releaseNameOverride: ccd-user-profile-java
+  image: 'hmctspublic.azurecr.io/ccd/user-profile-api:latest'
+  applicationPort: 4453
+  environment:
+    USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_definition,ccd_admin
+    USER_PROFILE_DB_HOST: "{{ .Release.Name }}-postgresql"
+    USER_PROFILE_DB_PORT: 5432
+    USER_PROFILE_DB_NAME: "{{ .Values.postgresql.postgresqlDatabase}}"
+    USER_PROFILE_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername}}"
+    USER_PROFILE_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    LOGBACK_REQUIRE_ALERT_LEVEL: 'false'
+    LOGBACK_REQUIRE_ERROR_CODE: 'false' 
+  postgresql:
+  enabled: true
+
+
+# idamApiUrl: https://idam-api.aat.platform.hmcts.net
+# idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+s2sUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+# draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
+# paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
+# appInsightsKey: "fake-key"
+
+
+# rpe-service-auth-provider:
+#   enabled: false
+#   java:
+#     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+#     readinessDelay: 180
+#     livenessDelay: 180
+#     readinessPeriod: 60
+#     livenessPeriod: 60
+#     keyVaults:
+#     environment:
+#       TESTING_SUPPORT_ENABLED: 'true'
+#       MICROSERVICEKEYS_CCD_ADMIN: AAAAAAAAAAAAAAAA
+#       MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
+#       MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
+#       MICROSERVICEKEYS_CCD_GATEWAY: AAAAAAAAAAAAAAAA
+#       MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
+#       MICROSERVICEKEYS_FPL_CASE_SERVICE: AAAAAAAAAAAAAAAA
+
+# postgresql:
+#   resources:
+#     requests:
+#       cpu: 25m
+#   initdbScripts:
+#     init.sql: |-
+#       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+#       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+#       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+#   postgresqlUsername: hmcts
+#   postgresqlPassword: hmcts
+#   postgresqlDatabase: user-profile
+#   persistence:
+#     enabled: true 
