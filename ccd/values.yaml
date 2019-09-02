@@ -1,5 +1,5 @@
 tags:
-  idam-pr: true
+  ccd-idam-pr: true
   rpe-service-auth-provider: false
   ccd-api-gw: false
   ccd-case-mgmt-web: false
@@ -163,7 +163,7 @@ ccd-admin-web:
         IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
         IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
-        
+
 # ccd-case-management-web:
 #     nodejs:
 #       enabled: true
