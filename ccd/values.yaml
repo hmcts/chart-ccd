@@ -194,7 +194,11 @@ ccd-case-management-web:
 #         CCD:
 #           - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect     
 
-
+ccd-idam-pr:
+    releaseNameOverride: ccd-idam-pr
+    redirect_uris:
+      CCD:
+        - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect  
 
 rpe-service-auth-provider:
   enabled: false
@@ -227,5 +231,3 @@ postgresql:
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
   nameOverride: postgres
-  persistence:
-    enabled: true 
