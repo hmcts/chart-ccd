@@ -10,7 +10,7 @@ ccd-user-profile-api:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: "hmcts"
       USER_PROFILE_DB_PASSWORD: "hmcts"
-      IDAM_S2S_URL: http://ccd-s2s
+      IDAM_S2S_URL: http://ccd-s2s:8489
   postgres:
     enabled: true
 
@@ -24,7 +24,7 @@ ccd-definition-store-api:
         secrets:
           - microservicekey-ccd-definition
     environment:
-      IDAM_S2S_URL: ccd-s2s
+      IDAM_S2S_URL: http://ccd-s2s:8489
       DEFINITION_STORE_DB_NAME: definition-store
       DEFINITION_STORE_DB_USERNAME: "hmcts"
       DEFINITION_STORE_DB_PASSWORD: "hmcts"
@@ -68,41 +68,43 @@ ccd-api-gateway-web:
       PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
       PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
 
-# ccd-admin-web:
-#     nodejs:
-#       enabled: true
-#       image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-#       releaseNameOverride: "ccd-admin-web"
-#       environment:
-#         IDAM_S2S_URL: http://ccd-s2s
-#         IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
-#         IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
-#         IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
+ccd-admin-web:
+  nodejs:
+    enabled: true
+    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
+    releaseNameOverride: "ccd-admin-web"
+    environment:
+      IDAM_S2S_URL: http://ccd-s2s
+      IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
+  idam-pr:
+    releaseNameOverride: ccd-idam-pr
+    redirect_uris:
+      CCD:
+        - https://ccd-admin-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect    
 
-# ccd-case-management-web:
-#     nodejs:
-#       enabled: true
-#       image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
-#       postcodeParam: '$${postcode}'
-#       environment:
-#         POSTCODE_LOOKUP_URL: 'https://gateway-ccd.aat.platform.hmcts.net/addresses?postcode={{ .Values.postcodeParam }}'
-#         IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
-#         CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
-#         CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
-#         CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
-#         CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
-#         DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
-#         DM_URL_REMOTE: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)/documents
-#         PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
-#         PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-#         CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
-#         PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
-
-# idam-pr:
-#     releaseNameOverride: ccd-idam-pr
-#     redirect_uris:
-#       CCD:
-#         - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect 
+ccd-case-management-web:
+  nodejs:
+    enabled: true
+    image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
+    environment:
+      POSTCODE_LOOKUP_URL: 'https://gateway-ccd.aat.platform.hmcts.net/addresses?postcode={{ .Values.postcodeParam }}'
+      IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
+      CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
+      CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
+      CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
+      CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
+      DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
+      DM_URL_REMOTE: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)/documents
+      PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
+      PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
+      CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
+      PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
+  idam-pr:
+    redirect_uris:
+      CCD:
+        - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect 
 
 rpe-service-auth-provider:
   enabled: false
