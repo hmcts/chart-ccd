@@ -1,204 +1,108 @@
 tags:
   ccd-idam-pr: true
   rpe-service-auth-provider: false
-  ccd-api-gw: false
-  ccd-case-mgmt-web: false
 
 ccd-user-profile-api:
   java:
     releaseNameOverride: ccd-user-profile
     image: 'hmctspublic.azurecr.io/ccd/user-profile-api:latest'
-    readinessDelay: 180
-    livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
-    applicationPort: 4453
     environment:
-      USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_definition,ccd_admin
-      USER_PROFILE_DB_HOST: "{{ .Release.Name }}-postgres"
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: "hmcts"
       USER_PROFILE_DB_PASSWORD: "hmcts"
-      LOGBACK_REQUIRE_ALERT_LEVEL: 'false'
-      LOGBACK_REQUIRE_ERROR_CODE: 'false' 
       IDAM_S2S_URL: http://ccd-s2s
-    postgresql:
-      enabled: true
+  postgres:
+    enabled: true
 
 ccd-definition-store-api:
-    java:
-      image: 'hmctspublic.azurecr.io/ccd/definition-store-api:latest'
-      releaseNameOverride: ccd-definition-store
-      readinessDelay: 180
-      livenessDelay: 180
-      readinessPeriod: 60
-      livenessPeriod: 60
-      applicationPort: 4451  
-      keyVaults:
-        s2s:
-          resourceGroup: rpe-service-auth-provider
-          secrets:
-            - microservicekey-ccd-definition
-      environment:
-        DEFINITION_STORE_DB_HOST: "{{ .Release.Name }}-postgres"
-        DEFINITION_STORE_DB_NAME: "definition-store"
-        DEFINITION_STORE_DB_USERNAME: "hmcts"
-        DEFINITION_STORE_DB_PASSWORD: "hmcts"
-        ENABLE_DB_MIGRATE: true
-        IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
-        DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp
-        AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: false
-        ELASTIC_SEARCH_HOST: ''
-        ELASTIC_SEARCH_PORT: 9200
-        ELASTIC_SEARCH_SCHEME: http
-        ELASTIC_SEARCH_ENABLED: false
-        ELASTIC_SEARCH_INDEX_SHARDS: 2
-        ELASTIC_SEARCH_INDEX_SHARDS_REPLICAS: 1
-        ELASTIC_SEARCH_FAIL_ON_IMPORT: false
-        ELASTIC_SEARCH_DYNAMIC: false
-        ELASTIC_SEARCH_CASE_INDEX_NAME_FORMAT: '%s_cases'
-        IDAM_S2S_URL: ccd-s2s
-        USER_PROFILE_HOST: http://ccd-user-profile
-      postgresql:
-        enabled: true
-
-ccd-data-store-api:
-    java:
-      image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
-      releaseNameOverride: ccd-data-store
-      applicationPort: 4452 
-      keyVaults:
-        s2s:
-          resourceGroup: rpe-service-auth-provider
-        secrets:
-          - microservicekey-ccd-data
-      environment:
-        ENABLE_DB_MIGRATE: true
-        DATA_STORE_DB_HOST: '{{ .Release.Name }}-postgres'
-        DATA_STORE_DB_PORT: 5432
-        DATA_STORE_DB_NAME: "data-store"
-        DATA_STORE_DB_USERNAME: "hmcts"
-        DATA_STORE_DB_PASSWORD: "hmcts"
-        CCD_DM_DOMAIN: https?://dm-store.*
-        IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
-        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,probate_backend,divorce_ccd_submission,sscs,sscs_bulkscan,cmc,cmc_claim_store,cmc_claim_external_api,jui_webapp,pui_webapp,bulk_scan_orchestrator,fpl_case_service,iac,finrem_ccd_data_migrator,finrem_case_orchestration,employment_tribunals,ethos_repl_service
-        DEFINITION_CACHE_MAX_IDLE_SEC: 259200
-        DEFINITION_CACHE_LATEST_VERSION_TTL_SEC: 1
-        DEFINITION_CACHE_MAX_SIZE: 5000
-        DEFINITION_CACHE_EVICTION_POLICY: NONE
-        ELASTIC_SEARCH_ENABLED: false
-        ELASTIC_SEARCH_HOSTS: ''
-        ELASTIC_SEARCH_DATA_NODES_HOSTS: ''
-        ELASTIC_SEARCH_PASSWORD: ''
-        ELASTIC_SEARCH_BLACKLIST: query_string
-        ELASTIC_SEARCH_CASE_INDEX_NAME_FORMAT: '%s_cases'
-        ELASTIC_SEARCH_CASE_INDEX_TYPE: _doc
-        IDAM_S2S_URL: ccd-s2s
-        DEFINITION_STORE_HOST: http://ccd-definition-store
-        USER_PROFILE_HOST: http://ccd-user-profile
-        CCD_DM_DOMAIN: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)
-        CCD_DRAFT_STORE_URL: http://draft-store-service-aat.service.core-compute-aat.internal
-        CCD_DEFAULTPRINTURL: https://return-case-doc-ccd.nonprod.platform.hmcts.net/jurisdictions/:jid/case-types/:ctid/cases/:cid
-      postgresql:
-        enabled: true
-
-ccd-api-gateway-web:
-    nodejs:
-      enabled: false
-      image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
-      releaseNameOverride: ccd-api-gateway
-      applicationPort: 3453
-      cpuLimits: 1
-      environment:
-        IDAM_OAUTH2_CLIENT_ID: ccd_gateway
-        CORS_ORIGIN_METHODS: GET,POST,OPTIONS,PUT,DELETE
-        IDAM_SERVICE_NAME: ccd_gw
-        SECURE_AUTH_COOKIE_ENABLED: true
-        IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
-        IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
-        IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
-        IDAM_S2S_URL: http://ccd-s2s
-        PROXY_AGGREGATED: http://ccd-data-store
-        PROXY_DATA: http://ccd-data-store
-        PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
-        PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
-        PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
-        PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
-      keyVaults:
-        secrets:
-        - ccd-api-gateway-oauth2-client-secret
-        - postcode-info-address-lookup-token
+  java:
+    image: 'hmctspublic.azurecr.io/ccd/definition-store-api:latest'
+    releaseNameOverride: ccd-definition-store
+    keyVaults:
       s2s:
         resourceGroup: rpe-service-auth-provider
         secrets:
-          - microservicekey-ccd-gw
+          - microservicekey-ccd-definition
+    environment:
+      IDAM_S2S_URL: ccd-s2s
+      DEFINITION_STORE_DB_NAME: definition-store
+      DEFINITION_STORE_DB_USERNAME: "hmcts"
+      DEFINITION_STORE_DB_PASSWORD: "hmcts"
+      USER_PROFILE_HOST: http://ccd-user-profile
+  postgres:
+    enabled: true    
 
-ccd-admin-web:
-    nodejs:
-      enabled: true
-      image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-      releaseNameOverride: "ccd-admin-web"
-      applicationPort: 3100
-      cpuLimits: 1
-      environment:
-        # Node specific vars
-        USE_CSRF_PROTECTION: true
-        SECURITY_REFERRER_POLICY: origin
-        HPKP_MAX_AGE: 2592000
-        HPKP_SHA256S: Set-proper-SHA256s
-        NODE_ENV: production
-        UV_THREADPOOL_SIZE: 64
-        NODE_CONFIG_DIR: ./config
-        TS_BASE_URL: ./src/main
+ccd-data-store-api:
+  java:
+    image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
+    releaseNameOverride: ccd-data-store
+    environment:
+      DATA_STORE_DB_NAME: "data-store"
+      DATA_STORE_DB_USERNAME: "hmcts"
+      DATA_STORE_DB_PASSWORD: "hmcts"
+      CCD_DM_DOMAIN: https?://dm-store.*
+      IDAM_USER_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_S2S_URL: ccd-s2s
+      DEFINITION_STORE_HOST: http://ccd-definition-store
+      USER_PROFILE_HOST: http://ccd-user-profile
+      CCD_DM_DOMAIN: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)
+      CCD_DRAFT_STORE_URL: http://draft-store-service-aat.service.core-compute-aat.internal
+  postgresql:
+     enabled: true
 
-        # Logging vars
-        REFORM_TEAM: ccd
-        REFORM_SERVICE_NAME: admin-web
-        IDAM_SERVICE_NAME: ccd_admin
-        SECURE_AUTH_COOKIE_ENABLED: true
-        IDAM_OAUTH2_CLIENT_ID: ccd_admin
+ccd-api-gateway-web:
+  nodejs:
+    enabled: false
+    image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
+    releaseNameOverride: ccd-api-gateway
+    environment:
+      IDAM_OAUTH2_CLIENT_ID: ccd_gateway
+      IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
+      IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_S2S_URL: http://ccd-s2s
+      PROXY_AGGREGATED: http://ccd-data-store
+      PROXY_DATA: http://ccd-data-store
+      PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
+      PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+      PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
+      PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
 
-        IDAM_S2S_URL: http://ccd-s2s
-        IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
-        IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
-        IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
+# ccd-admin-web:
+#     nodejs:
+#       enabled: true
+#       image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
+#       releaseNameOverride: "ccd-admin-web"
+#       environment:
+#         IDAM_S2S_URL: http://ccd-s2s
+#         IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
+#         IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+#         IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
 
-ccd-case-management-web:
-    nodejs:
-      enabled: true
-      image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
-      applicationPort: 3451
-      cpuLimits: 1
-      postcodeParam: '$${postcode}'
-      environment:
-        CCD_GW_OAUTH2_CLIENT_ID: ccd_gateway
-        CCD_PAGE_SIZE: 25
-        CCD_ACTIVITY_NEXT_POLL_REQUEST_MS: 5000
-        CCD_ACTIVITY_RETRY: 5
-        CCD_ACTIVITY_BATCH_COLLECTION_DELAY_MS: 1
-        CCD_ACTIVITY_MAX_REQUEST_PER_BATCH: 25
-        POSTCODE_LOOKUP_URL: 'https://gateway-ccd.aat.platform.hmcts.net/addresses?postcode={{ .Values.postcodeParam }}'
-        IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
-        CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
-        CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
-        CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
-        CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
-        DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
-        DM_URL_REMOTE: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)/documents
-        PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
-        PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-        CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
-        PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
-#     idam-pr:
-#       redirect_uris:
-#         CCD:
-#           - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect     
+# ccd-case-management-web:
+#     nodejs:
+#       enabled: true
+#       image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
+#       postcodeParam: '$${postcode}'
+#       environment:
+#         POSTCODE_LOOKUP_URL: 'https://gateway-ccd.aat.platform.hmcts.net/addresses?postcode={{ .Values.postcodeParam }}'
+#         IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
+#         CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
+#         CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
+#         CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
+#         CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
+#         DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
+#         DM_URL_REMOTE: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)/documents
+#         PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
+#         PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
+#         CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
+#         PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
 
-ccd-idam-pr:
-    releaseNameOverride: ccd-idam-pr
-    redirect_uris:
-      CCD:
-        - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect  
+# idam-pr:
+#     releaseNameOverride: ccd-idam-pr
+#     redirect_uris:
+#       CCD:
+#         - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect 
 
 rpe-service-auth-provider:
   enabled: false
@@ -230,4 +134,4 @@ postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
-  nameOverride: postgres
+
