@@ -82,21 +82,20 @@ ccd-admin-web:
     releaseNameOverride: ccd-idam-pr
     redirect_uris:
       CCD:
-        - https://ccd-admin-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect    
+        - https://ccd-admin-web/oauth2redirect    
 
 ccd-case-management-web:
   nodejs:
     enabled: true
     image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
+    releaseNameOverride: "ccd-case-management-web"
     environment:
-      POSTCODE_LOOKUP_URL: 'https://gateway-ccd.aat.platform.hmcts.net/addresses?postcode={{ .Values.postcodeParam }}'
       IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
       CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
       CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
       CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
       CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
       DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
-      DM_URL_REMOTE: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)/documents
       PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
       CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
@@ -104,7 +103,7 @@ ccd-case-management-web:
   idam-pr:
     redirect_uris:
       CCD:
-        - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect 
+        - https://ccd-case-management-web/oauth2redirect 
 
 rpe-service-auth-provider:
   enabled: true
