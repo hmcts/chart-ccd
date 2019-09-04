@@ -88,6 +88,7 @@ ccd-case-management-web:
   nodejs:
     enabled: true
     image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
+    releaseNameOverride: "ccd-management-web"
     environment:
       POSTCODE_LOOKUP_URL: 'https://gateway-ccd.aat.platform.hmcts.net/addresses?postcode={{ .Values.postcodeParam }}'
       IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net
