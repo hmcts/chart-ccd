@@ -23,5 +23,6 @@ global:
 ccd-test-stubs-service:
   enabled: true
   java:
+    releaseNameOverride: ccd-test-stubs-service
     environment:
       MANAGEMENT_WEB_URL: https://ccd-case-management-web
