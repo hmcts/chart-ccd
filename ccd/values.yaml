@@ -52,6 +52,7 @@ ccd-data-store-api:
 
 ccd-api-gateway-web:
   nodejs:
+    ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
     enabled: false
     image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
     releaseNameOverride: ccd-api-gateway
@@ -90,16 +91,16 @@ ccd-case-management-web:
     image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
     releaseNameOverride: "ccd-case-management-web"
     environment:
-      IDAM_LOGIN_URL: https://ccd-test-stubs-service/login
-      CCD_GW_LOGOUT_URL: https://ccd-test-stubs-service/logout
-      CCD_API_URL: https://ccd-api-gateway-web/aggregated
-      CCD_DATA_URL: https://ccd-api-gateway-web/data
-      CCD_GW_OAUTH2_URL: https://ccd-api-gateway-web/oauth2
-      DM_URL: https://ccd-api-gateway-web/documents
-      PRINT_SERVICE_URL: https://ccd-api-gateway-web/print
+      IDAM_LOGIN_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
+      CCD_GW_LOGOUT_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/logout
+      CCD_API_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/aggregated
+      CCD_DATA_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/data
+      CCD_GW_OAUTH2_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/oauth2
+      DM_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/documents
+      PRINT_SERVICE_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/print
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-      CCD_ACTIVITY_URL: https://ccd-api-gateway-web/activity
-      PAYMENTS_URL: https://ccd-api-gateway-web/payments
+      CCD_ACTIVITY_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/activity
+      PAYMENTS_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/payments
 
 rpe-service-auth-provider:
   enabled: true

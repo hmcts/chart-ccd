@@ -23,6 +23,7 @@ global:
 ccd-test-stubs-service:
   enabled: true
   java:
+    ingressHost: test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
     livenessPath: '/health'
     releaseNameOverride: ccd-test-stubs-service
     environment:
