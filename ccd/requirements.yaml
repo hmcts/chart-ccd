@@ -23,14 +23,14 @@ dependencies:
     version: ~1.0.0
     repository: '@hmctspublic'
     condition: ccd-api-gateway-web.enabled
+  - name: ccd-admin-web
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-admin-web.enabled
   - name: ccd-case-management-web
     version: ~1.0.0
     repository: '@hmctspublic'
     condition: ccd-case-management-web.enabled
-  - name: ccd-admin-web
-    version: ~1.0.0
-    repository: '@hmctspublic'
-    condition: ccd-api-gateway-web.enabled
   - name: ccd-test-stubs-service
     version: ~0.0.4
     repository: '@hmctspublic'

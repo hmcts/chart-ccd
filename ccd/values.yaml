@@ -101,6 +101,8 @@ ccd-case-management-web:
       CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
       PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
   idam-pr:
+    api:
+      url: http://ccd-test-stubs-service
     redirect_uris:
       CCD:
         - https://ccd-case-management-web/oauth2redirect
