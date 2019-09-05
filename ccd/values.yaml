@@ -79,7 +79,7 @@ ccd-admin-web:
       IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
       IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
   idam-pr:
-    releaseNameOverride: ccd-idam-pr
+    releaseNameOverride: ccd-idam-pr-admin-web
     redirect_uris:
       CCD:
         - https://ccd-admin-web/oauth2redirect
@@ -90,22 +90,16 @@ ccd-case-management-web:
     image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
     releaseNameOverride: "ccd-case-management-web"
     environment:
-      IDAM_LOGIN_URL: https://ccd-test-stubs-service
-      CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
-      CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
-      CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
-      CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
-      DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
-      PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
+      IDAM_LOGIN_URL: https://ccd-test-stubs-service/login
+      CCD_GW_LOGOUT_URL: https://ccd-test-stubs-service/logout
+      CCD_API_URL: https://ccd-api-gateway-web/aggregated
+      CCD_DATA_URL: https://ccd-api-gateway-web/data
+      CCD_GW_OAUTH2_URL: https://ccd-api-gateway-web/oauth2
+      DM_URL: https://ccd-api-gateway-web/documents
+      PRINT_SERVICE_URL: https://ccd-api-gateway-web/print
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-      CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
-      PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
-  idam-pr:
-    api:
-      url: http://ccd-test-stubs-service
-    redirect_uris:
-      CCD:
-        - https://ccd-case-management-web/oauth2redirect
+      CCD_ACTIVITY_URL: https://ccd-api-gateway-web/activity
+      PAYMENTS_URL: https://ccd-api-gateway-web/payments
 
 rpe-service-auth-provider:
   enabled: true
