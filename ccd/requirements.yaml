@@ -32,7 +32,7 @@ dependencies:
     repository: '@hmctspublic'
     condition: ccd-api-gateway-web.enabled
   - name: ccd-test-stubs-service
-    version: ~0.0.3
+    version: ~0.0.4
     repository: '@hmctspublic'
     condition: ccd-test-stubs-service.enabled
   
