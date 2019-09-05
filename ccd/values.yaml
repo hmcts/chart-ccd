@@ -2,6 +2,58 @@ tags:
   ccd-idam-pr: true
   rpe-service-auth-provider: false
 
+ccd-case-management-web:
+  nodejs:
+    enabled: true
+    image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
+    releaseNameOverride: "ccd-case-management-web"
+    environment:
+      IDAM_LOGIN_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
+      CCD_GW_LOGOUT_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/logout
+      CCD_API_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/aggregated
+      CCD_DATA_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/data
+      CCD_GW_OAUTH2_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/oauth2
+      DM_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/documents
+      PRINT_SERVICE_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/print
+      PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
+      CCD_ACTIVITY_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/activity
+      PAYMENTS_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/payments
+
+ccd-api-gateway-web:
+  nodejs:
+    ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
+    enabled: false
+    image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
+    releaseNameOverride: ccd-api-gateway
+    environment:
+      IDAM_OAUTH2_CLIENT_ID: ccd_gateway
+      IDAM_OAUTH2_TOKEN_ENDPOINT: http://ccd-test-stubs-service/oauth2/token
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: http://ccd-test-stubs-service/session/:token
+      IDAM_BASE_URL: http://ccd-test-stubs-service
+      IDAM_S2S_URL: http://service-auth-s2s
+      PROXY_AGGREGATED: http://ccd-data-store
+      PROXY_DATA: http://ccd-data-store
+      PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
+      PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+      PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
+      PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
+
+ccd-admin-web:
+  nodejs:
+    enabled: true
+    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
+    releaseNameOverride: "ccd-admin-web"
+    environment:
+      IDAM_S2S_URL: http://service-auth-s2s
+      IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
+  idam-pr:
+    releaseNameOverride: ccd-idam-pr-admin-web
+    redirect_uris:
+      CCD:
+        - https://ccd-admin-web/oauth2redirect
+
 ccd-user-profile-api:
   java:
     releaseNameOverride: ccd-user-profile
@@ -49,58 +101,6 @@ ccd-data-store-api:
       CCD_DRAFT_STORE_URL: http://draft-store-service-aat.service.core-compute-aat.internal
   postgresql:
      enabled: true
-
-ccd-api-gateway-web:
-  nodejs:
-    ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
-    enabled: false
-    image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
-    releaseNameOverride: ccd-api-gateway
-    environment:
-      IDAM_OAUTH2_CLIENT_ID: ccd_gateway
-      IDAM_OAUTH2_TOKEN_ENDPOINT: http://ccd-test-stubs-service/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: http://ccd-test-stubs-service/session/:token
-      IDAM_BASE_URL: http://ccd-test-stubs-service
-      IDAM_S2S_URL: http://service-auth-s2s
-      PROXY_AGGREGATED: http://ccd-data-store
-      PROXY_DATA: http://ccd-data-store
-      PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
-      PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
-      PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
-      PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
-
-ccd-admin-web:
-  nodejs:
-    enabled: true
-    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-    releaseNameOverride: "ccd-admin-web"
-    environment:
-      IDAM_S2S_URL: http://service-auth-s2s
-      IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/session/:token
-  idam-pr:
-    releaseNameOverride: ccd-idam-pr-admin-web
-    redirect_uris:
-      CCD:
-        - https://ccd-admin-web/oauth2redirect
-
-ccd-case-management-web:
-  nodejs:
-    enabled: true
-    image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
-    releaseNameOverride: "ccd-case-management-web"
-    environment:
-      IDAM_LOGIN_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
-      CCD_GW_LOGOUT_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/logout
-      CCD_API_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/aggregated
-      CCD_DATA_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/data
-      CCD_GW_OAUTH2_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/oauth2
-      DM_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/documents
-      PRINT_SERVICE_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/print
-      PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-      CCD_ACTIVITY_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/activity
-      PAYMENTS_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/payments
 
 rpe-service-auth-provider:
   enabled: true
