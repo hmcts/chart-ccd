@@ -27,4 +27,4 @@ ccd-test-stubs-service:
     livenessPath: '/health'
     releaseNameOverride: ccd-test-stubs-service
     environment:
-      MANAGEMENT_WEB_URL: https://ccd-case-management-web
+      MANAGEMENT_WEB_URL: https://www-ccd-aks.service.core-compute-sandbox.internal
