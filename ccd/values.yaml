@@ -99,6 +99,7 @@ ccd-data-store-api:
       CCD_DM_DOMAIN: https?://dm-store.*
       IDAM_USER_URL: http://ccd-test-stubs-service
       IDAM_S2S_URL: http://service-auth-s2s
+      DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DEFINITION_STORE_HOST: http://ccd-definition-store
       USER_PROFILE_HOST: http://ccd-user-profile
 #      CCD_DM_DOMAIN: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)
