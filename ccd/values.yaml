@@ -97,11 +97,11 @@ ccd-data-store-api:
       DATA_STORE_DB_USERNAME: "hmcts"
       DATA_STORE_DB_PASSWORD: "hmcts"
       CCD_DM_DOMAIN: https?://dm-store.*
-      IDAM_USER_URL: https://ccd-test-stubs-service
+      IDAM_USER_URL: http://ccd-test-stubs-service
       IDAM_S2S_URL: http://service-auth-s2s
       DEFINITION_STORE_HOST: http://ccd-definition-store
       USER_PROFILE_HOST: http://ccd-user-profile
-      CCD_DM_DOMAIN: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)
+#      CCD_DM_DOMAIN: ^https?://(?:api-gateway\\.preprod\\.dm\\.reform\\.hmcts\\.net|dm-store-aat\\.service\\.core-compute-aat\\.internal(?::\\d+)?)
       CCD_DRAFT_STORE_URL: http://draft-store-service-aat.service.core-compute-aat.internal
   postgresql:
      enabled: true
