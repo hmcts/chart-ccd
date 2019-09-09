@@ -69,7 +69,7 @@ ccd-user-profile-api:
       USER_PROFILE_DB_USERNAME: "hmcts"
       USER_PROFILE_DB_PASSWORD: "hmcts"
       IDAM_S2S_URL: http://service-auth-s2s
-  postgres:
+  postgresql:
     enabled: true
 
 ccd-definition-store-api:
@@ -83,7 +83,7 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: "hmcts"
       DEFINITION_STORE_DB_PASSWORD: "hmcts"
       USER_PROFILE_HOST: http://ccd-user-profile
-  postgres:
+  postgresql:
     enabled: true    
 
 ccd-data-store-api:
