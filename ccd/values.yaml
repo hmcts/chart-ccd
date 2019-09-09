@@ -12,15 +12,15 @@ ccd-case-management-web:
     releaseNameOverride: "ccd-case-management-web"
     environment:
       IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net/login
-      CCD_GW_LOGOUT_URL: https://gateway-ccd.aat.platform.hmcts.net/logout
-      CCD_API_URL: https://gateway-ccd.aat.platform.hmcts.net/aggregated
-      CCD_DATA_URL: https://gateway-ccd.aat.platform.hmcts.net/data
-      CCD_GW_OAUTH2_URL: https://gateway-ccd.aat.platform.hmcts.net/oauth2
-      DM_URL: https://gateway-ccd.aat.platform.hmcts.net/documents
-      PRINT_SERVICE_URL: https://gateway-ccd.aat.platform.hmcts.net/print
+      CCD_GW_LOGOUT_URL: https://ccd-api-gateway/logout
+      CCD_API_URL: https://ccd-api-gateway/aggregated
+      CCD_DATA_URL: https://ccd-api-gateway/data
+      CCD_GW_OAUTH2_URL: https://ccd-api-gateway/oauth2
+      DM_URL: https://ccd-api-gateway/documents
+      PRINT_SERVICE_URL: https://ccd-api-gateway/print
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-      CCD_ACTIVITY_URL: https://gateway-ccd.aat.platform.hmcts.net/activity
-      PAYMENTS_URL: https://gateway-ccd.aat.platform.hmcts.net/payments
+      CCD_ACTIVITY_URL: https://ccd-api-gateway/activity
+      PAYMENTS_URL: https://ccd-api-gateway/payments
   idam-pr:
     releaseNameOverride: ccd-idam-pr
     redirect_uris:
@@ -28,7 +28,7 @@ ccd-case-management-web:
         - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect  
     
 
-ccd-api-gateway-web:
+cccdApiGatewayWeb:
   nodejs:
     image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
     releaseNameOverride: ccd-api-gateway

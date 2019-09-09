@@ -24,6 +24,7 @@ dependencies:
   - name: ccd-api-gateway-web
     version: ~1.0.0
     repository: '@hmctspublic'
+    alias: ccdApiGatewayWeb
     condition: ccd-api-gateway-web.enabled
   - name: ccd-admin-web
     version: ~1.0.0

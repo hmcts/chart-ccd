@@ -22,7 +22,7 @@ ccd-case-management-web:
       CCD_ACTIVITY_URL:
       PAYMENTS_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/payments
 
-ccd-api-gateway-web:
+ccdApiGatewayWeb:
   nodejs:
     ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
     environment:
