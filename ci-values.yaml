@@ -5,16 +5,16 @@ consulIP: "10.97.11.254"
 readinessDelay: 90
 livenessDelay: 90
 
-apiGateway:
-  s2sKey: "AAAAAAAAAAAAAAAA"
-  idamClientSecret:
-    value: "123456"
+# apiGateway:
+#   s2sKey: "AAAAAAAAAAAAAAAA"
+#   idamClientSecret:
+#     value: "123456"
 
-dataStoreApi:
-  s2sKey: "AAAAAAAAAAAAAAAA"
+# dataStoreApi:
+#   s2sKey: "AAAAAAAAAAAAAAAA"
 
-definitionStoreApi:
-  s2sKey: "AAAAAAAAAAAAAAAA"
+# definitionStoreApi:
+#   s2sKey: "AAAAAAAAAAAAAAAA"
 
 global:
   subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
