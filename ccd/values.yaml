@@ -123,6 +123,8 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
 postgresql:
+  persistence:
+    enabled: false
   resources:
     requests:
       cpu: 25m
