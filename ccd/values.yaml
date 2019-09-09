@@ -69,8 +69,8 @@ ccd-user-profile-api:
       USER_PROFILE_DB_USERNAME: "hmcts"
       USER_PROFILE_DB_PASSWORD: "hmcts"
       IDAM_S2S_URL: http://service-auth-s2s
-  postgresql:
-    enabled: true
+  # postgresql:
+  #   enabled: true
 
 ccd-definition-store-api:
   java:
@@ -83,8 +83,8 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: "hmcts"
       DEFINITION_STORE_DB_PASSWORD: "hmcts"
       USER_PROFILE_HOST: http://ccd-user-profile
-  postgresql:
-    enabled: true    
+  # postgresql:
+  #   enabled: true    
 
 ccd-data-store-api:
   java:
@@ -101,8 +101,8 @@ ccd-data-store-api:
       DEFINITION_STORE_HOST: http://ccd-definition-store
       USER_PROFILE_HOST: http://ccd-user-profile
       CCD_DRAFT_STORE_URL: http://draft-store-service-aat.service.core-compute-aat.internal
-  postgresql:
-     enabled: true
+  # postgresql:
+  #    enabled: true
 
 rpe-service-auth-provider:
   enabled: true
@@ -122,14 +122,14 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
-# postgresql:
-#   resources:
-#     requests:
-#       cpu: 25m
-#   initdbScripts:
-#     init.sql: |-
-#       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-#       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-#   postgresqlUsername: hmcts
-#   postgresqlPassword: hmcts
-#   postgresqlDatabase: user-profile
+postgresql:
+  resources:
+    requests:
+      cpu: 25m
+  initdbScripts:
+    init.sql: |-
+      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
+  postgresqlDatabase: user-profile
