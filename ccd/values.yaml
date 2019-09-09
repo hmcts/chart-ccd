@@ -56,9 +56,9 @@ ccd-admin-web:
     releaseNameOverride: "ccd-admin-web"
     environment:
       IDAM_S2S_URL: http://service-auth-s2s
-      IDAM_BASE_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
-      IDAM_OAUTH2_TOKEN_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/session/:token
+      IDAM_BASE_URL: https://idam-api.aat.platform.hmcts.net/login
+      IDAM_OAUTH2_TOKEN_ENDPOINT: https://idam-api.aat.platform.hmcts.net/login/oauth2/token
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://idam-api.aat.platform.hmcts.net/login/session/:token
 
 ccd-user-profile-api:
   java:
@@ -78,7 +78,7 @@ ccd-definition-store-api:
     releaseNameOverride: ccd-definition-store
     environment:
       IDAM_S2S_URL: http://service-auth-s2s
-      IDAM_USER_URL: http://ccd-test-stubs-service
+      IDAM_USER_URL: http://idam-api.aat.platform.hmcts.net
       DEFINITION_STORE_DB_NAME: definition-store
       DEFINITION_STORE_DB_USERNAME: "hmcts"
       DEFINITION_STORE_DB_PASSWORD: "hmcts"
@@ -95,7 +95,7 @@ ccd-data-store-api:
       DATA_STORE_DB_USERNAME: "hmcts"
       DATA_STORE_DB_PASSWORD: "hmcts"
       CCD_DM_DOMAIN: https?://dm-store.*
-      IDAM_USER_URL: http://ccd-test-stubs-service
+      IDAM_USER_URL: http://idam-api.aat.platform.hmcts.net
       IDAM_S2S_URL: http://service-auth-s2s
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DEFINITION_STORE_HOST: http://ccd-definition-store
@@ -122,14 +122,14 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
-postgresql:
-  resources:
-    requests:
-      cpu: 25m
-  initdbScripts:
-    init.sql: |-
-      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: hmcts
-  postgresqlPassword: hmcts
-  postgresqlDatabase: user-profile
+# postgresql:
+#   resources:
+#     requests:
+#       cpu: 25m
+#   initdbScripts:
+#     init.sql: |-
+#       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+#       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+#   postgresqlUsername: hmcts
+#   postgresqlPassword: hmcts
+#   postgresqlDatabase: user-profile
