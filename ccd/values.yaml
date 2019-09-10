@@ -5,30 +5,33 @@ tags:
   front-end-management: true
   idam-stub: false
 
+global:
+   apiGatewayIngress: ""
+   caseManagementIngress: ""  
+
 ccd-case-management-web:
   nodejs:
-    enabled: true
     image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
-    releaseNameOverride: "ccd-case-management-web"
+    releaseNameOverride: ccd-case-management-web
     environment:
       IDAM_LOGIN_URL: https://idam-web-public.aat.platform.hmcts.net/login
-      CCD_GW_LOGOUT_URL: https://ccd-api-gateway/logout
-      CCD_API_URL: https://ccd-api-gateway/aggregated
-      CCD_DATA_URL: https://ccd-api-gateway/data
-      CCD_GW_OAUTH2_URL: https://ccd-api-gateway/oauth2
-      DM_URL: https://ccd-api-gateway/documents
-      PRINT_SERVICE_URL: https://ccd-api-gateway/print
+      CCD_GW_LOGOUT_URL: https://{{ .Values.global.apiGatewayIngress }}/logout
+      CCD_API_URL: https://{{ .Values.global.apiGatewayIngress }}/aggregated
+      CCD_DATA_URL: https://{{ .Values.global.apiGatewayIngress }}/data
+      CCD_GW_OAUTH2_URL: https://{{ .Values.global.apiGatewayIngress }}/oauth2
+      DM_URL: https://{{ .Values.global.apiGatewayIngress }}/documents
+      PRINT_SERVICE_URL: https://{{ .Values.global.apiGatewayIngress }}/print
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-      CCD_ACTIVITY_URL: https://ccd-api-gateway/activity
-      PAYMENTS_URL: https://ccd-api-gateway/payments
+      CCD_ACTIVITY_URL: https://{{ .Values.global.apiGatewayIngress }}/activity
+      PAYMENTS_URL: https://{{ .Values.global.apiGatewayIngress }}/payments
   idam-pr:
     releaseNameOverride: ccd-idam-pr
     redirect_uris:
       CCD:
-        - https://ccd-case-management-web-chart-ccd-release.service.core-compute-preview.internal/oauth2redirect  
+        - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect  
     
 
-cccdApiGatewayWeb:
+ccd-api-gateway-web:
   nodejs:
     image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
     releaseNameOverride: ccd-api-gateway
@@ -45,13 +48,12 @@ cccdApiGatewayWeb:
       PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
       PROXY_PAYMENTS: http://payment-api-aat.service.core-compute-aat.internal
       PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
-      CORS_ORIGIN_WHITELIST: "https://www-ccd-aks.service.core-compute-sandbox.internal,http://www-ccd-aks.service.core-compute-sandbox.internal,www-ccd-aks.service.core-compute-sandbox.internal,*"
+      CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api-aat.service.core-compute-aat.internal
     
 
 ccd-admin-web:
   nodejs:
-    enabled: true
     image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
     releaseNameOverride: "ccd-admin-web"
     environment:
@@ -69,13 +71,15 @@ ccd-user-profile-api:
       USER_PROFILE_DB_USERNAME: "hmcts"
       USER_PROFILE_DB_PASSWORD: "hmcts"
       IDAM_S2S_URL: http://service-auth-s2s
-  # postgresql:
-  #   enabled: true
 
 ccd-definition-store-api:
   java:
     image: 'hmctspublic.azurecr.io/ccd/definition-store-api:latest'
     releaseNameOverride: ccd-definition-store
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     environment:
       IDAM_S2S_URL: http://service-auth-s2s
       IDAM_USER_URL: http://idam-api.aat.platform.hmcts.net
@@ -83,13 +87,16 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: "hmcts"
       DEFINITION_STORE_DB_PASSWORD: "hmcts"
       USER_PROFILE_HOST: http://ccd-user-profile
-  # postgresql:
-  #   enabled: true    
+  
 
 ccd-data-store-api:
   java:
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: ccd-data-store
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     environment:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: "hmcts"
@@ -101,8 +108,8 @@ ccd-data-store-api:
       DEFINITION_STORE_HOST: http://ccd-definition-store
       USER_PROFILE_HOST: http://ccd-user-profile
       CCD_DRAFT_STORE_URL: http://draft-store-service-aat.service.core-compute-aat.internal
-  # postgresql:
-  #    enabled: true
+
+#Dependencies
 
 rpe-service-auth-provider:
   enabled: true

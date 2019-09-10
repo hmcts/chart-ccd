@@ -5,36 +5,29 @@ tags:
   idam-stub: true
   ccd-idam-pr: false
 
+global:
+   apiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
+   caseManagementIngress: www-ccd-aks.service.core-compute-sandbox.internal
+
 ccd-case-management-web:
   nodejs:
     enabled: true
     ingressHost: www-ccd-aks.service.core-compute-sandbox.internal
-    image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
-    releaseNameOverride: "ccd-case-management-web"
     environment:
       IDAM_LOGIN_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
-      CCD_GW_LOGOUT_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/logout
-      CCD_API_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/aggregated
-      CCD_DATA_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/data
-      CCD_GW_OAUTH2_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/oauth2
-      DM_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/documents
-      PRINT_SERVICE_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/print
-      CCD_ACTIVITY_URL:
-      PAYMENTS_URL: https://gateway-ccd-aks.service.core-compute-sandbox.internal/payments
 
-ccdApiGatewayWeb:
+ccd-api-gateway-web:
   nodejs:
     ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
     environment:
       IDAM_OAUTH2_TOKEN_ENDPOINT: http://ccd-test-stubs-service/oauth2/token
       IDAM_OAUTH2_LOGOUT_ENDPOINT: http://ccd-test-stubs-service/session/:token
       IDAM_BASE_URL: http://ccd-test-stubs-service
-      CORS_ORIGIN_WHITELIST: "https://www-ccd-aks.service.core-compute-sandbox.internal,http://www-ccd-aks.service.core-compute-sandbox.internal,www-ccd-aks.service.core-compute-sandbox.internal,*"
-
+      
+      
 ccd-admin-web:
   nodejs:
     enabled: true
-    ingressHost: ccd-admin-web-aks.service.core-compute-sandbox.internal
     environment:
       IDAM_BASE_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
       IDAM_OAUTH2_TOKEN_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/oauth2/token
