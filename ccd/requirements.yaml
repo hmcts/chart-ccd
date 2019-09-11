@@ -1,6 +1,6 @@
 dependencies:
   - name: postgresql
-    version: ~5.3.0
+    version: ~6.3.5
     repository: '@stable'
 
   - name: rpe-service-auth-provider
