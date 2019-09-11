@@ -11,7 +11,7 @@ dependencies:
   - name: idam-pr
     version: ~2.1.3
     repository: '@hmctspublic'
-    condition: idam-pr.disabled
+    condition: idam-pr.enabled
 
   - name: ccd-user-profile-api
     version: ~1.0.0
@@ -33,16 +33,16 @@ dependencies:
   - name: ccd-admin-web
     version: ~1.0.0
     repository: '@hmctspublic'
-    condition: ccd-admin-web.disabled
+    condition: ccd-admin-web.enabled
 
   - name: ccd-case-management-web
     version: ~1.0.0
     repository: '@hmctspublic'
-    condition: ccd-case-management-web.disabled
+    condition: ccd-case-management-web.enabled
 
   - name: ccd-test-stubs-service
     version: ~0.0.4
     repository: '@hmctspublic'
-    condition: ccd-test-stubs-service.disabled
+    condition: ccd-test-stubs-service.enabled
   
   
