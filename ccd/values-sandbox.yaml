@@ -1,48 +1,45 @@
-tags:
-  rpe-service-auth-provider: true
-  front-end-admin: true
-  front-end-management: true
-  idam-stub: true
-  ccd-idam-pr: false
 
 global:
    apiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
    caseManagementIngress: www-ccd-aks.service.core-compute-sandbox.internal
+   idamUrl: ccd-test-stubs-service
+   idamWebUrl: test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
 
 ccd-case-management-web:
   nodejs:
     enabled: true
     ingressHost: www-ccd-aks.service.core-compute-sandbox.internal
-    environment:
-      IDAM_LOGIN_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
+    # environment:
+    #   IDAM_LOGIN_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
 
 ccd-api-gateway-web:
+  enabled: true
   nodejs:
     ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
-    environment:
-      IDAM_OAUTH2_TOKEN_ENDPOINT: http://ccd-test-stubs-service/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: http://ccd-test-stubs-service/session/:token
-      IDAM_BASE_URL: http://ccd-test-stubs-service
+    # environment:
+    #   IDAM_OAUTH2_TOKEN_ENDPOINT: http://ccd-test-stubs-service/oauth2/token
+    #   IDAM_OAUTH2_LOGOUT_ENDPOINT: http://ccd-test-stubs-service/session/:token
+    #   IDAM_BASE_URL: http://ccd-test-stubs-service
       
       
 ccd-admin-web:
   nodejs:
     enabled: true
-    environment:
-      IDAM_BASE_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
-      IDAM_OAUTH2_TOKEN_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/session/:token
+    # environment:
+    #   IDAM_BASE_URL: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login
+    #   IDAM_OAUTH2_TOKEN_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/oauth2/token
+    #   IDAM_OAUTH2_LOGOUT_ENDPOINT: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal/login/session/:token
 
-ccd-definition-store-api:
-  java:
-    environment:
-      IDAM_USER_URL: http://ccd-test-stubs-service
+# ccd-definition-store-api:
+#   java:
+#     environment:
+#       IDAM_USER_URL: http://ccd-test-stubs-service
    
 
-ccd-data-store-api:
-  java:
-    environment:
-      IDAM_USER_URL: http://ccd-test-stubs-service
+# ccd-data-store-api:
+#   java:
+#     environment:
+#       IDAM_USER_URL: http://ccd-test-stubs-service
 
 ccd-test-stubs-service:
   enabled: true
