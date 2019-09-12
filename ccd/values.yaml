@@ -7,6 +7,7 @@ global:
    draftStoreUrl: http://ccd-draft-store
    paymentsUrl: http://ccd-payment-api
    s2sUrl: http://service-auth-s2s
+   #enableKeyVaults: true
 
 ccd-case-management-web:
   enabled: false
@@ -61,9 +62,9 @@ ccd-api-gateway-web:
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
       PROXY_DOCUMENT_MANAGEMENT: http://ccd-dm-store
       PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
-      PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
+      PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
-      PROXY_CASE_ACTIVITY: http://ccd-case-activity-api-aat.service.core-compute-aat.internal
+      PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
     
 ccd-user-profile-api:
   enabled: true
@@ -165,7 +166,7 @@ draft-store-service:
 #     livenessDelay: 180
 #     readinessPeriod: 60
 #     livenessPeriod: 60
-#     keyVaults:
+#     keyVaults: {}
 #     environment:
 #       PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
 #       ASB_CONNECTION_STRING: false
@@ -193,7 +194,7 @@ dm-store:
         disabled: true
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
         disabled: true
-    keyVaults:
+    keyVaults: {}
     environment:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
@@ -204,7 +205,29 @@ dm-store:
       POSTGRES_STORAGE_ENABLED: 'true'
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       IDAM_USER_BASE_URI: '{{ .Values.global.idamApiUrl }}'
-      IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'        
+      IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'  
+
+ccd-case-print-service:
+  enabled: true
+  nodejs:
+    image: 'hmctspublic.azurecr.io/ccd/case-print-service:latest'
+    releaseNameOverride: ccd-case-print-service
+    environment:
+      IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
+      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
+      IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+
+ccd-case-activity-api:
+  enabled: true
+  nodejs:
+    image: 'hmctspublic.azurecr.io/ccd/case-activity-api:latest'
+    releaseNameOverride: ccd-case-activity-api
+    environment:
+      REDIS_SSL_ENABLED: false
+
 
 postgresql:
   persistence:
@@ -219,6 +242,7 @@ postgresql:
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "fees_register" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile

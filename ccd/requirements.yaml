@@ -50,7 +50,17 @@ dependencies:
 
   # - name: payment-api
   #   version: ~0.0.4
-  #   repository: '@hmctspublic'  
+  #   repository: '@hmctspublic'
+
+  - name: ccd-case-print-service
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-case-print-service.enabled
+
+  - name: ccd-case-activity-api
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-case-activity-api.enabled
 
   - name: ccd-test-stubs-service
     version: ~0.0.4
