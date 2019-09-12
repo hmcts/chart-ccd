@@ -1,0 +1,44 @@
+
+global:
+   apiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
+   caseManagementIngress: www-ccd-aks.service.core-compute-sandbox.internal
+   idamApiUrl: http://ccd-test-stubs-service
+   idamWebUrl: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
+
+ccd-case-management-web:
+  enabled: true
+  nodejs:
+    ingressHost: www-ccd-aks.service.core-compute-sandbox.internal
+
+ccd-api-gateway-web:
+  enabled: true
+  nodejs:
+    ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
+      
+ccd-admin-web:
+  enabled: true
+    
+
+draft-store-service:
+  java:
+    ingressHost: ""
+
+# payment-api:
+#   java:
+#     secrets: 
+#       GOV_PAY_AUTH_KEY_CMC:
+#           secretRef: ccpay-aat-gov-pay-keys-cmc
+#           key: key
+#     environment:
+#       SPRING_MAIL_HOST: mailhog
+#       SPRING_MAIL_PORT: 1025
+
+
+ccd-test-stubs-service:
+  enabled: true
+  java:
+    ingressHost: test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
+    livenessPath: '/health'
+    releaseNameOverride: ccd-test-stubs-service
+    environment:
+      MANAGEMENT_WEB_URL: https://www-ccd-aks.service.core-compute-sandbox.internal

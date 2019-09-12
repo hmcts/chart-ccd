@@ -1,15 +1,70 @@
 dependencies:
   - name: postgresql
-    version: ~3.1.0
+    version: ~6.3.5
     repository: '@stable'
-    tags:
-      - postgresql-pod
-  - name: idam-pr
-    version: ~2.1.0
-    repository: '@hmctspublic'
-    tags:
-      - ccd-idam-pr
+
   - name: rpe-service-auth-provider
     version: ~0.1.1
     repository: '@hmctspublic'
+    condition: rpe-service-auth-provider.enabled
 
+  - name: idam-pr
+    version: ~2.1.3
+    repository: '@hmctspublic'
+    condition: idam-pr.enabled
+
+  - name: ccd-user-profile-api
+    version: ~1.0.0
+    repository: '@hmctspublic'
+
+  - name: ccd-definition-store-api
+    version: ~1.0.0
+    repository: '@hmctspublic'
+
+  - name: ccd-data-store-api
+    version: ~1.1.1
+    repository: '@hmctspublic'
+
+  - name: ccd-api-gateway-web
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-api-gateway-web.enabled
+
+  - name: ccd-admin-web
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-admin-web.enabled
+
+  - name: ccd-case-management-web
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-case-management-web.enabled
+
+  - name: draft-store-service
+    version: ~1.1.0
+    repository: '@hmctspublic'
+
+  - name: dm-store
+    version: ~2.0.0
+    repository: '@hmctspublic'
+
+  # - name: payment-api
+  #   version: ~0.0.4
+  #   repository: '@hmctspublic'
+
+  - name: ccd-case-print-service
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-case-print-service.enabled
+
+  - name: ccd-case-activity-api
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd-case-activity-api.enabled
+
+  - name: ccd-test-stubs-service
+    version: ~0.0.4
+    repository: '@hmctspublic'
+    condition: ccd-test-stubs-service.enabled
+  
+  
