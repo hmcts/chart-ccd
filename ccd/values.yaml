@@ -7,7 +7,8 @@ global:
    draftStoreUrl: http://ccd-draft-store
    paymentsUrl: http://ccd-payment-api
    s2sUrl: http://service-auth-s2s
-   #enableKeyVaults: true
+   postgresUsername: hmcts
+   postgresPassword: hmcts
 
 ccd-case-management-web:
   enabled: false
@@ -67,14 +68,14 @@ ccd-api-gateway-web:
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
     
 ccd-user-profile-api:
-  enabled: true
+  enabled: false
   java:
     releaseNameOverride: ccd-user-profile
     image: 'hmctspublic.azurecr.io/ccd/user-profile-api:latest'
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
-      USER_PROFILE_DB_USERNAME: "hmcts"
-      USER_PROFILE_DB_PASSWORD: "hmcts"
+      USER_PROFILE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
+      USER_PROFILE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       IDAM_S2S_URL: http://{{ .Values.global.s2sUrl }}
 
 ccd-definition-store-api:
@@ -90,8 +91,8 @@ ccd-definition-store-api:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       DEFINITION_STORE_DB_NAME: definition-store
-      DEFINITION_STORE_DB_USERNAME: "hmcts"
-      DEFINITION_STORE_DB_PASSWORD: "hmcts"
+      DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
+      DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       USER_PROFILE_HOST: http://ccd-user-profile
   
 
@@ -106,8 +107,8 @@ ccd-data-store-api:
     livenessPeriod: 60
     environment:
       DATA_STORE_DB_NAME: "data-store"
-      DATA_STORE_DB_USERNAME: "hmcts"
-      DATA_STORE_DB_PASSWORD: "hmcts"
+      DATA_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
+      DATA_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       CCD_DM_DOMAIN: https?://ccd-dm-store.*
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
@@ -137,6 +138,7 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
 draft-store-service:
+  enabled: true
   java:
     image: hmctspublic.azurecr.io/draft-store/service:latest
     releaseNameOverride: ccd-draft-store
@@ -149,8 +151,8 @@ draft-store-service:
       DRAFT_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
-      DRAFT_STORE_DB_USER_NAME: hmcts
-      DRAFT_STORE_DB_PASSWORD: hmcts
+      DRAFT_STORE_DB_USER_NAME: '{{ .Values.global.postgresUsername }}'
+      DRAFT_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       RUN_DB_MIGRATION_ON_STARTUP: 'true'
       DRAFT_STORE_DB_CONN_OPTIONS: ""
       SPRING_CLOUD_PROPERTIESVOLUME_ENABLED: false
@@ -171,7 +173,7 @@ draft-store-service:
 #       PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
 #       ASB_CONNECTION_STRING: false
 #       SPRING_DATASOURCE_USERNAME: hmcts
-#       SPRING_DATASOURCE_PASSWORD: hmcts
+#       SPRING_DATASOURCE_PASSWORD: '{{ .Values.global.postgresPassword }}'
 #       SPRING_LIQUIBASE_ENABLED: true
 #       AUTH_IDAM_CLIENT_BASEURL: '{{ .Values.global.idamApiUrl }}'
 #       CORE_CASE_DATA_API_URL: 'http://ccd-data-store'
@@ -180,6 +182,7 @@ draft-store-service:
       
 
 dm-store:
+  enabled: true
   java:
     image: hmctspublic.azurecr.io/dm/store:latest
     releaseNameOverride: ccd-dm-store
@@ -199,8 +202,8 @@ dm-store:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/evidence?ssl=disable
-      SPRING_DATASOURCE_USERNAME: hmcts
-      SPRING_DATASOURCE_PASSWORD: hmcts
+      SPRING_DATASOURCE_USERNAME: '{{ .Values.global.postgresUsername }}'
+      SPRING_DATASOURCE_PASSWORD: '{{ .Values.global.postgresPassword }}'
       ENABLE_AZURE_STORAGE_CONTAINER: 'false'
       POSTGRES_STORAGE_ENABLED: 'true'
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
@@ -242,7 +245,6 @@ postgresql:
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "fees_register" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
