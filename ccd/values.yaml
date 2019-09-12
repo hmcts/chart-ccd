@@ -2,10 +2,11 @@
 global:
    apiGatewayIngress: ""
    caseManagementIngress: ""
-   idamUrl: ""
-   idamWebUrl: ""
-   draftStoreUrl: ""
-   paymentsUrl: ""
+   idamApiUrl: http://
+   idamWebUrl: https://
+   draftStoreUrl: http://ccd-draft-store
+   paymentsUrl: http://ccd-payment-api
+   s2sUrl: http://service-auth-s2s
 
 ccd-case-management-web:
   enabled: false
@@ -13,7 +14,7 @@ ccd-case-management-web:
     image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
     releaseNameOverride: ccd-case-management-web
     environment:
-      IDAM_LOGIN_URL: https://{{ .Values.global.idamWebUrl }}/login
+      IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
       CCD_GW_LOGOUT_URL: https://{{ .Values.global.apiGatewayIngress }}/logout
       CCD_API_URL: https://{{ .Values.global.apiGatewayIngress }}/aggregated
       CCD_DATA_URL: https://{{ .Values.global.apiGatewayIngress }}/data
@@ -30,6 +31,17 @@ idam-pr:
   redirect_uris:
     CCD:
       - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect  
+
+ccd-admin-web:
+  enabled: false
+  nodejs:
+    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
+    releaseNameOverride: "ccd-admin-web"
+    environment:
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
+      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
     
 
 ccd-api-gateway-web:
@@ -39,32 +51,20 @@ ccd-api-gateway-web:
     releaseNameOverride: ccd-api-gateway
     environment:
       IDAM_OAUTH2_CLIENT_ID: ccd_gateway
-      IDAM_OAUTH2_TOKEN_ENDPOINT: http://{{ .Values.global.idamUrl }}/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: http://{{ .Values.global.idamUrl }}/session/:token
-      IDAM_BASE_URL: http://{{ .Values.global.idamUrl }}
-      IDAM_S2S_URL: http://service-auth-s2s
+      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamApiUrl }}/oauth2/token'
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamApiUrl }}/session/:token'
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_SERVICE_KEY: AAAAAAAAAAAAAAAA
       PROXY_AGGREGATED: http://ccd-data-store
       PROXY_DATA: http://ccd-data-store
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
-      PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
-      PROXY_PAYMENTS: http://{{ .Values.global.paymentsUrl }}
+      PROXY_DOCUMENT_MANAGEMENT: http://ccd-dm-store
+      PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service-aat.service.core-compute-aat.internal
       CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api-aat.service.core-compute-aat.internal
     
-
-ccd-admin-web:
-  enabled: false
-  nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-    releaseNameOverride: "ccd-admin-web"
-    environment:
-      IDAM_S2S_URL: http://service-auth-s2s
-      IDAM_BASE_URL: https://{{ .Values.global.idamWebUrl }}/login
-      IDAM_OAUTH2_TOKEN_ENDPOINT: https://{{ .Values.global.idamWebUrl }}/login/oauth2/token
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: https://{{ .Values.global.idamWebUrl }}/login/session/:token
-
 ccd-user-profile-api:
   enabled: true
   java:
@@ -74,7 +74,7 @@ ccd-user-profile-api:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: "hmcts"
       USER_PROFILE_DB_PASSWORD: "hmcts"
-      IDAM_S2S_URL: http://service-auth-s2s
+      IDAM_S2S_URL: http://{{ .Values.global.s2sUrl }}
 
 ccd-definition-store-api:
   enabled: true
@@ -86,8 +86,8 @@ ccd-definition-store-api:
     readinessPeriod: 60
     livenessPeriod: 60
     environment:
-      IDAM_S2S_URL: http://service-auth-s2s
-      IDAM_USER_URL: http://{{ .Values.global.idamUrl }}
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       DEFINITION_STORE_DB_NAME: definition-store
       DEFINITION_STORE_DB_USERNAME: "hmcts"
       DEFINITION_STORE_DB_PASSWORD: "hmcts"
@@ -107,13 +107,13 @@ ccd-data-store-api:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: "hmcts"
       DATA_STORE_DB_PASSWORD: "hmcts"
-      CCD_DM_DOMAIN: https?://dm-store.*
-      IDAM_USER_URL: http://{{ .Values.global.idamUrl }}
-      IDAM_S2S_URL: http://service-auth-s2s
+      CCD_DM_DOMAIN: https?://ccd-dm-store.*
+      IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DEFINITION_STORE_HOST: http://ccd-definition-store
       USER_PROFILE_HOST: http://ccd-user-profile
-      CCD_DRAFT_STORE_URL: http://{{ .Values.global.draftStoreUrl }}
+      CCD_DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
 
 #Dependencies
 
@@ -121,7 +121,7 @@ rpe-service-auth-provider:
   enabled: true
   java:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
-    releaseNameOverride: 'service-auth-s2s'
+    releaseNameOverride: service-auth-s2s
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -135,6 +135,77 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
+draft-store-service:
+  java:
+    image: hmctspublic.azurecr.io/draft-store/service:latest
+    releaseNameOverride: ccd-draft-store
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      DRAFT_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
+      DRAFT_STORE_DB_NAME: draftstore
+      DRAFT_STORE_DB_PORT: '5432'
+      DRAFT_STORE_DB_USER_NAME: hmcts
+      DRAFT_STORE_DB_PASSWORD: hmcts
+      RUN_DB_MIGRATION_ON_STARTUP: 'true'
+      DRAFT_STORE_DB_CONN_OPTIONS: ""
+      SPRING_CLOUD_PROPERTIESVOLUME_ENABLED: false
+      IDAM_URL: '{{ .Values.global.idamApiUrl }}'
+      S2S_URL: '{{ .Values.global.s2sUrl }}'
+      
+
+# payment-api:
+#   java:
+#     image: hmctspublic.azurecr.io/payment/api:latest
+#     releaseNameOverride: ccd-payment-api
+#     readinessDelay: 180
+#     livenessDelay: 180
+#     readinessPeriod: 60
+#     livenessPeriod: 60
+#     keyVaults:
+#     environment:
+#       PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
+#       ASB_CONNECTION_STRING: false
+#       SPRING_DATASOURCE_USERNAME: hmcts
+#       SPRING_DATASOURCE_PASSWORD: hmcts
+#       SPRING_LIQUIBASE_ENABLED: true
+#       AUTH_IDAM_CLIENT_BASEURL: '{{ .Values.global.idamApiUrl }}'
+#       CORE_CASE_DATA_API_URL: 'http://ccd-data-store'
+#       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api 
+#       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
+      
+
+dm-store:
+  java:
+    image: hmctspublic.azurecr.io/dm/store:latest
+    releaseNameOverride: ccd-dm-store
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        disabled: true
+      STORAGE_ACCOUNT_KEY:
+        disabled: true
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
+        disabled: true
+    keyVaults:
+    environment:
+      ENABLE_DB_MIGRATE: 'true'
+      ENABLE_TTL: 'false'
+      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/evidence?ssl=disable
+      SPRING_DATASOURCE_USERNAME: hmcts
+      SPRING_DATASOURCE_PASSWORD: hmcts
+      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
+      POSTGRES_STORAGE_ENABLED: 'true'
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
+      IDAM_USER_BASE_URI: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'        
+
 postgresql:
   persistence:
     enabled: false
@@ -145,6 +216,9 @@ postgresql:
     init.sql: |-
       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile

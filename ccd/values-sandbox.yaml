@@ -2,12 +2,12 @@
 global:
    apiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
    caseManagementIngress: www-ccd-aks.service.core-compute-sandbox.internal
-   idamUrl: ccd-test-stubs-service
-   idamWebUrl: test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
+   idamApiUrl: http://ccd-test-stubs-service
+   idamWebUrl: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
 
 ccd-case-management-web:
+  enabled: true
   nodejs:
-    enabled: true
     ingressHost: www-ccd-aks.service.core-compute-sandbox.internal
 
 ccd-api-gateway-web:
@@ -16,8 +16,13 @@ ccd-api-gateway-web:
     ingressHost: gateway-ccd-aks.service.core-compute-sandbox.internal
       
 ccd-admin-web:
-  nodejs:
-    enabled: true
+  enabled: true
+    
+
+draft-store-service:
+  java:
+    ingressHost: ""
+
 
 ccd-test-stubs-service:
   enabled: true
