@@ -23,6 +23,7 @@ ccd-user-profile-api:
     
 
 draft-store-service:
+  enabled: true
   java:
     ingressHost: ""
 
@@ -30,6 +31,12 @@ payment-api:
   enabled: true
 
 dm-store:
+  enabled: true
+
+ccd-case-print-service:
+  enabled: true
+
+ccd-case-activity-api:
   enabled: true
 
 

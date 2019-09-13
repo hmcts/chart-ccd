@@ -9,6 +9,7 @@ ccd-test-stubs-service:
   enabled: false
 
 draft-store-service:
+  enabled: true
   java:
     ingressHost: ""
 
@@ -16,6 +17,12 @@ payment-api:
   enabled: true
 
 dm-store:
+  enabled: true
+
+ccd-case-print-service:
+  enabled: 
+  
+ccd-case-activity-api:
   enabled: true
 
 global:

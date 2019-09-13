@@ -138,7 +138,7 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
 draft-store-service:
-  enabled: true
+  enabled: false
   java:
     image: hmctspublic.azurecr.io/draft-store/service:latest
     releaseNameOverride: ccd-draft-store
@@ -210,7 +210,7 @@ dm-store:
       IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'  
 
 ccd-case-print-service:
-  enabled: true
+  enabled: false
   nodejs:
     image: 'hmctspublic.azurecr.io/ccd/case-print-service:latest'
     releaseNameOverride: ccd-case-print-service
@@ -223,7 +223,7 @@ ccd-case-print-service:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
 
 ccd-case-activity-api:
-  enabled: true
+  enabled: false
   nodejs:
     image: 'hmctspublic.azurecr.io/ccd/case-activity-api:latest'
     releaseNameOverride: ccd-case-activity-api
