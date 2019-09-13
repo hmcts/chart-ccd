@@ -26,16 +26,6 @@ draft-store-service:
   java:
     ingressHost: ""
 
-# payment-api:
-#   java:
-#     secrets: 
-#       GOV_PAY_AUTH_KEY_CMC:
-#           secretRef: ccpay-aat-gov-pay-keys-cmc
-#           key: key
-#     environment:
-#       SPRING_MAIL_HOST: mailhog
-#       SPRING_MAIL_PORT: 1025
-
 
 ccd-test-stubs-service:
   enabled: true

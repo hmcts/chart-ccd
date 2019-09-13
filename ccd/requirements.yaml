@@ -51,9 +51,10 @@ dependencies:
     repository: '@hmctspublic'
     condition: dm-store.enabled
 
-  # - name: payment-api
-  #   version: ~0.0.4
-  #   repository: '@hmctspublic'
+  - name: payment-api
+    version: ~0.1.0
+    repository: '@hmctspublic'
+    condition: payment-api.enabled
 
   - name: ccd-case-print-service
     version: ~1.0.0
