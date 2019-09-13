@@ -26,6 +26,12 @@ draft-store-service:
   java:
     ingressHost: ""
 
+payment-api:
+  enabled: true
+
+dm-store:
+  enabled: true
+
 
 ccd-test-stubs-service:
   enabled: true

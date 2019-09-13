@@ -161,7 +161,7 @@ draft-store-service:
       
 
 payment-api:
-  enabled: true
+  enabled: false
   java:
     image: hmctspublic.azurecr.io/payment/api:latest
     releaseNameOverride: ccd-payment-api
@@ -181,7 +181,7 @@ payment-api:
       
 
 dm-store:
-  enabled: true
+  enabled: false
   java:
     image: hmctspublic.azurecr.io/dm/store:latest
     releaseNameOverride: ccd-dm-store
