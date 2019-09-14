@@ -17,21 +17,27 @@ ccd-api-gateway-web:
       
 ccd-admin-web:
   enabled: true
+
+ccd-user-profile-api:
+  enabled: true  
     
 
 draft-store-service:
+  enabled: true
   java:
     ingressHost: ""
 
-# payment-api:
-#   java:
-#     secrets: 
-#       GOV_PAY_AUTH_KEY_CMC:
-#           secretRef: ccpay-aat-gov-pay-keys-cmc
-#           key: key
-#     environment:
-#       SPRING_MAIL_HOST: mailhog
-#       SPRING_MAIL_PORT: 1025
+payment-api:
+  enabled: true
+
+dm-store:
+  enabled: true
+
+ccd-case-print-service:
+  enabled: true
+
+ccd-case-activity-api:
+  enabled: true
 
 
 ccd-test-stubs-service:
