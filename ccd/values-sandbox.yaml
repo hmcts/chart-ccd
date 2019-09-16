@@ -18,9 +18,10 @@ ccd-api-gateway-web:
 ccd-admin-web:
   enabled: true
 
+
 ccd-user-profile-api:
   enabled: true  
-    
+
 
 draft-store-service:
   enabled: true
