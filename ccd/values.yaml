@@ -68,7 +68,7 @@ ccd-api-gateway-web:
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
     
 ccd-user-profile-api:
-  enabled: true
+  enabled: false
   java:
     releaseNameOverride: ccd-user-profile
     image: 'hmctspublic.azurecr.io/ccd/user-profile-api:latest'
