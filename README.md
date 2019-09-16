@@ -5,9 +5,12 @@ Including:
 * data-store-api
 * user-profile-api
 * definition-store-api
+* api-gateway-web
 * case-management-web (optional, enabled with a flag)
 * admin-web (optional, enabled with a flag)
 * print-api (aka case-print-service which is optional, enabled with a flag)
+* case-activity (aka ccd-case-activity-api which is optinal, enabled with flag)
+* print-service (aka ccd-case-print-service which is optional, enabled with flag)
 
 We will take small PRs and small features to this chart but more complicated needs should be handled in your own chart.
 
@@ -23,29 +26,25 @@ dependencies:
     repository: '@hmctspublic'
 ```
 
+Note: ccd-test-stubs-service  is introduced in Requirements.yaml , this is required only to test on sandbox env, as IDAM not available here.
+
 The `SERVICE_FQDN`, `INGRESS_IP` and `CONSUL_LB_IP` are all provided by the pipeline, but require you to pass them through for preview environments.
 
-values.preview.template.yaml
+
+values-sandbox.yaml
 ```yaml
-ccd:
-  ingressHost: ${SERVICE_FQDN}
-  ingressIP: ${INGRESS_IP}
-  consulIP: ${CONSUL_LB_IP}
+global:
+   apiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
+   caseManagementIngress: www-ccd-aks.service.core-compute-sandbox.internal
+   idamApiUrl: http://ccd-test-stubs-service
+   idamWebUrl: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
 
-  idam-pr:
-    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
-    redirect_uris:
-      CCD:
-        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
-      CCD Admin:
-        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
 
-  apiGateway:
-    s2sKey: ${API_GATEWAY_S2S_KEY}
-    idamClientSecret: 
-      value: ${API_GATEWAY_IDAM_SECRET}
+  ccd-api-gateway-web:
+    nodejs:
+    ingressHost: <ingress host name>
 
-  userProfileApi:
+  ccd-user-profile-api:
     authorisedServices: ccd_admin,ccd_data,ccd_definition,cmc_claim_store
 
   dataStoreApi:
@@ -56,96 +55,43 @@ ccd:
     s2sKey: ${DEFINITION_STORE_S2S_KEY}
     s2sAuthorisedServices: ccd_admin,ccd_data,cmc_claim_store,ccd_gw
 
-  caseManagementWeb:
+  ccd-case-management-web:
     enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
-    environment:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    nodejs:
+      ingressHost: <need ingress host name>
 
-  adminWeb:
+  ccd-admin-web:
     enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
-    s2sKey: ${ADMIN_S2S_KEY}
-    idamClientSecret: 
-      value: ${ADMIN_WEB_IDAM_SECRET}
-    environment:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0
+
+  ccd-test-stubs-service:
+    enabled: true # used only in sandbox env to stub the IDAM for authorization.
+    
 ```
 
-## Importers
-
-In addition to the core services you can include some helper pods to import definitions and user profiles:
-
-- definitions: https://github.com/hmcts/ccd-docker-definition-importer
-- user profiles: https://github.com/hmcts/ccd-docker-user-profile-importer
-
-values.preview.template.yaml
-```yaml
-ccd:
-  # above config for core services
-
-  importer:
-    userprofile:
-      enabled: true
-      jurisdictions:
-        - CMC
-      users:
-        - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|open
-      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
-      userProfileDatabasePort: 5432
-      userProfileDatabaseUser: hmcts
-      userProfileDatabasePassword: hmcts
-      userProfileDatabaseName: user-profile
-    definition:
-      enabled: true
-      image: hmcts.azurecr.io/hmcts/cmc-ccd-definition-importer:1.2.6
-      definitionFilename: cmc-ccd.xlsx
-      userRoles:
-        - citizen
-        - caseworker-cmc
-        - caseworker-cmc-solicitor
-        - caseworker-cmc-systemupdate
-        - caseworker-cmc-anonymouscitizen
+ci-values.yaml  --> used in pipleine build
+idam is enabled on ci env.
+```
+  idam-pr:
+    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
+    redirect_uris:
+      CCD:
+        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
+      CCD Admin:
+        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
 ```
 
-The idam secret and s2s keys need to be loaded in the pipeline,
-example config:
-
-```
-def secrets = [
-  'your-vault-${env}': [
-    secret('idam-client-secret', 'IDAM_CLIENT_SECRET') // optional, this is an example
-  ],
-  's2s-${env}'      : [
-    secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
-    secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
-    secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
-    secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
-  ],
-  'ccd-${env}'      : [
-    secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
-  ]
-]
-
-withPipeline(type, product, component) {
-  loadVaultSecrets(secrets)
-}
-```
-
-## Accessing an app using this chart on a pull request
-
-DNS will be automatically registered for most of the CCD pods, the ccd component will be prefixed to the regular url,
-The prefixes can be found here:
-https://github.com/hmcts/chart-ccd/blob/master/ccd/templates/ingress.yaml#L23
-
+## Accessing an app using this chart 
 An example url for accessing case management web would be:
+caseManagementIngress -- should have been registered before
 ```
-https://case-management-web-sscs-cor-backend-pr-189.service.core-compute-preview.internal/
+https://www-ccd-aks.service.core-compute-sandbox.internal/
 ```
 
 ### IDAM whitelisting for web components
 
 Managed using https://github.com/hmcts/chart-idam-pr (version 2.0.0 and above).
 
-To enable add following to your values.preview.template.yaml:
+To enable add following to your values.<env>.yaml:
 ```
 tags:
   ccd-idam-pr: true
@@ -219,30 +165,6 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `printApi.applicationPort`                    | Port definition case print service runs on | `3100` |
 | `printApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
 | `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
-| `importer.definition.enabled` | Enabling Definition importer | `false` |
-| `importer.definition.image` | Definition importer image to use | `hmcts/ccd-definition-importer:latest` |
-| `importer.definition.kvSecretRef` | Secret with credentials for accessing necessary key vaults in Azure | `kvcreds` |
-| `importer.definition.gitSecretRef` | Secret with gitlab credentials for accessing defined defintions, if using gitlab urls | `kvcreds` |
-| `importer.definition.definitions` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_URLS` | `nil` |
-| `importer.definition.definitionFilename` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_FILENAME` | `nil` |
-| `importer.definition.waitHosts` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS` | `nil` |
-| `importer.definition.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS_TIMEOUT` | `300` |
-| `importer.definition.userRoles` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`USER_ROLES` | `- caseworker-bulkscan` |
-| `importer.definition.microservice` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`MICROSERVICE` | `ccd_gw` |
-| `importer.definition.verbose` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`VERBOSE` | `false` |
-| `importer.userprofile.enabled` | Enabling User Profile importer | `false` |
-| `importer.userprofile.image` | User Profile importer image to use | `hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest` |
-| `importer.userprofile.users` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USERS` | `nil` |
-| `importer.userprofile.jurisdictions` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_JURISDICTIONS` | `nil` |
-| `importer.userprofile.microservice` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`MICROSSERVICE` | `ccd_definition` |
-| `importer.userprofile.waitHosts` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS` | `nil` |
-| `importer.userprofile.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
-| `importer.userprofile.userProfileDatabaseHost` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_HOST` | `nil` |
-| `importer.userprofile.userProfileDatabasePort` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PORT` | `nil` |
-| `importer.userprofile.userProfileDatabaseUser` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_USERNAME` | `nil` |
-| `importer.userprofile.userProfileDatabasePassword` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PASSWORD` | `nil` |
-| `importer.userprofile.userProfileDatabaseName` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_DATABASE` | `nil` |
-| `importer.userprofile.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
 
 ## Development and Testing
 
@@ -262,7 +184,7 @@ You can easily include this chart in another chart for testing:
 requirements.yaml
 ```
   - name: ccd
-    version: '>0.0.1'
+    version: '~4.0.0'
     repository: file://<path-to-repository-can-be-relative-or-absolute>/chart-ccd/ccd
 ```
 
