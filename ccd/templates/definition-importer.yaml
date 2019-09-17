@@ -129,6 +129,12 @@ spec:
             value: http://{{ .Release.Name }}-definition-store-api
           - name: VERBOSE
             value: {{ .Values.importer.definition.verbose | quote }}
+          {{- if .Values.importer.definition.environment }}
+            {{- range $key, $val := .Values.importer.definition.environment }}
+          - name: {{ $key }}
+            value: {{ $val | quote }}
+            {{- end}}
+          {{- end }}
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}

@@ -230,6 +230,7 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `importer.definition.userRoles` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`USER_ROLES` | `- caseworker-bulkscan` |
 | `importer.definition.microservice` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`MICROSERVICE` | `ccd_gw` |
 | `importer.definition.verbose` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`VERBOSE` | `false` |
+| `importer.definition.environment` | Helpful for templating defintions if using base image: https://github.com/hmcts/ccd-definition-processor | `null` |
 | `importer.userprofile.enabled` | Enabling User Profile importer | `false` |
 | `importer.userprofile.image` | User Profile importer image to use | `hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest` |
 | `importer.userprofile.users` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USERS` | `nil` |
