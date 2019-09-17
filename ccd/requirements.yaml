@@ -12,4 +12,6 @@ dependencies:
   - name: rpe-service-auth-provider
     version: ~0.1.1
     repository: '@hmctspublic'
+    tags:
+      - ccd-s2s
 
