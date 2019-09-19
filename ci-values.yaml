@@ -16,9 +16,6 @@ draft-store-service:
 payment-api:
   enabled: true
 
-dm-store:
-  enabled: true
-
 ccd-case-print-service:
   enabled: 
   
