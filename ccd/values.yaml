@@ -1,5 +1,5 @@
 tags:
-  idam-pr: true  #ccd-case-management-web - will add IDAM redirect urls
+  idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
 
 global:
    apiGatewayIngress: ""
@@ -15,7 +15,6 @@ global:
 ccd-case-management-web:
   enabled: true
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
     releaseNameOverride: ccd-case-management-web
     environment:
       IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
@@ -29,7 +28,7 @@ ccd-case-management-web:
       CCD_ACTIVITY_URL: https://{{ .Values.global.apiGatewayIngress }}/activity
       PAYMENTS_URL: https://{{ .Values.global.apiGatewayIngress }}/payments
 
-# this should be handled by management web chart not duplicated here
+# still not sure this is needed
 #idam-pr:
 #  enabled: false
 #  releaseNameOverride: ccd-idam-pr
@@ -40,19 +39,16 @@ ccd-case-management-web:
 ccd-admin-web:
   enabled: false
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
     releaseNameOverride: "ccd-admin-web"
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
       IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
       IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
-    
 
 ccd-api-gateway-web:
   enabled: true
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
     releaseNameOverride: ccd-api-gateway
     environment:
       IDAM_OAUTH2_CLIENT_ID: ccd_gateway
@@ -74,7 +70,6 @@ ccd-user-profile-api:
   enabled: true
   java:
     releaseNameOverride: ccd-user-profile
-    image: 'hmctspublic.azurecr.io/ccd/user-profile-api:latest'
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
@@ -84,7 +79,6 @@ ccd-user-profile-api:
 ccd-definition-store-api:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/ccd/definition-store-api:latest'
     releaseNameOverride: ccd-definition-store
     readinessDelay: 180
     livenessDelay: 180
@@ -97,12 +91,10 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       USER_PROFILE_HOST: http://ccd-user-profile
-  
 
 ccd-data-store-api:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: ccd-data-store
     readinessDelay: 180
     livenessDelay: 180
@@ -125,7 +117,6 @@ ccd-data-store-api:
 rpe-service-auth-provider:
   enabled: true
   java:
-    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     releaseNameOverride: service-auth-s2s
     readinessDelay: 180
     livenessDelay: 180
@@ -143,8 +134,7 @@ rpe-service-auth-provider:
 draft-store-service:
   enabled: false
   java:
-    image: hmctspublic.azurecr.io/draft-store/service:latest
-    releaseNameOverride: ccd-draft-store
+    releaseNameOverride: draft-store-service
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -161,13 +151,11 @@ draft-store-service:
       SPRING_CLOUD_PROPERTIESVOLUME_ENABLED: false
       IDAM_URL: '{{ .Values.global.idamApiUrl }}'
       S2S_URL: '{{ .Values.global.s2sUrl }}'
-      
 
 payment-api:
   enabled: false
   java:
-    image: hmctspublic.azurecr.io/payment/api:latest
-    releaseNameOverride: ccd-payment-api
+    releaseNameOverride: payment-api
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -181,13 +169,11 @@ payment-api:
       CORE_CASE_DATA_API_URL: 'http://ccd-data-store'
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api 
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
-      
 
 dm-store:
   enabled: true
   java:
-    image: hmctspublic.azurecr.io/dm/store:latest
-    releaseNameOverride: ccd-dm-store
+    releaseNameOverride: dm-store
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -215,7 +201,6 @@ dm-store:
 ccd-case-print-service:
   enabled: false
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/case-print-service:latest'
     releaseNameOverride: ccd-case-print-service
     environment:
       IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
@@ -228,11 +213,9 @@ ccd-case-print-service:
 ccd-case-activity-api:
   enabled: false
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/case-activity-api:latest'
     releaseNameOverride: ccd-case-activity-api
     environment:
       REDIS_SSL_ENABLED: false
-
 
 postgresql:
   persistence:
