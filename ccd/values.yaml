@@ -6,8 +6,8 @@ global:
    caseManagementIngress: ""
    idamApiUrl: http://
    idamWebUrl: https://
-   draftStoreUrl: http://ccd-draft-store
-   paymentsUrl: http://ccd-payment-api
+   draftStoreUrl: http://draft-store-service
+   paymentsUrl: http://payment-api
    s2sUrl: http://service-auth-s2s
    postgresUsername: hmcts
    postgresPassword: hmcts
@@ -60,7 +60,7 @@ ccd-api-gateway-web:
       PROXY_AGGREGATED: http://ccd-data-store
       PROXY_DATA: http://ccd-data-store
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
-      PROXY_DOCUMENT_MANAGEMENT: http://ccd-dm-store
+      PROXY_DOCUMENT_MANAGEMENT: http://dm-store
       PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
@@ -104,7 +104,7 @@ ccd-data-store-api:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DATA_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
-      CCD_DM_DOMAIN: https?://ccd-dm-store.*
+      CCD_DM_DOMAIN: https?://dm-store.*
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
