@@ -118,6 +118,7 @@ rpe-service-auth-provider:
   enabled: true
   java:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    ingressHost: ""
     releaseNameOverride: service-auth-s2s
     readinessDelay: 180
     livenessDelay: 180
@@ -175,6 +176,7 @@ payment-api:
 dm-store:
   enabled: true
   java:
+    #needed because the chart uses htts:// which causes issues
     image: hmctspublic.azurecr.io/dm/store:latest
     releaseNameOverride: dm-store
     readinessDelay: 180
