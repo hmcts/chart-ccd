@@ -27,12 +27,13 @@ ccd-case-management-web:
       CCD_ACTIVITY_URL: https://{{ .Values.global.apiGatewayIngress }}/activity
       PAYMENTS_URL: https://{{ .Values.global.apiGatewayIngress }}/payments
 
-idam-pr:
-  enabled: false
-  releaseNameOverride: ccd-idam-pr
-  redirect_uris:
-    CCD:
-      - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect  
+# this should be handled by management web chart not duplicated here
+#idam-pr:
+#  enabled: false
+#  releaseNameOverride: ccd-idam-pr
+#  redirect_uris:
+#    CCD:
+#      - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect
 
 ccd-admin-web:
   enabled: false

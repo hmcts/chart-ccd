@@ -9,11 +9,6 @@ dependencies:
     repository: '@hmctspublic'
     condition: rpe-service-auth-provider.enabled
 
-  - name: idam-pr
-    version: ~2.1.3
-    repository: '@hmctspublic'
-    condition: idam-pr.enabled
-
   - name: ccd-user-profile-api
     version: ~1.0.0
     repository: '@hmctspublic'
