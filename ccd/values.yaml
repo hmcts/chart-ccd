@@ -117,6 +117,7 @@ ccd-data-store-api:
 rpe-service-auth-provider:
   enabled: true
   java:
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     releaseNameOverride: service-auth-s2s
     readinessDelay: 180
     livenessDelay: 180
@@ -134,6 +135,7 @@ rpe-service-auth-provider:
 draft-store-service:
   enabled: false
   java:
+    image: hmctspublic.azurecr.io/draft-store/service:latest
     releaseNameOverride: draft-store-service
     readinessDelay: 180
     livenessDelay: 180
@@ -173,6 +175,7 @@ payment-api:
 dm-store:
   enabled: true
   java:
+    image: hmctspublic.azurecr.io/dm/store:latest
     releaseNameOverride: dm-store
     readinessDelay: 180
     livenessDelay: 180
