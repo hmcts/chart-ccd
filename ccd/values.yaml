@@ -138,8 +138,6 @@ rpe-service-auth-provider:
 draft-store-service:
   enabled: false
   java:
-    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
-    image: hmctspublic.azurecr.io/draft-store/service:latest
     releaseNameOverride: draft-store-service
     readinessDelay: 180
     livenessDelay: 180
