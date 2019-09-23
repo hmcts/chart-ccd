@@ -15,7 +15,6 @@ global:
 ccd-case-management-web:
   enabled: true
   nodejs:
-    releaseNameOverride: ccd-case-management-web
     environment:
       IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
       CCD_GW_LOGOUT_URL: https://{{ .Values.global.apiGatewayIngress }}/logout
@@ -39,7 +38,6 @@ ccd-case-management-web:
 ccd-api-gateway-web:
   enabled: true
   nodejs:
-    releaseNameOverride: ccd-api-gateway
     environment:
       IDAM_OAUTH2_CLIENT_ID: ccd_gateway
       IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamApiUrl }}/oauth2/token'
@@ -59,7 +57,6 @@ ccd-api-gateway-web:
 ccd-admin-web:
   enabled: false
   nodejs:
-    releaseNameOverride: "ccd-admin-web"
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
@@ -69,14 +66,12 @@ ccd-admin-web:
 ccd-case-activity-api:
   enabled: false
   nodejs:
-    releaseNameOverride: ccd-case-activity-api
     environment:
       REDIS_SSL_ENABLED: false
 
 ccd-user-profile-api:
   enabled: true
   java:
-    releaseNameOverride: ccd-user-profile
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
@@ -86,7 +81,6 @@ ccd-user-profile-api:
 ccd-definition-store-api:
   enabled: true
   java:
-    releaseNameOverride: ccd-definition-store
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -104,7 +98,6 @@ ccd-data-store-api:
   java:
     #todo remove 'image' when RDM-5913 is released
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
-    releaseNameOverride: ccd-data-store
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
