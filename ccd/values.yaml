@@ -95,6 +95,8 @@ ccd-definition-store-api:
 ccd-data-store-api:
   enabled: true
   java:
+    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
+    image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: ccd-data-store
     readinessDelay: 180
     livenessDelay: 180
@@ -136,6 +138,7 @@ rpe-service-auth-provider:
 draft-store-service:
   enabled: false
   java:
+    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
     image: hmctspublic.azurecr.io/draft-store/service:latest
     releaseNameOverride: draft-store-service
     readinessDelay: 180
@@ -176,7 +179,7 @@ payment-api:
 dm-store:
   enabled: true
   java:
-    #needed because the chart uses htts:// which causes issues
+    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
     image: hmctspublic.azurecr.io/dm/store:latest
     releaseNameOverride: dm-store
     readinessDelay: 180
