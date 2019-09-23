@@ -5,7 +5,7 @@ dependencies:
     condition: postgresql.enabled
 
   - name: rpe-service-auth-provider
-    version: ~0.2.2
+    version: ~0.2.3
     repository: '@hmctspublic'
     condition: rpe-service-auth-provider.enabled
 

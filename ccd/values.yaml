@@ -119,7 +119,6 @@ ccd-data-store-api:
 rpe-service-auth-provider:
   enabled: true
   java:
-    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     ingressHost: ""
     releaseNameOverride: service-auth-s2s
     readinessDelay: 180
