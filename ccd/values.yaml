@@ -95,7 +95,7 @@ ccd-definition-store-api:
 ccd-data-store-api:
   enabled: true
   java:
-    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
+    #todo remove 'image' when RDM-5913 is released
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: ccd-data-store
     readinessDelay: 180
