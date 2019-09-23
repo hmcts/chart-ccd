@@ -36,16 +36,6 @@ ccd-case-management-web:
 #    CCD:
 #      - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect
 
-ccd-admin-web:
-  enabled: false
-  nodejs:
-    releaseNameOverride: "ccd-admin-web"
-    environment:
-      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
-      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
-      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
-
 ccd-api-gateway-web:
   enabled: true
   nodejs:
@@ -65,7 +55,24 @@ ccd-api-gateway-web:
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
-    
+
+ccd-admin-web:
+  enabled: false
+  nodejs:
+    releaseNameOverride: "ccd-admin-web"
+    environment:
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
+      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
+
+ccd-case-activity-api:
+  enabled: false
+  nodejs:
+    releaseNameOverride: ccd-case-activity-api
+    environment:
+      REDIS_SSL_ENABLED: false
+
 ccd-user-profile-api:
   enabled: true
   java:
@@ -214,13 +221,6 @@ ccd-case-print-service:
       IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
       IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
-
-ccd-case-activity-api:
-  enabled: false
-  nodejs:
-    releaseNameOverride: ccd-case-activity-api
-    environment:
-      REDIS_SSL_ENABLED: false
 
 postgresql:
   persistence:
