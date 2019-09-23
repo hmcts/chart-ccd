@@ -165,6 +165,8 @@ draft-store-service:
 payment-api:
   enabled: false
   java:
+    #todo remove 'image' when microservice chart define image itself
+    image: hmctspublic.azurecr.io/payment/api:latest
     releaseNameOverride: payment-api
     readinessDelay: 180
     livenessDelay: 180
