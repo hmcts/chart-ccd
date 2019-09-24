@@ -1,6 +1,9 @@
 tags:
   idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
 
+ccd-postgresql:
+  enabled: true
+
 global:
    apiGatewayIngress: ""
    caseManagementIngress: ""
