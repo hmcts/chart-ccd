@@ -1,19 +1,20 @@
+tags:
+  idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
 
 global:
    apiGatewayIngress: ""
    caseManagementIngress: ""
    idamApiUrl: http://
    idamWebUrl: https://
-   draftStoreUrl: http://ccd-draft-store
-   paymentsUrl: http://ccd-payment-api
+   draftStoreUrl: http://draft-store-service
+   paymentsUrl: http://payment-api
    s2sUrl: http://service-auth-s2s
    postgresUsername: hmcts
    postgresPassword: hmcts
 
 ccd-case-management-web:
-  enabled: false
+  enabled: true
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/case-management-web:latest'
     releaseNameOverride: ccd-case-management-web
     environment:
       IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
@@ -27,29 +28,17 @@ ccd-case-management-web:
       CCD_ACTIVITY_URL: https://{{ .Values.global.apiGatewayIngress }}/activity
       PAYMENTS_URL: https://{{ .Values.global.apiGatewayIngress }}/payments
 
-idam-pr:
-  enabled: false
-  releaseNameOverride: ccd-idam-pr
-  redirect_uris:
-    CCD:
-      - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect  
-
-ccd-admin-web:
-  enabled: false
-  nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/admin-web:latest'
-    releaseNameOverride: "ccd-admin-web"
-    environment:
-      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
-      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
-      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
-    
+# still not sure this is needed
+#idam-pr:
+#  enabled: false
+#  releaseNameOverride: ccd-idam-pr
+#  redirect_uris:
+#    CCD:
+#      - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect
 
 ccd-api-gateway-web:
   enabled: true
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/api-gateway-web:latest'
     releaseNameOverride: ccd-api-gateway
     environment:
       IDAM_OAUTH2_CLIENT_ID: ccd_gateway
@@ -61,17 +50,33 @@ ccd-api-gateway-web:
       PROXY_AGGREGATED: http://ccd-data-store
       PROXY_DATA: http://ccd-data-store
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
-      PROXY_DOCUMENT_MANAGEMENT: http://ccd-dm-store
+      PROXY_DOCUMENT_MANAGEMENT: http://dm-store
       PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
-    
-ccd-user-profile-api:
+
+ccd-admin-web:
   enabled: false
+  nodejs:
+    releaseNameOverride: "ccd-admin-web"
+    environment:
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
+      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
+
+ccd-case-activity-api:
+  enabled: false
+  nodejs:
+    releaseNameOverride: ccd-case-activity-api
+    environment:
+      REDIS_SSL_ENABLED: false
+
+ccd-user-profile-api:
+  enabled: true
   java:
     releaseNameOverride: ccd-user-profile
-    image: 'hmctspublic.azurecr.io/ccd/user-profile-api:latest'
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
@@ -81,7 +86,6 @@ ccd-user-profile-api:
 ccd-definition-store-api:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/ccd/definition-store-api:latest'
     releaseNameOverride: ccd-definition-store
     readinessDelay: 180
     livenessDelay: 180
@@ -94,11 +98,11 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       USER_PROFILE_HOST: http://ccd-user-profile
-  
 
 ccd-data-store-api:
   enabled: true
   java:
+    #todo remove 'image' when RDM-5913 is released
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: ccd-data-store
     readinessDelay: 180
@@ -109,7 +113,7 @@ ccd-data-store-api:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DATA_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
-      CCD_DM_DOMAIN: https?://ccd-dm-store.*
+      CCD_DM_DOMAIN: https?://dm-store.*
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
@@ -122,7 +126,7 @@ ccd-data-store-api:
 rpe-service-auth-provider:
   enabled: true
   java:
-    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    ingressHost: ""
     releaseNameOverride: service-auth-s2s
     readinessDelay: 180
     livenessDelay: 180
@@ -140,8 +144,7 @@ rpe-service-auth-provider:
 draft-store-service:
   enabled: false
   java:
-    image: hmctspublic.azurecr.io/draft-store/service:latest
-    releaseNameOverride: ccd-draft-store
+    releaseNameOverride: draft-store-service
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -158,13 +161,13 @@ draft-store-service:
       SPRING_CLOUD_PROPERTIESVOLUME_ENABLED: false
       IDAM_URL: '{{ .Values.global.idamApiUrl }}'
       S2S_URL: '{{ .Values.global.s2sUrl }}'
-      
 
 payment-api:
   enabled: false
   java:
+    #todo remove 'image' when microservice chart define image itself
     image: hmctspublic.azurecr.io/payment/api:latest
-    releaseNameOverride: ccd-payment-api
+    releaseNameOverride: payment-api
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -178,13 +181,13 @@ payment-api:
       CORE_CASE_DATA_API_URL: 'http://ccd-data-store'
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api 
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
-      
 
 dm-store:
-  enabled: false
+  enabled: true
   java:
+    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
     image: hmctspublic.azurecr.io/dm/store:latest
-    releaseNameOverride: ccd-dm-store
+    releaseNameOverride: dm-store
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -212,7 +215,6 @@ dm-store:
 ccd-case-print-service:
   enabled: false
   nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/case-print-service:latest'
     releaseNameOverride: ccd-case-print-service
     environment:
       IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
@@ -221,15 +223,6 @@ ccd-case-print-service:
       IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
       IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
-
-ccd-case-activity-api:
-  enabled: false
-  nodejs:
-    image: 'hmctspublic.azurecr.io/ccd/case-activity-api:latest'
-    releaseNameOverride: ccd-case-activity-api
-    environment:
-      REDIS_SSL_ENABLED: false
-
 
 postgresql:
   persistence:
