@@ -1,8 +1,17 @@
 tags:
   idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
 
+#subcharts conditions
 ccd-postgresql:
   enabled: true
+ccd-rpe-service-auth-provider:
+  enabled: true
+ccd-draft-store-service:
+  enabled: false
+ccd-dm-store:
+  enabled: false
+ccd-payment-api:
+  enabled: false
 
 global:
    apiGatewayIngress: ""
@@ -127,7 +136,6 @@ ccd-data-store-api:
 #Dependencies
 
 rpe-service-auth-provider:
-  enabled: true
   java:
     ingressHost: ""
     releaseNameOverride: service-auth-s2s
@@ -145,7 +153,6 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
 
 draft-store-service:
-  enabled: false
   java:
     releaseNameOverride: draft-store-service
     readinessDelay: 180
@@ -166,7 +173,6 @@ draft-store-service:
       S2S_URL: '{{ .Values.global.s2sUrl }}'
 
 payment-api:
-  enabled: false
   java:
     #todo remove 'image' when microservice chart define image itself
     image: hmctspublic.azurecr.io/payment/api:latest
@@ -186,7 +192,6 @@ payment-api:
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
 
 dm-store:
-  enabled: true
   java:
     releaseNameOverride: dm-store
     readinessDelay: 180
