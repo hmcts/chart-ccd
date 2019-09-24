@@ -2,16 +2,17 @@ tags:
   idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
 
 #subcharts conditions
-ccd-postgresql:
-  enabled: true
-ccd-rpe-service-auth-provider:
-  enabled: true
-ccd-draft-store-service:
-  enabled: true
-ccd-dm-store:
-  enabled: true
-ccd-payment-api:
-  enabled: true
+ccd:
+  postgresql:
+    enabled: true
+  rpe-service-auth-provider:
+    enabled: true
+  draft-store-service:
+    enabled: true
+  dm-store:
+    enabled: true
+  payment-api:
+    enabled: true
 
 global:
    apiGatewayIngress: ""
