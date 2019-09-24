@@ -185,8 +185,6 @@ payment-api:
 dm-store:
   enabled: true
   java:
-    #todo remove 'image' when microservice chart image is updated with removal of 'htts://'
-    image: hmctspublic.azurecr.io/dm/store:latest
     releaseNameOverride: dm-store
     readinessDelay: 180
     livenessDelay: 180
