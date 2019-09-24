@@ -7,11 +7,11 @@ ccd-postgresql:
 ccd-rpe-service-auth-provider:
   enabled: true
 ccd-draft-store-service:
-  enabled: false
+  enabled: true
 ccd-dm-store:
-  enabled: false
+  enabled: true
 ccd-payment-api:
-  enabled: false
+  enabled: true
 
 global:
    apiGatewayIngress: ""
