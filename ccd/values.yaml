@@ -5,6 +5,8 @@ tags:
 ccd:
   postgresql:
     enabled: true
+    username: hmcts
+    password: hmcts
   rpeServiceAuthProvider:
     enabled: true
   draftStoreService:
@@ -23,8 +25,6 @@ global:
    paymentsUrl: http://payment-api
    dmStoreUrl: http://dm-store
    s2sUrl: http://service-auth-s2s
-   postgresUsername: hmcts
-   postgresPassword: hmcts
 
 #TODO once microservice charts have been updated to latest base charts versions
 #TODO move to dynamic releaseNameOverride e.g. {{.Release.Name}}-ccd-case-management-web
@@ -112,7 +112,7 @@ ccd-definition-store-api:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       DEFINITION_STORE_DB_NAME: definition-store
-      DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
+      DEFINITION_STORE_DB_USERNAME: '{{ .Values.ccd.postgresql.username }}'
       DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       USER_PROFILE_HOST: http://ccd-user-profile
 
@@ -128,7 +128,7 @@ ccd-data-store-api:
     livenessPeriod: 60
     environment:
       DATA_STORE_DB_NAME: "data-store"
-      DATA_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
+      DATA_STORE_DB_USERNAME: '{{ .Values.ccd.postgresql.username }}'
       DATA_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       CCD_DM_DOMAIN: https?://dm-store.*
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
@@ -169,7 +169,7 @@ draft-store-service:
       DRAFT_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
-      DRAFT_STORE_DB_USER_NAME: '{{ .Values.global.postgresUsername }}'
+      DRAFT_STORE_DB_USER_NAME: '{{ .Values.ccd.postgresql.username }}'
       DRAFT_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       RUN_DB_MIGRATION_ON_STARTUP: 'true'
       DRAFT_STORE_DB_CONN_OPTIONS: ""
@@ -248,6 +248,6 @@ postgresql:
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: hmcts
-  postgresqlPassword: hmcts
+  postgresqlUsername: '{{ .Values.ccd.postgresql.username }}'
+  postgresqlPassword: '{{ .Values.ccd.postgresql.password }}'
   postgresqlDatabase: user-profile
