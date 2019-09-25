@@ -8,19 +8,20 @@ ccd:
   rpeServiceAuthProvider:
     enabled: true
   draftStoreService:
-    enabled: false
+    enabled: true
   dmStore:
-    enabled: false
+    enabled: true
   paymentApi:
     enabled: true
 
 global:
-   ccdApiGatewayIngress: ""
-   ccdCaseManagementWebIngress: ""
-   idamApiUrl: http://
-   idamWebUrl: https://
+   ccdApiGatewayIngress:
+   ccdCaseManagementWebIngress:
+   idamApiUrl:
+   idamWebUrl:
    draftStoreUrl: http://draft-store-service
    paymentsUrl: http://payment-api
+   dmStoreUrl: http://dm-store
    s2sUrl: http://service-auth-s2s
    postgresUsername: hmcts
    postgresPassword: hmcts
@@ -66,7 +67,7 @@ ccd-api-gateway-web:
       PROXY_AGGREGATED: http://ccd-data-store
       PROXY_DATA: http://ccd-data-store
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
-      PROXY_DOCUMENT_MANAGEMENT: http://dm-store
+      PROXY_DOCUMENT_MANAGEMENT: '{{ .Values.global.dmStoreUrl }}'
       PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.ccdCaseManagementWebIngress }},http://{{ .Values.global.ccdCaseManagementWebIngress }},{{ .Values.global.ccdCaseManagementWebIngress }},*"
