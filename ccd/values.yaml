@@ -15,8 +15,8 @@ ccd:
     enabled: true
 
 global:
-   apiGatewayIngress: ""
-   caseManagementIngress: ""
+   ccdApiGatewayIngress: ""
+   ccdCaseManagementWebIngress: ""
    idamApiUrl: http://
    idamWebUrl: https://
    draftStoreUrl: http://draft-store-service
@@ -34,15 +34,15 @@ ccd-case-management-web:
     releaseNameOverride: ccd-case-management-web
     environment:
       IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
-      CCD_GW_LOGOUT_URL: https://{{ .Values.global.apiGatewayIngress }}/logout
-      CCD_API_URL: https://{{ .Values.global.apiGatewayIngress }}/aggregated
-      CCD_DATA_URL: https://{{ .Values.global.apiGatewayIngress }}/data
-      CCD_GW_OAUTH2_URL: https://{{ .Values.global.apiGatewayIngress }}/oauth2
-      DM_URL: https://{{ .Values.global.apiGatewayIngress }}/documents
-      PRINT_SERVICE_URL: https://{{ .Values.global.apiGatewayIngress }}/print
+      CCD_GW_LOGOUT_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/logout
+      CCD_API_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/aggregated
+      CCD_DATA_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/data
+      CCD_GW_OAUTH2_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/oauth2
+      DM_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/documents
+      PRINT_SERVICE_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/print
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-      CCD_ACTIVITY_URL: https://{{ .Values.global.apiGatewayIngress }}/activity
-      PAYMENTS_URL: https://{{ .Values.global.apiGatewayIngress }}/payments
+      CCD_ACTIVITY_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/activity
+      PAYMENTS_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/payments
 
 # still not sure this is needed
 #idam-pr:
@@ -50,7 +50,7 @@ ccd-case-management-web:
 #  releaseNameOverride: ccd-idam-pr
 #  redirect_uris:
 #    CCD:
-#      - https://{{ .Values.global.caseManagementIngress}}/oauth2redirect
+#      - https://{{ .Values.global.ccdCaseManagementWebIngress}}/oauth2redirect
 
 ccd-api-gateway-web:
   enabled: true
@@ -69,7 +69,7 @@ ccd-api-gateway-web:
       PROXY_DOCUMENT_MANAGEMENT: http://dm-store
       PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
-      CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.caseManagementIngress }},http://{{ .Values.global.caseManagementIngress }},{{ .Values.global.caseManagementIngress }},*"
+      CORS_ORIGIN_WHITELIST: "https://{{ .Values.global.ccdCaseManagementWebIngress }},http://{{ .Values.global.ccdCaseManagementWebIngress }},{{ .Values.global.ccdCaseManagementWebIngress }},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
 
 ccd-admin-web:
