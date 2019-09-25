@@ -5,13 +5,13 @@ tags:
 ccd:
   postgresql:
     enabled: true
-  rpe-service-auth-provider:
+  rpeServiceAuthProvider:
     enabled: true
-  draft-store-service:
-    enabled: true
-  dm-store:
-    enabled: true
-  payment-api:
+  draftStoreService:
+    enabled: false
+  dmStore:
+    enabled: false
+  paymentApi:
     enabled: true
 
 global:
@@ -24,6 +24,9 @@ global:
    s2sUrl: http://service-auth-s2s
    postgresUsername: hmcts
    postgresPassword: hmcts
+
+#TODO once microservice charts have been updated to latest base charts versions
+#TODO move to dynamic releaseNameOverride e.g. {{.Release.Name}}-ccd-case-management-web
 
 ccd-case-management-web:
   enabled: true
@@ -175,7 +178,7 @@ draft-store-service:
 
 payment-api:
   java:
-    #todo remove 'image' when microservice chart define image itself
+    #todo remove 'image' when microservice chart define image itself and empty keyVaults
     image: hmctspublic.azurecr.io/payment/api:latest
     releaseNameOverride: payment-api
     readinessDelay: 180
