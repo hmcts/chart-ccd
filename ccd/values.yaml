@@ -230,7 +230,7 @@ ccd-case-print-service:
 
 postgresql:
   persistence:
-    enabled: true
+    enabled: false
   resources:
     requests:
       cpu: 25m
