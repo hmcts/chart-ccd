@@ -10,7 +10,7 @@ ccd:
   draftStoreService:
     enabled: true
   dmStore:
-    enabled: true
+    enabled: false
   paymentApi:
     enabled: true
 
