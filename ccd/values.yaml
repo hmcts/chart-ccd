@@ -97,6 +97,8 @@ ccd-user-profile-api:
   enabled: true
   java:
     releaseNameOverride: ccd-user-profile
+    readinessDelay: 120
+    livenessDelay: 120
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
@@ -109,8 +111,6 @@ ccd-definition-store-api:
     releaseNameOverride: ccd-definition-store
     readinessDelay: 180
     livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
@@ -125,10 +125,8 @@ ccd-data-store-api:
     #todo remove 'image' when RDM-5913 is released
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: ccd-data-store
-    readinessDelay: 180
-    livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
+    readinessDelay: 240
+    livenessDelay: 240
     environment:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
@@ -149,8 +147,6 @@ rpe-service-auth-provider:
     releaseNameOverride: service-auth-s2s
     readinessDelay: 180
     livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
     keyVaults:
     environment:
       TESTING_SUPPORT_ENABLED: 'true'
@@ -163,10 +159,8 @@ rpe-service-auth-provider:
 draft-store-service:
   java:
     releaseNameOverride: draft-store-service
-    readinessDelay: 180
-    livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
+    readinessDelay: 240
+    livenessDelay: 240
     keyVaults:
     environment:
       DRAFT_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
@@ -187,8 +181,6 @@ payment-api:
     releaseNameOverride: payment-api
     readinessDelay: 180
     livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
     keyVaults: {}
     environment:
       SPRING_DATASOURCE_USERNAME: '{{ .Values.global.postgresUsername }}'
@@ -204,8 +196,6 @@ dm-store:
     releaseNameOverride: dm-store
     readinessDelay: 180
     livenessDelay: 180
-    readinessPeriod: 60
-    livenessPeriod: 60
     secrets:
       STORAGE_ACCOUNT_NAME:
         disabled: true
@@ -248,9 +238,10 @@ postgresql:
     init.sql: |-
       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
-  postgresqlDatabase: user-profile
+  postgresqlDatabase: ccd
