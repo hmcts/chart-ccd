@@ -1,5 +1,8 @@
 # chart-ccd
 
+NOTE: :warning: version 4.0.0-alpha of the CCD Product chart is still not ready to be used. It was released to make testing on HMCTS Demo a faster process
+
+
 This chart is intended for deploying the full CCD product stack.
 Including:
 * data-store-api
