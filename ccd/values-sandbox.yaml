@@ -2,8 +2,8 @@ tags:
   idam-pr: false  #ccd-case-management-web - will add IDAM redirect urls
 
 global:
-   apiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
-   caseManagementIngress: www-ccd-aks.service.core-compute-sandbox.internal
+   ccdApiGatewayIngress: gateway-ccd-aks.service.core-compute-sandbox.internal
+   ccdCaseManagementWebIngress: www-ccd-aks.service.core-compute-sandbox.internal
    idamApiUrl: http://ccd-test-stubs-service
    idamWebUrl: https://test-stubs-service-ccd-aks.service.core-compute-sandbox.internal
 

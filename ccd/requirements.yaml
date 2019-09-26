@@ -2,12 +2,12 @@ dependencies:
   - name: postgresql
     version: ~6.3.5
     repository: '@stable'
-    condition: postgresql.enabled
+    condition: ccd.postgresql.enabled
 
   - name: rpe-service-auth-provider
     version: ~0.2.3
     repository: '@hmctspublic'
-    condition: rpe-service-auth-provider.enabled
+    condition: ccd.rpeServiceAuthProvider.enabled
 
   - name: ccd-user-profile-api
     version: ~1.0.0
@@ -39,17 +39,17 @@ dependencies:
   - name: draft-store-service
     version: ~1.3.2
     repository: '@hmctspublic'
-    condition: draft-store-service.enabled
+    condition: ccd.draftStoreService.enabled
 
   - name: dm-store
-    version: ~2.0.0
+    version: ~2.0.1
     repository: '@hmctspublic'
-    condition: dm-store.enabled
+    condition: ccd.dmStore.enabled
 
   - name: payment-api
     version: ~0.1.0
     repository: '@hmctspublic'
-    condition: payment-api.enabled
+    condition: ccd.paymentApi.enabled
 
   - name: ccd-case-print-service
     version: ~1.0.0
