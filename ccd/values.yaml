@@ -5,8 +5,6 @@ tags:
 ccd:
   postgresql:
     enabled: true
-    username: hmcts
-    password: hmcts
   rpeServiceAuthProvider:
     enabled: true
   draftStoreService:
@@ -21,10 +19,15 @@ global:
    ccdCaseManagementWebIngress:
    idamApiUrl:
    idamWebUrl:
+   ccdDataStoreUrl: http://ccd-data-store
+   ccdDefinitionStoreUrl: http://ccd-definition-store
+   ccdUserProfileUrl: http://ccd-user-profile
    draftStoreUrl: http://draft-store-service
    paymentsUrl: http://payment-api
    dmStoreUrl: http://dm-store
    s2sUrl: http://service-auth-s2s
+   postgresUsername: hmcts
+   postgresPassword: hmcts
 
 #TODO once microservice charts have been updated to latest base charts versions
 #TODO move to dynamic releaseNameOverride e.g. {{.Release.Name}}-ccd-case-management-web
@@ -64,9 +67,9 @@ ccd-api-gateway-web:
       IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_SERVICE_KEY: AAAAAAAAAAAAAAAA
-      PROXY_AGGREGATED: http://ccd-data-store
-      PROXY_DATA: http://ccd-data-store
-      PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api
+      PROXY_AGGREGATED: '{{ .Values.global.ccdDataStoreUrl }}'
+      PROXY_DATA: '{{ .Values.global.ccdDataStoreUrl }}'
+      PROXY_DEFINITION_IMPORT: '{{ .Values.global.ccdDefinitionStoreUrl }}'
       PROXY_DOCUMENT_MANAGEMENT: '{{ .Values.global.dmStoreUrl }}'
       PROXY_PAYMENTS: '{{ .Values.global.paymentsUrl }}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
@@ -74,7 +77,7 @@ ccd-api-gateway-web:
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
 
 ccd-admin-web:
-  enabled: false
+  enabled: true
   nodejs:
     releaseNameOverride: "ccd-admin-web"
     environment:
@@ -112,9 +115,9 @@ ccd-definition-store-api:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       DEFINITION_STORE_DB_NAME: definition-store
-      DEFINITION_STORE_DB_USERNAME: '{{ .Values.ccd.postgresql.username }}'
+      DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
-      USER_PROFILE_HOST: http://ccd-user-profile
+      USER_PROFILE_HOST: '{{ .Values.global.ccdUserProfileUrl }}'
 
 ccd-data-store-api:
   enabled: true
@@ -128,14 +131,14 @@ ccd-data-store-api:
     livenessPeriod: 60
     environment:
       DATA_STORE_DB_NAME: "data-store"
-      DATA_STORE_DB_USERNAME: '{{ .Values.ccd.postgresql.username }}'
+      DATA_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DATA_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       CCD_DM_DOMAIN: https?://dm-store.*
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
-      DEFINITION_STORE_HOST: http://ccd-definition-store
-      USER_PROFILE_HOST: http://ccd-user-profile
+      DEFINITION_STORE_HOST: '{{ .Values.global.ccdDefinitionStoreUrl }}'
+      USER_PROFILE_HOST: '{{ .Values.global.ccdUserProfileUrl }}'
       CCD_DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
 
 #Dependencies
@@ -169,7 +172,7 @@ draft-store-service:
       DRAFT_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
-      DRAFT_STORE_DB_USER_NAME: '{{ .Values.ccd.postgresql.username }}'
+      DRAFT_STORE_DB_USER_NAME: '{{ .Values.global.postgresUsername }}'
       DRAFT_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       RUN_DB_MIGRATION_ON_STARTUP: 'true'
       DRAFT_STORE_DB_CONN_OPTIONS: ""
@@ -192,7 +195,7 @@ payment-api:
       SPRING_DATASOURCE_PASSWORD: '{{ .Values.global.postgresPassword }}'
       SPRING_LIQUIBASE_ENABLED: true
       AUTH_IDAM_CLIENT_BASEURL: '{{ .Values.global.idamApiUrl }}'
-      CORE_CASE_DATA_API_URL: 'http://ccd-data-store'
+      CORE_CASE_DATA_API_URL: '{{ .Values.global.ccdDataStoreUrl }}'
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api 
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
 
@@ -248,6 +251,6 @@ postgresql:
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: '{{ .Values.ccd.postgresql.username }}'
-  postgresqlPassword: '{{ .Values.ccd.postgresql.password }}'
+  postgresqlUsername: hmcts
+  postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
