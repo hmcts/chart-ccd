@@ -27,13 +27,6 @@ spec:
         backend:
           serviceName: {{ .Release.Name }}-case-management-web
           servicePort: 80
-  - host: gateway-{{ .Values.ingressHost }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: {{ .Release.Name }}-api-gateway
-          servicePort: 80
   {{- end }}
   {{- if .Values.adminWeb.enabled }}
   - host: admin-web-{{ .Values.ingressHost }}

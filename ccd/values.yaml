@@ -30,6 +30,7 @@ adminWeb:
 apiGateway:
   image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
   applicationPort: 3453
+  ingressClass: "traefik"
 
 printApi:
   enabled: false

@@ -1,0 +1,23 @@
+{{- if .Values.caseManagementWeb.enabled }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ccd-api-gateway
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-ccd-api-gateway
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}-ccd-api-gateway
+    app.kubernetes.io/instance: {{ .Release.Name }}-ccd-api-gateway
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.apiGateway.ingressClass }}
+spec:
+  rules:
+  - host: gateway-{{ .Values.ingressHost }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Release.Name }}-api-gateway
+          servicePort: 80
+{{- end }}
