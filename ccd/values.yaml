@@ -139,6 +139,24 @@ ccd-data-store-api:
       USER_PROFILE_HOST: '{{ .Values.global.ccdUserProfileUrl }}'
       CCD_DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
 
+ccd-case-print-service:
+  enabled: true
+  nodejs:
+    releaseNameOverride: ccd-case-print-service
+    environment:
+      IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
+      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
+      IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+
+ccd-test-stubs-service:
+  enabled: true
+  java:
+    livenessPath: '/health'
+    releaseNameOverride: ccd-test-stubs-service
+
 #Dependencies
 
 rpe-service-auth-provider:
@@ -215,18 +233,6 @@ dm-store:
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       IDAM_USER_BASE_URI: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'  
-
-ccd-case-print-service:
-  enabled: false
-  nodejs:
-    releaseNameOverride: ccd-case-print-service
-    environment:
-      IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
-      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
-      IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
-      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
 
 postgresql:
   persistence:
