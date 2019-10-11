@@ -23,7 +23,7 @@ jobs:
   - template: steps/charts/validate.yaml@cnp-library
     parameters:
       chartName: ccd
-      chartReleaseName: chart-ccd-ci-test
+      chartReleaseName: chart-ccd-3-ci-test
       chartNamespace: chart-tests
       helmInstallTimeout: "600"
 
