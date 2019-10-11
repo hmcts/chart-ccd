@@ -37,7 +37,7 @@ spec:
         - name: CCD_GW_OAUTH2_CLIENT_ID
           value: ccd_gateway
         - name: DM_URL
-          value: https://gateway-{{ .Values.ingressHost }}/oauth2
+          value: https://gateway-{{ .Values.ingressHost }}/documents
        # - name: DM_URL_REMOTE TODO look at this
        #   value: 'false'
         - name: CCD_PAGE_SIZE
