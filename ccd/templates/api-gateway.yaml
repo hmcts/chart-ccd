@@ -57,8 +57,8 @@ spec:
           value: https://case-management-web-{{ .Values.ingressHost }}
         - name: PROXY_AGGREGATED
           value: http://{{ .Release.Name }}-data-store-api
-       # - name: PROXY_CASE_ACTIVITY TODO: not deployed currently
-       #   value: http://{{ .Release.Name }}-case-activity-api
+        - name: PROXY_CASE_ACTIVITY
+          value: http://{{ .Release.Name }}-case-activity-api
         - name: PROXY_DATA
           value: http://{{ .Release.Name }}-data-store-api
         - name: PROXY_DEFINITION_IMPORT
