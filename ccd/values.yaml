@@ -93,7 +93,9 @@ ccd-admin-web:
       IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
       IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
       IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
-
+  #TODO added to avoid collision of naming with the man web idam pr. Probably this should be pushed down to micro chart
+  idam-pr:
+    releaseNameOverride: ccd-admin-web-idam-pr
 ccd-case-activity-api:
   nodejs:
     releaseNameOverride: ccd-case-activity-api
