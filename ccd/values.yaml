@@ -209,6 +209,8 @@ payment-api:
       CORE_CASE_DATA_API_URL: '{{ .Values.global.ccdDataStoreUrl }}'
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api 
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
+      #remove when this is sorted in payment chart
+      PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
 
 dm-store:
   java:
