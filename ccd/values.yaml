@@ -29,6 +29,7 @@ ccd:
 global:
    ccdApiGatewayIngress:
    ccdCaseManagementWebIngress:
+   ccdAdminWebIngress:
    idamApiUrl:
    idamWebUrl:
    ccdDataStoreUrl: http://ccd-data-store
@@ -57,14 +58,15 @@ ccd-case-management-web:
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
       CCD_ACTIVITY_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/activity
       PAYMENTS_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/payments
-
-# still not sure this is needed
-#idam-pr:
-#  enabled: false
-#  releaseNameOverride: ccd-idam-pr
-#  redirect_uris:
-#    CCD:
-#      - https://{{ .Values.global.ccdCaseManagementWebIngress}}/oauth2redirect
+  idam-pr:
+    releaseNameOverride: ccd-idam-pr
+    api:
+      url: '{{ .Values.global.idamApiUrl }}'
+    web_public:
+      url: '{{ .Values.global.idamWebUrl }}'
+    redirect_uris:
+      CCD:
+        - https://{{ .Values.global.ccdCaseManagementWebIngress}}/oauth2redirect
 
 ccd-api-gateway-web:
   nodejs:
@@ -93,9 +95,15 @@ ccd-admin-web:
       IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
       IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
       IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
-  #TODO added to avoid collision of naming with the man web idam pr. Probably this should be pushed down to micro chart
   idam-pr:
     releaseNameOverride: ccd-admin-web-idam-pr
+    api:
+      url: '{{ .Values.global.idamApiUrl }}'
+    web_public:
+      url: '{{ .Values.global.idamWebUrl }}'
+    redirect_uris:
+      CCD Admin:
+        - '{{ .Values.global.ccdAdminWebIngress }}'
 ccd-case-activity-api:
   nodejs:
     releaseNameOverride: ccd-case-activity-api
