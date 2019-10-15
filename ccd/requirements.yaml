@@ -7,7 +7,7 @@ dependencies:
   - name: rpe-service-auth-provider
     version: ~0.2.3
     repository: '@hmctspublic'
-    condition: ccd.rpeServiceAuthProvider.enabled
+    condition: ccd.s2s.enabled
 
   - name: ccd-user-profile-api
     version: ~1.0.0
@@ -24,22 +24,22 @@ dependencies:
   - name: ccd-api-gateway-web
     version: ~1.0.2
     repository: '@hmctspublic'
-    condition: ccd-api-gateway-web.enabled
+    condition: ccd.apiGatewayWeb.enabled
 
   - name: ccd-admin-web
     version: ~1.0.2
     repository: '@hmctspublic'
-    condition: ccd-admin-web.enabled
+    condition: ccd.adminWeb.enabled
 
   - name: ccd-case-management-web
     version: ~1.0.0
     repository: '@hmctspublic'
-    condition: ccd-case-management-web.enabled
+    condition: ccd.managementWeb.enabled
 
   - name: draft-store-service
     version: ~1.3.2
     repository: '@hmctspublic'
-    condition: ccd.draftStoreService.enabled
+    condition: ccd.draftStore.enabled
 
   - name: dm-store
     version: ~2.0.1
@@ -54,16 +54,16 @@ dependencies:
   - name: ccd-case-print-service
     version: ~1.0.0
     repository: '@hmctspublic'
-    condition: ccd-case-print-service.enabled
+    condition: ccd.printService.enabled
 
   - name: ccd-case-activity-api
     version: ~1.0.0
     repository: '@hmctspublic'
-    condition: ccd-case-activity-api.enabled
+    condition: ccd.activityApi.enabled
 
   - name: ccd-test-stubs-service
     version: ~0.0.4
     repository: '@hmctspublic'
-    condition: ccd-test-stubs-service.enabled
-  
-  
+    condition: ccd.testStubsService.enabled
+
+
