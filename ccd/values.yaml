@@ -43,7 +43,7 @@ global:
    postgresPassword: hmcts
 
 #TODO once microservice charts have been updated to latest base charts versions
-#TODO move to dynamic releaseNameOverride e.g. {{.Release.Name}}-ccd-case-management-web
+#TODO move to dynamic releaseNameOverride e.g.  {{.Release.Name}}-ccd-case-management-web
 ccd-case-management-web:
   nodejs:
     releaseNameOverride: ccd-case-management-web
