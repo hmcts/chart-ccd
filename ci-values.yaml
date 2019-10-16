@@ -22,5 +22,7 @@ global:
   ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
   idamApiUrl: idam-api.aat.platform.hmcts.net
   idamWebUrl: idam-web-public.aat.platform.hmcts.net
+  ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
+  ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
 
 
