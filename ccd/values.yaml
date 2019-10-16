@@ -66,7 +66,7 @@ ccd-case-management-web:
       url: '{{ .Values.global.idamWebUrl }}'
     redirect_uris:
       CCD:
-        - 'https://{{ .Values.global.ccdCaseManagementWebIngress}}/oauth2redirect'
+        - 'https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect'
 
 ccd-api-gateway-web:
   nodejs:
