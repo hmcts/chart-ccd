@@ -1,3 +1,7 @@
+#todo test idam-pr
+tags:
+  idam-pr: false
+
 ingressHost: chart-ccd-release.service.core-compute-preview.internal
 ingressIP: "10.97.17.51"
 consulIP: "10.97.11.254"
@@ -22,5 +26,7 @@ global:
   ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
   idamApiUrl: idam-api.aat.platform.hmcts.net
   idamWebUrl: idam-web-public.aat.platform.hmcts.net
+  ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
+  ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
 
 

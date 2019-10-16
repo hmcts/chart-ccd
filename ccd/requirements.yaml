@@ -27,12 +27,12 @@ dependencies:
     condition: ccd.apiGatewayWeb.enabled
 
   - name: ccd-admin-web
-    version: ~1.0.2
+    version: ~1.0.3
     repository: '@hmctspublic'
     condition: ccd.adminWeb.enabled
 
   - name: ccd-case-management-web
-    version: ~1.0.0
+    version: ~1.0.1
     repository: '@hmctspublic'
     condition: ccd.managementWeb.enabled
 
