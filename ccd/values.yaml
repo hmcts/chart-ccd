@@ -103,7 +103,7 @@ ccd-admin-web:
       url: '{{ .Values.global.idamWebUrl }}'
     redirect_uris:
       CCD Admin:
-        - '{{ .Values.global.ccdAdminWebIngress }}'
+        - 'https://{{.Values.global.ccdAdminWebIngress}}/oauth2redirect'
 ccd-case-activity-api:
   nodejs:
     releaseNameOverride: ccd-case-activity-api
