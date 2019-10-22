@@ -267,3 +267,47 @@ postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
+
+# helper pods to import definitions and user profiles
+importer:
+  userprofile:
+    enabled: false
+    image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
+    # Users is a list of delimited strings in format: idamEmail|ccdJurisdiction|ccdDefaultCaseType|ccdDefaultCaseState. For example:
+    # users:
+    # - mryan321.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
+    # - mryan321.hmcts.claimant+2@gmail.com|SSCS|SSCS|open
+    users: 
+    # Jurisdictions is a list of jurisdictions referenced in above users. For example:
+    # jurisdictions:
+    # - CMC
+    # - SSCS
+    jurisdictions:
+    waitHosts: ""
+    waitHostsTimeout: 300
+    microservice: ccd_definition
+    verbose: "false"
+    userProfileDatabaseHost: ""
+    userProfileDatabasePort: ""
+    userProfileDatabaseUser: ""
+    userProfileDatabasePassword: ""
+    userProfileDatabaseName: ""
+  definition:
+    enabled: false
+    image: hmcts/ccd-definition-importer:latest
+    # kvSecretRef: kvcreds
+    # gitSecretRef: kvcreds
+    # Definitions is a list. For example:
+    # definitions:
+    # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test_Exception_Record.template.xlsx
+    # - https://github.com/hmcts/chart-ccd/raw/master/data/CCD_Definition_Test.template.xlsx
+    definitions:
+    definitionFilename: ""
+    waitHosts: ""
+    waitHostsTimeout: 300
+    userRoles:
+      - caseworker-bulkscan
+    microservice: ccd_gw
+    verbose: "false"
+    redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
+
