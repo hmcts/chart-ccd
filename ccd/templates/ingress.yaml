@@ -12,7 +12,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: user-profile-api-{{ required "`ingressHost` must be set in your values.yaml file" .Values.ingressHost }}
+  - host: user-profile-api-{{ required "`ingressHost` must be set in your values.yaml file" (tpl .Values.ingressHost $) }}
     http:
       paths:
       - path: /
@@ -20,7 +20,7 @@ spec:
           serviceName: {{ .Release.Name }}-user-profile-api
           servicePort: 80
   {{- if .Values.caseManagementWeb.enabled }}
-  - host: case-management-web-{{ .Values.ingressHost }}
+  - host: case-management-web-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
@@ -29,7 +29,7 @@ spec:
           servicePort: 80
   {{- end }}
   {{- if .Values.adminWeb.enabled }}
-  - host: admin-web-{{ .Values.ingressHost }}
+  - host: admin-web-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
@@ -38,7 +38,7 @@ spec:
           servicePort: 80
   {{- end }}
   {{- if .Values.printApi.enabled }}
-  - host: print-api-{{ .Values.ingressHost }}
+  - host: print-api-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
@@ -46,14 +46,14 @@ spec:
           serviceName: {{ .Release.Name }}-print-api
           servicePort: 80
   {{- end }}
-  - host: data-store-api-{{ .Values.ingressHost }}
+  - host: data-store-api-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ .Release.Name }}-data-store-api
           servicePort: 80
-  - host: definition-store-api-{{ .Values.ingressHost }}
+  - host: definition-store-api-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
