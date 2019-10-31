@@ -29,7 +29,7 @@ spec:
           servicePort: 80
   {{- end }}
   {{- if .Values.adminWeb.enabled }}
-  - host: admin-web-{{ tpl .Values.ingressHost }}
+  - host: admin-web-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
