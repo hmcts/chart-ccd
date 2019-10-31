@@ -1,0 +1,9 @@
+dependencies:
+- name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 3.1.4
+- name: idam-pr
+  repository: https://hmctspublic.azurecr.io/helm/v1/repo
+  version: 2.1.3
+digest: sha256:7bf058ae8d185e07ec0c4b48a07150979c1690ff02dda3c8621cd84d4e7783d4
+generated: "2019-10-31T14:07:28.649149Z"

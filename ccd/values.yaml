@@ -1,7 +1,9 @@
 tags:
   postgresql-pod: true
   ccd-idam-pr: false
-  
+
+ingressHost: ""
+
 userProfileApi:
   image: hmctspublic.azurecr.io/ccd/user-profile-api:latest
   applicationPort: 4453
