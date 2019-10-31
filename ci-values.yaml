@@ -1,4 +1,4 @@
-ingressHost: chart-ccd-release.service.core-compute-preview.internal
+ingressHost: "{{ .Values.global.ccdIngress }}"
 ingressIP: "10.97.17.51"
 consulIP: "10.97.11.254"
 
@@ -19,3 +19,4 @@ definitionStoreApi:
 global:
   subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
   tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+  ccdIngress: chart-ccd-release.service.core-compute-preview.internal
