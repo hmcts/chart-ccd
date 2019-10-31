@@ -47,7 +47,7 @@ paymentsUrl: "http://payment-api-aat.service.core-compute-aat.internal"
 appInsightsKey: "fake-key"
 
 memoryRequests: "512Mi"
-cpuRequests: "25m"
+cpuRequests: "250m"
 memoryLimits: "1024Mi"
 cpuLimits: "2500m"
 
