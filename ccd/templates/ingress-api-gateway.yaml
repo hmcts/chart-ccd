@@ -13,7 +13,7 @@ metadata:
     kubernetes.io/ingress.class: {{ .Values.apiGateway.ingressClass }}
 spec:
   rules:
-  - host: gateway-{{ .Values.ingressHost }}
+  - host: gateway-{{ tpl .Values.ingressHost $ }}
     http:
       paths:
       - path: /
