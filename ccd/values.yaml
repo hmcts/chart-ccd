@@ -25,6 +25,10 @@ ccd:
     enabled: false
   testStubsService:
     enabled: true
+  definitionImporter:
+    enabled: false
+  userProfileImporter:
+    enabled: false  
 
 global:
    ccdApiGatewayIngress:
@@ -249,6 +253,25 @@ dm-store:
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       IDAM_USER_BASE_URI: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'
+
+ccd-definition-importer:
+    definitions:
+      - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
+    definitionFilename: cmc-ccd.xlsx
+    verbose: "false"
+    redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
+    definitionStoreUrl: '{{ .Values.global.ccdDefinitionStoreUrl }}'
+    s2sUrl: '{{ .Values.global.s2sUrl }}'
+    idamApiUrl: '{{ .Values.global.idamApiUrl }}'
+
+ccd-user-profile-importer:
+    userProfileUrl: '{{ .Values.global.ccdUserProfileUrl }}'
+    s2sUrl: '{{ .Values.global.s2sUrl }}'
+    users:
+      - adasari123.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
+
+
+  
 
 postgresql:
   persistence:
