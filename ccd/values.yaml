@@ -252,7 +252,7 @@ dm-store:
 
 postgresql:
   persistence:
-    enabled: false
+    enabled: true
   resources:
     requests:
       cpu: 25m
