@@ -257,8 +257,6 @@ dm-store:
 ccd-definition-importer:
     definitions:
       - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
-    definitionFilename: cmc-ccd.xlsx
-    verbose: "false"
     redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
     definitionStoreUrl: '{{ .Values.global.ccdDefinitionStoreUrl }}'
     s2sUrl: '{{ .Values.global.s2sUrl }}'
@@ -269,9 +267,6 @@ ccd-user-profile-importer:
     s2sUrl: '{{ .Values.global.s2sUrl }}'
     users:
       - adasari123.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
-
-
-  
 
 postgresql:
   persistence:
