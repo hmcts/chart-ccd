@@ -5,9 +5,9 @@ tags:
 ccd:
   postgresql:
     enabled: true
-  rpeServiceAuthProvider:
+  s2s:
     enabled: true
-  draftStoreService:
+  draftStore:
     enabled: true
   dmStore:
     enabled: false
