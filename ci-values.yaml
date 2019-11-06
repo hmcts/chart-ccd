@@ -10,14 +10,6 @@ readinessDelay: 90
 livenessDelay: 90
 
 ccd:
-  draftStoreService:
-    enabled: true
-  paymentApi:
-    enabled: true
-  printService:
-    enabled: true
-  activityApi:
-    enabled: true
   testStubsService:
     enabled: false
 global:
