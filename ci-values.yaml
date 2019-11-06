@@ -34,4 +34,12 @@ global:
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
 
+ccd-user-profile-api:
+  java:
+    environment:
+      USER_PROFILE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      ENABLE_DB_MIGRATE: 'true'
+      USER_PROFILE_DB_OPTIONS: "?stringtype=unspecified"
+  
+
 

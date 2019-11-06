@@ -45,6 +45,7 @@ global:
    s2sUrl: http://service-auth-s2s
    postgresUsername: hmcts
    postgresPassword: hmcts
+   
 
 #TODO once microservice charts have been updated to latest base charts versions
 #TODO move to dynamic releaseNameOverride e.g. {{.Release.Name}}-ccd-case-management-web
@@ -124,6 +125,8 @@ ccd-user-profile-api:
       USER_PROFILE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       USER_PROFILE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      APPINSIGHTS_INSTRUMENTATIONKEY: 'fake-key'
+      
 
 ccd-definition-store-api:
   java:
