@@ -20,9 +20,9 @@ ccd:
   adminWeb:
     enabled: true
   printService:
-    enabled: false
+    enabled: true
   activityApi:
-    enabled: false
+    enabled: true
   testStubsService:
     enabled: true
 
@@ -92,9 +92,22 @@ ccd-admin-web:
     releaseNameOverride: "ccd-admin-web"
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
-      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
-      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamApiUrl }}/oauth2/token'
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamApiUrl }}/session/:token'
+      ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+      ADMINWEB_IMPORT_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/import'
+      ADMINWEB_JURISDICTIONS_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/data/jurisdictions'
+      ADMINWEB_USER_PROFILE_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/users'
+      ADMINWEB_SAVE_USER_PROFILE_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/users/save'
+      ADMINWEB_USER_ROLE_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/user-role'
+      ADMIN_ALL_USER_ROLES_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/user-roles'
+      ADMINWEB_CREATE_DEFINITION_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/draft'
+      ADMINWEB_UPDATE_DEFINITION_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/draft/save'
+      ADMINWEB_DEFINITIONS_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/drafts'
+      ADMINWEB_WHOAMI_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/idam/profile'
+      ADMINWEB_IMPORT_AUDITS_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/import-audits'
+      ADMINWEB_AUTHORIZATION_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/idam/adminweb/authorization'
   idam-pr:
     releaseNameOverride: ccd-admin-web-idam-pr
     api:
@@ -109,6 +122,7 @@ ccd-case-activity-api:
     releaseNameOverride: ccd-case-activity-api
     environment:
       REDIS_SSL_ENABLED: false
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
 
 ccd-user-profile-api:
   java:
@@ -163,6 +177,7 @@ ccd-case-print-service:
       IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
       IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      CASE_DATA_STORE_URL: '{{ .Values.global.ccdDataStoreUrl }}'
 
 #TODO add more defaults here from the flux config
 ccd-test-stubs-service:
