@@ -1,7 +1,8 @@
 # chart-ccd
 
-NOTE: :warning: version 4.0.0-alpha of the chart-ccd is still not ready to be used. It was released to make testing on HMCTS Demo a faster process
+NOTE: :warning: version 4.0.0-alpha of the chart-ccd is still not ready to be used. It was released to make testing on HMCTS Demo a faster process.  
 
+Postgresql persistance is ENABLED on this chart, due to PREVIEW environmental issues with PVC's in this environment, persistance should be DISABLED when utilized in PREVIEW. 
 
 This chart is intended for deploying the full CCD product stack.
 Including:

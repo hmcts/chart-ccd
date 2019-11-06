@@ -10,7 +10,7 @@ ccd:
   draftStoreService:
     enabled: true
   dmStore:
-    enabled: false
+    enabled: true
   paymentApi:
     enabled: true
   managementWeb:
@@ -20,9 +20,9 @@ ccd:
   adminWeb:
     enabled: true
   printService:
-    enabled: false
+    enabled: true
   activityApi:
-    enabled: false
+    enabled: true
   testStubsService:
     enabled: true
 
@@ -252,7 +252,7 @@ dm-store:
 
 postgresql:
   persistence:
-    enabled: false
+    enabled: true
   resources:
     requests:
       cpu: 25m
