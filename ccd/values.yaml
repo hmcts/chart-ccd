@@ -268,8 +268,9 @@ dm-store:
       IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'
 
 postgresql:
+  # Due to stability issues in the Preview environment, please disable persistance in the consuming chart for the Preview environment.
   persistence:
-    enabled: false
+    enabled: true
   resources:
     requests:
       cpu: 25m
