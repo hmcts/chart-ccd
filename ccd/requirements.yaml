@@ -66,4 +66,7 @@ dependencies:
     repository: '@hmctspublic'
     condition: ccd.testStubsService.enabled
 
-
+  - name: ccd-definition-importer
+    version: ~1.0.1
+    repository: '@hmctspublic'
+    condition: ccd.definitionImporter.enabled

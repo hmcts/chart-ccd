@@ -25,6 +25,8 @@ ccd:
     enabled: true
   testStubsService:
     enabled: true
+  definitionImporter:
+    enabled: false
 
 global:
    ccdApiGatewayIngress:
@@ -285,3 +287,11 @@ postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
+
+
+ccd-definition-importer:
+  redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
+  definitionStoreUrl: '{{.Values.global.ccdDefinitionStoreUrl}}'
+  s2sUrl: '{{ .Values.global.s2sUrl }}'
+  idamApiUrl: '{{ .Values.global.idamApiUrl }}'
+  
