@@ -27,6 +27,8 @@ ccd:
     enabled: true
   definitionImporter:
     enabled: false
+  blobstorage:
+    enabled: true
 
 global:
    ccdApiGatewayIngress:
@@ -145,6 +147,13 @@ ccd-definition-store-api:
     releaseNameOverride: ccd-definition-store
     readinessDelay: 180
     livenessDelay: 180
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: storageAccountName
+      STORAGE_ACCOUNT_KEY:
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: accessKey
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
@@ -152,6 +161,10 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       USER_PROFILE_HOST: '{{ .Values.global.ccdUserProfileUrl }}'
+      # Storage Account
+      AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+      AZURE_STORAGE_BLOB_CONTAINER_REFERENCE: definition-store
+      AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net"
 
 ccd-data-store-api:
   java:
@@ -252,11 +265,11 @@ dm-store:
     livenessDelay: 180
     secrets:
       STORAGE_ACCOUNT_NAME:
-        disabled: true
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: storageAccountName
       STORAGE_ACCOUNT_KEY:
-        disabled: true
-      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
-        disabled: true
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: accessKey
     keyVaults: {}
     environment:
       ENABLE_DB_MIGRATE: 'true'
@@ -264,9 +277,10 @@ dm-store:
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/evidence?ssl=disable
       SPRING_DATASOURCE_USERNAME: '{{ .Values.global.postgresUsername }}'
       SPRING_DATASOURCE_PASSWORD: '{{ .Values.global.postgresPassword }}'
-      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
-      POSTGRES_STORAGE_ENABLED: 'true'
-      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
+      ENABLE_AZURE_STORAGE_CONTAINER: 'true'
+      POSTGRES_STORAGE_ENABLED: 'false'
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net"
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       IDAM_USER_BASE_URI: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'
 
@@ -289,10 +303,18 @@ postgresql:
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
 
+blobstorage:
+  releaseNameOverride: "{{ .Release.Name }}-blobstorage"
+  resourceGroup: ccd-aks
+  teamName: "CCD"
+  location: uksouth
+  setup:
+    containers:
+    - definition-store
+    - dm-store
 
 ccd-definition-importer:
   redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
   definitionStoreUrl: '{{.Values.global.ccdDefinitionStoreUrl}}'
   s2sUrl: '{{ .Values.global.s2sUrl }}'
   idamApiUrl: '{{ .Values.global.idamApiUrl }}'
-  
