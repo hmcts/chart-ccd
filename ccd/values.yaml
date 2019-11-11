@@ -302,8 +302,7 @@ postgresql:
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
 
-
-releaseNameOverride: {{.Release.Name}}-blobstorage
+releaseNameOverride: '{{ .Release.Name }}-blobstorage'
 blobstorage:
   resourceGroup: ccd-aks
   teamName: "CCD"
