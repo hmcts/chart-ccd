@@ -1,3 +1,7 @@
+#todo test idam-pr
+tags:
+  idam-pr: false
+
 ingressHost: chart-ccd-release.service.core-compute-preview.internal
 ingressIP: "10.97.17.51"
 consulIP: "10.97.11.254"
@@ -5,28 +9,25 @@ consulIP: "10.97.11.254"
 readinessDelay: 90
 livenessDelay: 90
 
-ccd-test-stubs-service:
-  enabled: false
-
-draft-store-service:
-  enabled: true
-  java:
-    ingressHost: ""
-
-payment-api:
-  enabled: true
-
-ccd-case-print-service:
-  enabled: 
-  
-ccd-case-activity-api:
-  enabled: true
-
+ccd:
+  testStubsService:
+    enabled: false
+  definitionImporter:
+    enabled: true
 global:
   subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
   tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
   ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
   idamApiUrl: idam-api.aat.platform.hmcts.net
   idamWebUrl: idam-web-public.aat.platform.hmcts.net
+  ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
+  ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
+  environment: aat
+
+ccd-definition-importer:
+  definitions:
+    - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
+  userRoles:
+    - caseworker-cmc
 
 

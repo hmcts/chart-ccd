@@ -73,6 +73,10 @@ ccd:
       NODE_TLS_REJECT_UNAUTHORIZED: 0
 ```
 
+## PostgreSQL
+
+Persistance is enabled on this chart.  Due to stability issues with PVC's in the Preview environment, please disable persistance in consumers of this chart.
+
 ## Importers
 
 In addition to the core services you can include some helper pods to import definitions and user profiles:

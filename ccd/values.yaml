@@ -5,18 +5,35 @@ tags:
 ccd:
   postgresql:
     enabled: true
-  rpeServiceAuthProvider:
+  s2s:
     enabled: true
-  draftStoreService:
+  draftStore:
     enabled: true
   dmStore:
     enabled: true
   paymentApi:
     enabled: true
+  managementWeb:
+    enabled: true
+  apiGatewayWeb:
+    enabled: true
+  adminWeb:
+    enabled: true
+  printService:
+    enabled: true
+  activityApi:
+    enabled: true
+  testStubsService:
+    enabled: true
+  definitionImporter:
+    enabled: false
+  blobstorage:
+    enabled: true
 
 global:
    ccdApiGatewayIngress:
    ccdCaseManagementWebIngress:
+   ccdAdminWebIngress:
    idamApiUrl:
    idamWebUrl:
    ccdDataStoreUrl: http://ccd-data-store
@@ -31,9 +48,7 @@ global:
 
 #TODO once microservice charts have been updated to latest base charts versions
 #TODO move to dynamic releaseNameOverride e.g. {{.Release.Name}}-ccd-case-management-web
-
 ccd-case-management-web:
-  enabled: true
   nodejs:
     releaseNameOverride: ccd-case-management-web
     environment:
@@ -47,17 +62,17 @@ ccd-case-management-web:
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
       CCD_ACTIVITY_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/activity
       PAYMENTS_URL: https://{{ .Values.global.ccdApiGatewayIngress }}/payments
-
-# still not sure this is needed
-#idam-pr:
-#  enabled: false
-#  releaseNameOverride: ccd-idam-pr
-#  redirect_uris:
-#    CCD:
-#      - https://{{ .Values.global.ccdCaseManagementWebIngress}}/oauth2redirect
+  idam-pr:
+    releaseNameOverride: ccd-idam-pr
+    api:
+      url: '{{ .Values.global.idamApiUrl }}'
+    web_public:
+      url: '{{ .Values.global.idamWebUrl }}'
+    redirect_uris:
+      CCD:
+        - 'https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect'
 
 ccd-api-gateway-web:
-  enabled: true
   nodejs:
     releaseNameOverride: ccd-api-gateway
     environment:
@@ -77,24 +92,45 @@ ccd-api-gateway-web:
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
 
 ccd-admin-web:
-  enabled: true
   nodejs:
     releaseNameOverride: "ccd-admin-web"
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
-      IDAM_BASE_URL: '{{ .Values.global.idamWebUrl }}/login'
-      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/oauth2/token'
-      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamWebUrl }}/login/session/:token'
-
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_OAUTH2_TOKEN_ENDPOINT: '{{ .Values.global.idamApiUrl }}/oauth2/token'
+      IDAM_OAUTH2_LOGOUT_ENDPOINT: '{{ .Values.global.idamApiUrl }}/session/:token'
+      ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+      ADMINWEB_IMPORT_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/import'
+      ADMINWEB_JURISDICTIONS_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/data/jurisdictions'
+      ADMINWEB_USER_PROFILE_URL: '{{ .Values.global.ccdUserProfileUrl }}/users'
+      ADMINWEB_SAVE_USER_PROFILE_URL: '{{ .Values.global.ccdUserProfileUrl }}/users/save'
+      ADMINWEB_USER_ROLE_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/user-role'
+      ADMIN_ALL_USER_ROLES_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/user-roles'
+      ADMINWEB_CREATE_DEFINITION_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/draft'
+      ADMINWEB_UPDATE_DEFINITION_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/draft/save'
+      ADMINWEB_DEFINITIONS_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/drafts'
+      ADMINWEB_WHOAMI_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/idam/profile'
+      ADMINWEB_IMPORT_AUDITS_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/import-audits'
+      ADMINWEB_AUTHORIZATION_URL: '{{ .Values.global.ccdDefinitionStoreUrl }}/api/idam/adminweb/authorization'
+      ADMINWEB_ROLES_WHITELIST: 'ccd-import,ccd-import-validate'
+      IDAM_ADMIN_WEB_SERVICE_KEY: AAAAAAAAAAAAAAAA
+  idam-pr:
+    releaseNameOverride: ccd-admin-web-idam-pr
+    api:
+      url: '{{ .Values.global.idamApiUrl }}'
+    web_public:
+      url: '{{ .Values.global.idamWebUrl }}'
+    redirect_uris:
+      CCD Admin:
+        - 'https://{{.Values.global.ccdAdminWebIngress}}/oauth2redirect'
 ccd-case-activity-api:
-  enabled: false
   nodejs:
     releaseNameOverride: ccd-case-activity-api
     environment:
       REDIS_SSL_ENABLED: false
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
 
 ccd-user-profile-api:
-  enabled: true
   java:
     releaseNameOverride: ccd-user-profile
     readinessDelay: 120
@@ -106,11 +142,17 @@ ccd-user-profile-api:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
 
 ccd-definition-store-api:
-  enabled: true
   java:
     releaseNameOverride: ccd-definition-store
     readinessDelay: 180
     livenessDelay: 180
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: storageAccountName
+      STORAGE_ACCOUNT_KEY:
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: accessKey
     environment:
       IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
       IDAM_USER_URL: '{{ .Values.global.idamApiUrl }}'
@@ -118,9 +160,12 @@ ccd-definition-store-api:
       DEFINITION_STORE_DB_USERNAME: '{{ .Values.global.postgresUsername }}'
       DEFINITION_STORE_DB_PASSWORD: '{{ .Values.global.postgresPassword }}'
       USER_PROFILE_HOST: '{{ .Values.global.ccdUserProfileUrl }}'
+      # Storage Account
+      AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+      AZURE_STORAGE_BLOB_CONTAINER_REFERENCE: definition-store
+      AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net"
 
 ccd-data-store-api:
-  enabled: true
   java:
     #todo remove 'image' when RDM-5913 is released
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
@@ -138,6 +183,24 @@ ccd-data-store-api:
       DEFINITION_STORE_HOST: '{{ .Values.global.ccdDefinitionStoreUrl }}'
       USER_PROFILE_HOST: '{{ .Values.global.ccdUserProfileUrl }}'
       CCD_DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
+
+ccd-case-print-service:
+  nodejs:
+    releaseNameOverride: ccd-case-print-service
+    environment:
+      IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
+      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
+      IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
+      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      CASE_DATA_STORE_URL: '{{ .Values.global.ccdDataStoreUrl }}'
+
+#TODO add more defaults here from the flux config
+ccd-test-stubs-service:
+  java:
+    livenessPath: '/health'
+    releaseNameOverride: ccd-test-stubs-service
 
 #Dependencies
 
@@ -158,6 +221,7 @@ rpe-service-auth-provider:
 
 draft-store-service:
   java:
+    ingressHost: ""
     releaseNameOverride: draft-store-service
     readinessDelay: 240
     livenessDelay: 240
@@ -188,8 +252,10 @@ payment-api:
       SPRING_LIQUIBASE_ENABLED: true
       AUTH_IDAM_CLIENT_BASEURL: '{{ .Values.global.idamApiUrl }}'
       CORE_CASE_DATA_API_URL: '{{ .Values.global.ccdDataStoreUrl }}'
-      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api 
+      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ .Values.global.s2sUrl }}'
+      #remove when this is sorted in payment chart
+      PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
 
 dm-store:
   java:
@@ -198,11 +264,11 @@ dm-store:
     livenessDelay: 180
     secrets:
       STORAGE_ACCOUNT_NAME:
-        disabled: true
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: storageAccountName
       STORAGE_ACCOUNT_KEY:
-        disabled: true
-      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
-        disabled: true
+        secretRef: storage-secret-{{.Release.Name}}-blobstorage
+        key: accessKey
     keyVaults: {}
     environment:
       ENABLE_DB_MIGRATE: 'true'
@@ -210,27 +276,17 @@ dm-store:
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/evidence?ssl=disable
       SPRING_DATASOURCE_USERNAME: '{{ .Values.global.postgresUsername }}'
       SPRING_DATASOURCE_PASSWORD: '{{ .Values.global.postgresPassword }}'
-      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
-      POSTGRES_STORAGE_ENABLED: 'true'
-      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
+      ENABLE_AZURE_STORAGE_CONTAINER: 'true'
+      POSTGRES_STORAGE_ENABLED: 'false'
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net"
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       IDAM_USER_BASE_URI: '{{ .Values.global.idamApiUrl }}'
-      IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'  
-
-ccd-case-print-service:
-  enabled: false
-  nodejs:
-    releaseNameOverride: ccd-case-print-service
-    environment:
-      IDAM_PRINT_SERVICE_KEY: AAAAAAAAAAAAAAAA
-      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
-      IDAM_S2S_AUTH: '{{ .Values.global.s2sUrl }}'
-      IDAM_BASE_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_S2S_URL: '{{ .Values.global.s2sUrl }}'
+      IDAM_S2S_BASE_URI: '{{ .Values.global.s2sUrl }}'
 
 postgresql:
+  # Due to stability issues in the Preview environment, please disable persistance in the consuming chart for the Preview environment.
   persistence:
-    enabled: false
+    enabled: true
   resources:
     requests:
       cpu: 25m
@@ -245,3 +301,19 @@ postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
+
+blobstorage:
+  releaseNameOverride: "{{ .Release.Name }}-blobstorage"
+  resourceGroup: ccd-aks
+  teamName: "CCD"
+  location: uksouth
+  setup:
+    containers:
+    - definition-store
+    - dm-store
+
+ccd-definition-importer:
+  redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
+  definitionStoreUrl: '{{.Values.global.ccdDefinitionStoreUrl}}'
+  s2sUrl: '{{ .Values.global.s2sUrl }}'
+  idamApiUrl: '{{ .Values.global.idamApiUrl }}'
