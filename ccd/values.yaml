@@ -315,6 +315,6 @@ blobstorage:
 
 ccd-definition-importer:
   redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
-  definitionStoreUrl: '{{.Values.global.ccdDefinitionStoreUrl}}'
+  definitionStoreUrl: '{{ .Values.global.ccdDefinitionStoreUrl }}'
   s2sUrl: '{{ .Values.global.s2sUrl }}'
   idamApiUrl: '{{ .Values.global.idamApiUrl }}'
