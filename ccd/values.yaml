@@ -318,3 +318,4 @@ ccd-definition-importer:
   definitionStoreUrl: '{{ .Values.global.ccdDefinitionStoreUrl }}'
   s2sUrl: '{{ .Values.global.s2sUrl }}'
   idamApiUrl: '{{ .Values.global.idamApiUrl }}'
+  verbose: true
