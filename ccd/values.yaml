@@ -319,3 +319,10 @@ ccd-definition-importer:
   s2sUrl: '{{ .Values.global.s2sUrl }}'
   idamApiUrl: '{{ .Values.global.idamApiUrl }}'
   verbose: true
+  secrets:
+    IMPORTER_USERNAME:
+      disabled: false
+    IMPORTER_PASSWORD:
+      disabled: false
+    CLIENT_SECRET:
+      disabled: false
