@@ -29,6 +29,9 @@ inspect:
 deploy:
 	helm install ${CHART} --name ${RELEASE} --namespace ${NAMESPACE} -f ci-values.yaml --wait
 
+upgrade:
+	helm upgrade --install ${RELEASE} ${CHART} --namespace ${NAMESPACE} -f ci-values.yaml --wait
+
 test:
 	helm test ${RELEASE}
 
