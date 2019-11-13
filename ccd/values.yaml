@@ -41,10 +41,10 @@ global:
   ccdDataStoreUrl: "http://{{.Release.Name}}-ccd-data-store-api"
   ccdDefinitionStoreUrl: "http://{{.Release.Name}}-ccd-definition-store"
   ccdUserProfileUrl: "http://{{.Release.Name}}-ccd-user-profile-api"
-  draftStoreUrl: "http://{.Release.Name}}-draft-store"
-  paymentsUrl: "{.Release.Name}}-payment-api"
-  dmStoreUrl: "http://{.Release.Name}}-dm-store"
-  s2sUrl: "http://{.Release.Name}}-s2s"
+  draftStoreUrl: "http://{{.Release.Name}}-draft-store"
+  paymentsUrl: "http://{{.Release.Name}}-payment-api"
+  dmStoreUrl: "http://{{.Release.Name}}-dm-store"
+  s2sUrl: "http://{{.Release.Name}}-s2s"
   postgresUsername: hmcts
   postgresPassword: hmcts
 
