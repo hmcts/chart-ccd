@@ -318,10 +318,10 @@ blobstorage:
 
 ccd-definition-importer:
   releaseNameOverride: "{{ .Release.Name }}-definition-importer"
-  redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
-  definitionStoreUrl: '{{ .Values.global.ccdDefinitionStoreUrl }}'
-  s2sUrl: '{{ .Values.global.s2sUrl }}'
-  idamApiUrl: '{{ .Values.global.idamApiUrl }}'
+  redirectUri: "https://{{tpl .Values.global.ccdCaseManagementWebIngress $}}/oauth2redirect"
+  definitionStoreUrl: '{{tpl .Values.global.ccdDefinitionStoreUrl $}}'
+  s2sUrl: '{{tpl .Values.global.s2sUrl $}}'
+  idamApiUrl: '{{tpl .Values.global.idamApiUrl $}}'
   verbose: true
   secrets:
     IMPORTER_USERNAME:
@@ -332,6 +332,6 @@ ccd-definition-importer:
       disabled: false
 
 ccd-user-profile-importer:
-  releaseNameOverride: "{{ .Release.Name }}-user-profile-importer"
-  s2sUrl: '{{ .Values.global.s2sUrl }}'
-  userProfileUrl: '{{ .Values.global.ccdUserProfileUrl }}'
+  releaseNameOverride: "{{tpl .Release.Name $}}-user-profile-importer"
+  s2sUrl: '{{tpl .Values.global.s2sUrl $}}'
+  userProfileUrl: '{{tpl .Values.global.ccdUserProfileUrl $}}'
