@@ -128,7 +128,7 @@ ccd-admin-web:
         - 'https://{{tpl .Values.global.ccdAdminWebIngress $}}/oauth2redirect'
 ccd-case-activity-api:
   nodejs:
-    releaseNameOverride: ccd-case-activity-api
+    releaseNameOverride: "{{.Release.Name}}-ccd-case-activity-api"
     environment:
       REDIS_SSL_ENABLED: false
       IDAM_BASE_URL: '{{tpl .Values.global.idamApiUrl $}}'
