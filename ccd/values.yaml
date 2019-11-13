@@ -48,13 +48,12 @@ global:
   postgresUsername: hmcts
   postgresPassword: hmcts
 
-#TODO once microservice charts have been updated to latest base charts versions
-#TODO move to dynamic releaseNameOverride e.g. {{ .Release.Name }}-ccd-case-management-web
 ccd-case-management-web:
   nodejs:
     releaseNameOverride:  "{{ .Release.Name }}-ccd-case-mgmt-web"
     environment:
       IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+      #adding tpl allows global values to be templated  with {{.Release.name}}.
       CCD_GW_LOGOUT_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $ }}/logout
       CCD_API_URL: https://{{ tpl  .Values.global.ccdApiGatewayIngress $ }}/aggregated
       CCD_DATA_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $}}/data
