@@ -31,6 +31,8 @@ ccd:
     enabled: false
   blobstorage:
     enabled: true
+  emAnnotation:
+    enabled: true
 
 global:
   ccdApiGatewayIngress:
@@ -44,6 +46,7 @@ global:
   draftStoreUrl: "http://{{ .Release.Name }}-draft-store"
   paymentsUrl: "http://{{ .Release.Name }}-payment-api"
   dmStoreUrl: "http://{{ .Release.Name }}-dm-store"
+  emAnnotationUrl: "http://{{ .Release.Name }}-em-annotation"
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
   postgresPassword: hmcts
@@ -89,6 +92,7 @@ ccd-api-gateway-web:
       PROXY_DATA: '{{ tpl .Values.global.ccdDataStoreUrl $}}'
       PROXY_DEFINITION_IMPORT: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
       PROXY_DOCUMENT_MANAGEMENT: '{{ tpl .Values.global.dmStoreUrl $}}'
+      PROXY_MV_ANNOTATIONS_API_URL: '{{ tpl .Values.global.emAnnotationUrl $}}'
       PROXY_PAYMENTS: '{{ tpl .Values.global.paymentsUrl $}}'
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ tpl .Values.global.ccdCaseManagementWebIngress $}},http://{{ tpl .Values.global.ccdCaseManagementWebIngress $}},{{ tpl .Values.global.ccdCaseManagementWebIngress $}},*"
@@ -286,6 +290,20 @@ dm-store:
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       IDAM_USER_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
+
+em-annotation:
+  java:
+    releaseNameOverride: "{{ .Release.Name }}-em-annotation"
+    readinessDelay: 180
+    livenessDelay: 180
+    environment:
+      ENABLE_LIQUIBASE: 'true'
+      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/annotation?ssl=disable
+      SPRING_DATASOURCE_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
+      SPRING_DATASOURCE_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
+      IDAM_API_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
+      S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
+      DM_STORE_APP_URL: '{{ tpl .Values.global.dmStoreUrl $}}'
 
 postgresql:
   # Due to stability issues in the Preview environment, please disable persistance in the consuming chart for the Preview environment.
