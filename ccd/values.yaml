@@ -291,7 +291,7 @@ dm-store:
       IDAM_USER_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
 
-em-annotation:
+em-anno:
   java:
     releaseNameOverride: "{{ .Release.Name }}-em-annotation"
     readinessDelay: 180
