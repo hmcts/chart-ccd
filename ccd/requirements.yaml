@@ -71,6 +71,11 @@ dependencies:
     repository: '@hmctspublic'
     condition: ccd.definitionImporter.enabled
 
+  - name: ccd-user-profile-importer
+    version: ~1.0.0
+    repository: '@hmctspublic'
+    condition: ccd.userProfileImporter.enabled
+
   - name: blobstorage
     version: ~0.2.1
     repository: '@hmctspublic'
