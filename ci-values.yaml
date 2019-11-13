@@ -14,6 +14,8 @@ ccd:
     enabled: false
   definitionImporter:
     enabled: true
+  userProfileImporter:
+    enabled: true
 
 postgresql:
   persistence:
@@ -37,3 +39,14 @@ ccd-definition-importer:
     - caseworker-autotest1-private
     - caseworker-autotest1-senior
     - caseworker-autotest1-solicitor
+
+ccd-user-profile-importer:
+  users:
+    - auto.test.cnp@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test.cnp+private@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test.cnp+public@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test.cnp+senior@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test.cnp+solc@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test12.cnp+private@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test12.cnp+solc@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+    - auto.test12.cnp+senior@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO

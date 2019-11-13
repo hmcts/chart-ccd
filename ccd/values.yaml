@@ -27,6 +27,8 @@ ccd:
     enabled: true
   definitionImporter:
     enabled: false
+  userProfileImporter:
+    enabled: false
   blobstorage:
     enabled: true
 
@@ -314,6 +316,7 @@ blobstorage:
     - dm-store
 
 ccd-definition-importer:
+  releaseNameOverride: "{{ .Release.Name }}-definition-importer"
   redirectUri: "https://{{.Values.global.ccdCaseManagementWebIngress}}/oauth2redirect"
   definitionStoreUrl: '{{ .Values.global.ccdDefinitionStoreUrl }}'
   s2sUrl: '{{ .Values.global.s2sUrl }}'
@@ -326,3 +329,9 @@ ccd-definition-importer:
       disabled: false
     CLIENT_SECRET:
       disabled: false
+
+ccd-user-profile-importer:
+  releaseNameOverride: "{{ .Release.Name }}-user-profile-importer"
+  s2sUrl: '{{ .Values.global.s2sUrl }}'
+  userProfileUrl: '{{ .Values.global.ccdUserProfileUrl }}'
+  
