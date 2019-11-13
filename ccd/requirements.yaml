@@ -67,10 +67,10 @@ dependencies:
     condition: ccd.testStubsService.enabled
 
   - name: ccd-definition-importer
-    version: ~1.0.1
+    version: ~1.0.3
     repository: '@hmctspublic'
     condition: ccd.definitionImporter.enabled
-    
+
   - name: blobstorage
     version: ~0.2.1
     repository: '@hmctspublic'

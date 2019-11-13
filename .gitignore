@@ -1,2 +1,3 @@
 *.tgz
 .idea/
+ccd/requirements.lock
