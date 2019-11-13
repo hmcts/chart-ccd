@@ -64,7 +64,7 @@ ccd-case-management-web:
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
       CCD_ACTIVITY_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $}}/activity
       PAYMENTS_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $ }}/payments
-      DM_URL_REMOTE: "^https?://(?:{.Release.Name}}-dm-store(?::\\d+)?)/documents"
+      DM_URL_REMOTE: "^https?://(?:{{tpl .Values.global.dmStoreUrl $}}(?::\\d+)?)/documents"
   idam-pr:
     releaseNameOverride: ccd-idam-pr
     api:
