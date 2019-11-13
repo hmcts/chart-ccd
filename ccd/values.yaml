@@ -32,7 +32,7 @@ ccd:
   blobstorage:
     enabled: true
   emAnnotation:
-    enabled: true
+    enabled: false
 
 global:
   ccdApiGatewayIngress:
