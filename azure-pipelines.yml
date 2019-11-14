@@ -24,7 +24,7 @@ jobs:
     parameters:
       chartName: ccd
       chartReleaseName: chart-ccd-ci-test
-      chartNamespace: ccd
+      chartNamespace: chart-tests
       helmInstallTimeout: "1000"
 
 - job: Release

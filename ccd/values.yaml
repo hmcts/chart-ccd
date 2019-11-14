@@ -26,11 +26,11 @@ ccd:
   testStubsService:
     enabled: true
   definitionImporter:
-    enabled: false
+    enabled: false
   userProfileImporter:
     enabled: false
   blobstorage:
-    enabled: true
+    enabled: true
 
 global:
   ccdApiGatewayIngress:
