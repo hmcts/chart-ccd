@@ -80,3 +80,8 @@ dependencies:
     version: ~0.2.1
     repository: '@hmctspublic'
     condition: ccd.blobstorage.enabled
+
+  - name: em-anno
+    version: ~0.1.13
+    repository: '@hmctspublic'
+    condition: ccd.emAnnotation.enabled
