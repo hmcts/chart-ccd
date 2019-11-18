@@ -51,3 +51,14 @@ ccd-user-profile-importer:
     - auto.test12.cnp+solc@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
     - auto.test12.cnp+senior@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
 
+ccd-user-profile-api:
+  java:
+    environment:
+      DEFINITION_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DEFINITION_STORE_DB_OPTIONS: ""
+      DEFINITION_STORE_DB_MAX_POOL_SIZE: 5
+
+      ENABLE_DB_MIGRATE: true
+      ELASTIC_SEARCH_ENABLED: false
+      AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: false
+
