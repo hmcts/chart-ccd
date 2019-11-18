@@ -46,10 +46,10 @@ dependencies:
     repository: '@hmctspublic'
     condition: ccd.dmStore.enabled
 
-  - name: payment-api
-    version: ~0.1.6
+  - name: ccpay
+    version: ~0.1.10-alpha
     repository: '@hmctspublic'
-    condition: ccd.paymentApi.enabled
+    condition: ccd.ccpay.enabled
 
   - name: ccd-case-print-service
     version: ~1.0.0
