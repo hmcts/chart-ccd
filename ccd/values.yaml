@@ -11,8 +11,6 @@ ccd:
     enabled: true
   dmStore:
     enabled: true
-  paymentApi:
-    enabled: true
   managementWeb:
     enabled: true
   apiGatewayWeb:
@@ -32,6 +30,8 @@ ccd:
   blobstorage:
     enabled: true
   emAnnotation:
+    enabled: false
+  ccpay:
     enabled: false
 
 global:
@@ -246,25 +246,6 @@ draft-store-service:
       IDAM_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
 
-payment-api:
-  java:
-    #todo remove 'image' when microservice chart define image itself and empty keyVaults
-    image: hmctspublic.azurecr.io/payment/api:latest
-    releaseNameOverride: "{{ .Release.Name }}-payment-api"
-    readinessDelay: 180
-    livenessDelay: 180
-    keyVaults: {}
-    environment:
-      SPRING_DATASOURCE_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-      SPRING_DATASOURCE_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-      SPRING_LIQUIBASE_ENABLED: true
-      AUTH_IDAM_CLIENT_BASEURL: '{{ tpl .Values.global.idamApiUrl $}}'
-      CORE_CASE_DATA_API_URL: '{{ tpl .Values.global.ccdDataStoreUrl $}}'
-      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/payment_api
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: '{{ tpl .Values.global.s2sUrl $}}'
-      #remove when this is sorted in payment chart
-      PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
-
 dm-store:
   java:
     releaseNameOverride: "{{ .Release.Name }}-dm-store"
@@ -354,3 +335,48 @@ ccd-user-profile-importer:
   releaseNameOverride: "{{ tpl .Release.Name $}}-user-profile-importer"
   s2sUrl: '{{ tpl .Values.global.s2sUrl $}}'
   userProfileUrl: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
+
+ccpay:
+  postgresql:
+    enabled: false
+  payment-api:
+    enabled: true
+  fees-register-api:
+    enabled: false
+  rpe-service-auth-provider:
+    enabled: false
+  ccpay-bubble-frontend:
+    enabled: false
+  ccpay-bulkscanning-api:
+    enabled: false
+
+payment-api:
+  java:
+    releaseNameOverride: "{{ .Release.Name }}-payment-api"
+    secrets:
+      PCI_PAL_ACCOUNT_ID_CMC:
+        disabled: true
+      PCI_PAL_ACCOUNT_ID_PROBATE:
+        disabled: true
+      PCI_PAL_ACCOUNT_ID_DIVORCE:
+        disabled: true
+      PCI_PAL_API_URL:
+        disabled: true
+      PCI_PAL_API_KEY:
+        disabled: true
+      GOV_PAY_KEYS_PROBATE:
+        disabled: true
+      GOV_PAY_KEYS_DIVORCE:
+        disabled: true
+      GOV_PAY_KEYS_CMC:
+        disabled: true
+      GOV_PAY_KEYS_REFERENCE:
+        disabled: true
+      LIBERATA_KEYS_OAUTH2_CLIENT_ID:
+        disabled: true
+      LIBERATA_KEYS_OAUTH2_CLIENT_SECRET:
+        disabled: true
+      LIBERATA_KEYS_OAUTH2_USERNAME:
+        disabled: true
+      LIBERATA_KEYS_OAUTH2_PASSWORD:
+        disabled: true
