@@ -1,16 +1,18 @@
 # chart-ccd
 
-NOTE: :warning: version 4.0.0-alpha of the chart-ccd is still not ready to be used. It was released to make testing on HMCTS Demo a faster process
-
 
 This chart is intended for deploying the full CCD product stack.
 Including:
 * data-store-api
 * user-profile-api
 * definition-store-api
+Optional:
 * case-management-web (optional, enabled with a flag)
 * admin-web (optional, enabled with a flag)
 * print-api (aka case-print-service which is optional, enabled with a flag)
+* payment-api (which is optional, enabled with a flag)
+* activity-api (aka ccd-case-activity-api which is optional, enabled with a flag)
+*
 
 We will take small PRs and small features to this chart but more complicated needs should be handled in your own chart.
 
@@ -28,8 +30,24 @@ dependencies:
 
 The `SERVICE_FQDN`, `INGRESS_IP` and `CONSUL_LB_IP` are all provided by the pipeline, but require you to pass them through for preview environments.
 
-values.preview.template.yaml
+values.preview.yaml
 ```yaml
+
+# Enable required services as follows
+ccd:
+  testStubsService:
+    enabled: false
+  definitionImporter:
+    enabled: true
+  userProfileImporter:
+    enabled: true
+
+global:
+  ccdApiGatewayIngress: gateway-{{ .Release.Name }}.core-compute-preview.internal
+  ccdCaseManagementWebIngress: www-{{ .Release.Name }}.core-compute-preview.internal
+  ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.core-compute-preview.internal
+
+
 ccd:
   ingressHost: ${SERVICE_FQDN}
   ingressIP: ${INGRESS_IP}
@@ -84,33 +102,18 @@ In addition to the core services you can include some helper pods to import defi
 - definitions: https://github.com/hmcts/ccd-docker-definition-importer
 - user profiles: https://github.com/hmcts/ccd-docker-user-profile-importer
 
-values.preview.template.yaml
+values.preview.yaml
 ```yaml
 ccd:
   # above config for core services
-
-  importer:
-    userprofile:
-      enabled: true
-      jurisdictions:
-        - CMC
-      users:
-        - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|open
-      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
-      userProfileDatabasePort: 5432
-      userProfileDatabaseUser: hmcts
-      userProfileDatabasePassword: hmcts
-      userProfileDatabaseName: user-profile
-    definition:
-      enabled: true
-      image: hmcts.azurecr.io/hmcts/cmc-ccd-definition-importer:1.2.6
-      definitionFilename: cmc-ccd.xlsx
-      userRoles:
-        - citizen
-        - caseworker-cmc
-        - caseworker-cmc-solicitor
-        - caseworker-cmc-systemupdate
-        - caseworker-cmc-anonymouscitizen
+  ccd-definition-importer:
+    definitions:
+      - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
+    userRoles:
+      - caseworker-autotest1
+  ccd-user-profile-importer:
+    users:
+      - auto.test.cnp@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
 ```
 
 The idam secret and s2s keys need to be loaded in the pipeline,
@@ -152,7 +155,7 @@ https://case-management-web-sscs-cor-backend-pr-189.service.core-compute-preview
 
 Managed using https://github.com/hmcts/chart-idam-pr (version 2.0.0 and above).
 
-To enable add following to your values.preview.template.yaml:
+To enable add following to your values.preview.yaml:
 ```
 tags:
   ccd-idam-pr: true
@@ -226,30 +229,24 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `printApi.applicationPort`                    | Port definition case print service runs on | `3100` |
 | `printApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
 | `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
-| `importer.definition.enabled` | Enabling Definition importer | `false` |
-| `importer.definition.image` | Definition importer image to use | `hmcts/ccd-definition-importer:latest` |
-| `importer.definition.kvSecretRef` | Secret with credentials for accessing necessary key vaults in Azure | `kvcreds` |
-| `importer.definition.gitSecretRef` | Secret with gitlab credentials for accessing defined defintions, if using gitlab urls | `kvcreds` |
-| `importer.definition.definitions` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_URLS` | `nil` |
-| `importer.definition.definitionFilename` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_FILENAME` | `nil` |
-| `importer.definition.waitHosts` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS` | `nil` |
-| `importer.definition.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS_TIMEOUT` | `300` |
-| `importer.definition.userRoles` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`USER_ROLES` | `- caseworker-bulkscan` |
-| `importer.definition.microservice` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`MICROSERVICE` | `ccd_gw` |
-| `importer.definition.verbose` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`VERBOSE` | `false` |
-| `importer.userprofile.enabled` | Enabling User Profile importer | `false` |
-| `importer.userprofile.image` | User Profile importer image to use | `hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest` |
-| `importer.userprofile.users` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USERS` | `nil` |
-| `importer.userprofile.jurisdictions` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_JURISDICTIONS` | `nil` |
-| `importer.userprofile.microservice` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`MICROSSERVICE` | `ccd_definition` |
-| `importer.userprofile.waitHosts` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS` | `nil` |
-| `importer.userprofile.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
-| `importer.userprofile.userProfileDatabaseHost` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_HOST` | `nil` |
-| `importer.userprofile.userProfileDatabasePort` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PORT` | `nil` |
-| `importer.userprofile.userProfileDatabaseUser` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_USERNAME` | `nil` |
-| `importer.userprofile.userProfileDatabasePassword` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PASSWORD` | `nil` |
-| `importer.userprofile.userProfileDatabaseName` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_DATABASE` | `nil` |
-| `importer.userprofile.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
+| `ccd.definitionImporter.enabled` | Enabling Definition importer | `false` |
+| `ccd-definition-importerimage` | Definition importer image to use | `hmcts.azurecr.io/hmcts/ccd-definition-importer:latest` |
+| `ccd-definition-importer.keyVaults` | Secret with credentials for accessing necessary key vaults in Azure | `kvcreds` |
+| `ccd-definition-importer.secrets` | set these env varibales from kubernetes secrets | `nil` (set by user) |
+| `ccd-definition-importer.definitions` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_URLS` | `nil` |
+| `ccd-definition-importer.definitionFilename` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_FILENAME` | `nil` |
+| `ccd-definition-importer.waitHosts` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS` | `nil` |
+| `ccd-definition-importer.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS_TIMEOUT` | `300` |
+| `ccd-definition-importer.userRoles` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`USER_ROLES` | `- caseworker-bulkscan` |
+| `ccd-definition-importer.microservice` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`MICROSERVICE` | `ccd_gw` |
+| `ccd-definition-importer.verbose` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`VERBOSE` | `false` |
+| `ccd.userProfileImporter.enabled` | Enabling User Profile importer | `false` |
+| `ccd-user-profile-importer.image` | User Profile importer image to use | `hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest` |
+| `ccd-user-profile-importer.users` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USERS` | `nil` |
+| `ccd-user-profile-importermicroservice` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`MICROSSERVICE` | `ccd_definition` |
+| `ccd-user-profile-importer.waitHosts` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS` | `nil` |
+| `ccd-user-profile-importer.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
+| `ccd-user-profile-importer.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
 
 ## Development and Testing
 
@@ -269,7 +266,7 @@ You can easily include this chart in another chart for testing:
 requirements.yaml
 ```
   - name: ccd
-    version: '>0.0.1'
+    version: '>1.0.0'
     repository: file://<path-to-repository-can-be-relative-or-absolute>/chart-ccd/ccd
 ```
 
