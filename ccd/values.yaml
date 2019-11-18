@@ -144,6 +144,7 @@ ccd-user-profile-api:
     livenessDelay: 120
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
+      USER_PROFILE_DB_HOST: "{{ .Release.Name }}-postgresql"
       USER_PROFILE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       USER_PROFILE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
@@ -164,6 +165,7 @@ ccd-definition-store-api:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       DEFINITION_STORE_DB_NAME: definition-store
+      DEFINITION_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
       DEFINITION_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       DEFINITION_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       USER_PROFILE_HOST: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
@@ -182,6 +184,7 @@ ccd-data-store-api:
     livenessDelay: 240
     environment:
       DATA_STORE_DB_NAME: "data-store"
+      DATA_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
       DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       CCD_DM_DOMAIN: https?://dm-store.*
