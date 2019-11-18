@@ -235,7 +235,7 @@ draft-store-service:
     livenessDelay: 240
     keyVaults:
     environment:
-      DRAFT_STORE_DB_HOST:  "{{ .Release.Name }}-postgresql"
+      DRAFT_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
       DRAFT_STORE_DB_USER_NAME: '{{ tpl .Values.global.postgresUsername $}}'
