@@ -30,6 +30,7 @@ global:
   ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
+  devMode: true
 
 ccd-definition-importer:
   definitions:
@@ -53,7 +54,6 @@ ccd-user-profile-importer:
 
 ccd-definition-store-api:
   java:
-    devApplicationInsightsInstrumentKey: "00000000-0000-0000-0000-000000000000"
     environment:
       DEFINITION_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
       DEFINITION_STORE_DB_OPTIONS: ""
@@ -65,7 +65,6 @@ ccd-definition-store-api:
 
 ccd-user-profile-api:
   java:
-    devApplicationInsightsInstrumentKey: "00000000-0000-0000-0000-000000000000"
     environment:
       USER_PROFILE_DB_HOST: "{{ .Release.Name }}-postgresql"
       USER_PROFILE_DB_OPTIONS: "?stringtype=unspecified"
@@ -73,7 +72,6 @@ ccd-user-profile-api:
 
 ccd-data-store-api:
   java:
-    #todo remove 'image' when RDM-5913 is released
     environment:
       DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
