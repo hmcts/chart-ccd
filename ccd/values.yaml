@@ -355,8 +355,6 @@ ccd-user-profile-importer:
 ccpay:
   postgresql:
     enabled: false
-  payment-api:
-    enabled: true
   fees-register-api:
     enabled: false
   rpe-service-auth-provider:
@@ -366,33 +364,34 @@ ccpay:
   ccpay-bulkscanning-api:
     enabled: false
 
-payment-api:
-  java:
-    releaseNameOverride: "{{ .Release.Name }}-payment-api"
-    secrets:
-      PCI_PAL_ACCOUNT_ID_CMC:
-        disabled: true
-      PCI_PAL_ACCOUNT_ID_PROBATE:
-        disabled: true
-      PCI_PAL_ACCOUNT_ID_DIVORCE:
-        disabled: true
-      PCI_PAL_API_URL:
-        disabled: true
-      PCI_PAL_API_KEY:
-        disabled: true
-      GOV_PAY_KEYS_PROBATE:
-        disabled: true
-      GOV_PAY_KEYS_DIVORCE:
-        disabled: true
-      GOV_PAY_KEYS_CMC:
-        disabled: true
-      GOV_PAY_KEYS_REFERENCE:
-        disabled: true
-      LIBERATA_KEYS_OAUTH2_CLIENT_ID:
-        disabled: true
-      LIBERATA_KEYS_OAUTH2_CLIENT_SECRET:
-        disabled: true
-      LIBERATA_KEYS_OAUTH2_USERNAME:
-        disabled: true
-      LIBERATA_KEYS_OAUTH2_PASSWORD:
-        disabled: true
+  payment-api:
+    enabled: true
+    java:
+      releaseNameOverride: "{{ .Release.Name }}-payment-api"
+      secrets:
+        PCI_PAL_ACCOUNT_ID_CMC:
+          disabled: true
+        PCI_PAL_ACCOUNT_ID_PROBATE:
+          disabled: true
+        PCI_PAL_ACCOUNT_ID_DIVORCE:
+          disabled: true
+        PCI_PAL_API_URL:
+          disabled: true
+        PCI_PAL_API_KEY:
+          disabled: true
+        GOV_PAY_KEYS_PROBATE:
+          disabled: true
+        GOV_PAY_KEYS_DIVORCE:
+          disabled: true
+        GOV_PAY_KEYS_CMC:
+          disabled: true
+        GOV_PAY_KEYS_REFERENCE:
+          disabled: true
+        LIBERATA_KEYS_OAUTH2_CLIENT_ID:
+          disabled: true
+        LIBERATA_KEYS_OAUTH2_CLIENT_SECRET:
+          disabled: true
+        LIBERATA_KEYS_OAUTH2_USERNAME:
+          disabled: true
+        LIBERATA_KEYS_OAUTH2_PASSWORD:
+          disabled: true
