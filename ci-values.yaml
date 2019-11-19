@@ -13,7 +13,7 @@ ccd:
   testStubsService:
     enabled: false
   definitionImporter:
-    enabled: true
+    enabled: true
   userProfileImporter:
     enabled: true
 
@@ -30,6 +30,7 @@ global:
   ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
+  devMode: true
 
 ccd-definition-importer:
   definitions:
@@ -50,5 +51,3 @@ ccd-user-profile-importer:
     - auto.test12.cnp+private@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
     - auto.test12.cnp+solc@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
     - auto.test12.cnp+senior@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
-    
-    
