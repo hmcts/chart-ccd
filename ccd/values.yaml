@@ -395,7 +395,4 @@ ccpay:
           disabled: true
         LIBERATA_KEYS_OAUTH2_PASSWORD:
           disabled: true
-      environment:
-        # Remove this once pay chart aligned ccdDataStoreUrl name
-        CORE_CASE_DATA_API_URL: "{{ tpl .Values.global.ccdDataStoreUrl $}}"
 
