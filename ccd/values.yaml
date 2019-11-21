@@ -66,7 +66,7 @@ ccd-case-management-web:
       PRINT_SERVICE_URL_REMOTE: https://return-case-doc-ccd.nonprod.platform.hmcts.net
       CCD_ACTIVITY_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $}}/activity
       PAYMENTS_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $ }}/payments
-      DM_URL_REMOTE: "^https?://(?:{{ tpl .Values.global.dmStoreUrl $}}(?::\\d+)?)/documents"
+      DM_URL_REMOTE: "^https?://(?:{{ .Release.Name }}-dm-store(?::\\d+)?)/documents"
       ANNOTATION_API_URL: https://{{ tpl .Values.global.ccdApiGatewayIngress $}}/em-anno"
   idam-pr:
     releaseNameOverride: "{{ .Release.Name }}-ccd-idam-pr"
@@ -315,7 +315,7 @@ postgresql:
       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "payment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
