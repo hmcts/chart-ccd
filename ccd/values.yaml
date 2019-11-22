@@ -28,7 +28,7 @@ ccd:
   userProfileImporter:
     enabled: true
   blobstorage:
-    enabled: true
+    enabled: false
   emAnnotation:
     enabled: false
   ccpay:
