@@ -160,11 +160,11 @@ ccd-definition-store-api:
       STORAGE_ACCOUNT_NAME:
         secretRef: storage-secret-{{ .Release.Name }}-blobstorage
         key: storageAccountName
-	      disabled: true
+        disabled: true
       STORAGE_ACCOUNT_KEY:
         secretRef: storage-secret-{{ .Release.Name }}-blobstorage
         key: accessKey
-	      disabled: true
+        disabled: true
     environment:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
