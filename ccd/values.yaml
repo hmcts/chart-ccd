@@ -8,25 +8,25 @@ ccd:
   s2s:
     enabled: true
   draftStore:
-    enabled: true
+    enabled: false
   dmStore:
-    enabled: true
+    enabled: false
   managementWeb:
-    enabled: true
+    enabled: false
   apiGatewayWeb:
-    enabled: true
+    enabled: false
   adminWeb:
     enabled: true
   printService:
-    enabled: true
+    enabled: false
   activityApi:
-    enabled: true
+    enabled: false
   testStubsService:
-    enabled: true
+    enabled: false
   definitionImporter:
-    enabled: false
+    enabled: true
   userProfileImporter:
-    enabled: false
+    enabled: true
   blobstorage:
     enabled: true
   emAnnotation:
@@ -35,11 +35,11 @@ ccd:
     enabled: false
 
 global:
-  ccdApiGatewayIngress:
-  ccdCaseManagementWebIngress:
-  ccdAdminWebIngress:
-  idamApiUrl:
-  idamWebUrl:
+  ccdApiGatewayIngress: ""
+  ccdCaseManagementWebIngress: ""
+  ccdAdminWebIngress: ""
+  idamApiUrl: ""
+  idamWebUrl: ""
   ccdDataStoreUrl: "http://{{ .Release.Name }}-ccd-data-store-api"
   ccdDefinitionStoreUrl: "http://{{ .Release.Name }}-ccd-definition-store"
   ccdUserProfileUrl: "http://{{ .Release.Name }}-ccd-user-profile-api"
