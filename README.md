@@ -1,5 +1,8 @@
 # chart-ccd
 
+Note: Default enabled services with CCD-chart are
+Data Store, Definition Store, User Profile, Document management Store, Api gateway.
+All the others are disabled by default (including the CCD frontends)
 
 This chart is intended for deploying the full CCD product stack.
 Including:
