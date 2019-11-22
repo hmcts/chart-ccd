@@ -158,9 +158,13 @@ ccd-definition-store-api:
     livenessDelay: 180
     secrets:
       STORAGE_ACCOUNT_NAME:
-         disabled: true
+        secretRef: storage-secret-{{ .Release.Name }}-blobstorage
+        key: storageAccountName
+	      disabled: true
       STORAGE_ACCOUNT_KEY:
-         disabled: true
+        secretRef: storage-secret-{{ .Release.Name }}-blobstorage
+        key: accessKey
+	      disabled: true
     environment:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
