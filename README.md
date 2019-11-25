@@ -27,17 +27,18 @@ Follow instructions for which environment you are configuring.
 * user profile
 * s2s
 * postgresql
-* definitionImporter ()
-* userProfileImporter ()
+* definitionImporter
+* userProfileImporter
 * adminWeb 
 
 [Optional Services:]
 * case-management-web ( enabled with a flag)
-* admin-web (enabled with a flag)
 * print-api (aka case-print-service which is optional, enabled with a flag)
 * payment-api (which is optional, enabled with a flag)
 * activity-api (aka ccd-case-activity-api which is optional, enabled with a flag)
-*
+* draft-store
+* dm-store 
+* api-gateway-web
 
 
 If you want to customise the installation, download the manifest and
