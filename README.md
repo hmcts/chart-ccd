@@ -4,7 +4,7 @@
 
 * [Introduction](#introduction)
 * [Configuration](#Example-Configuration)
-* [Overriding existings services](#Override-Servies)
+* [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
 * [Deployment on Preview](#Preview-Deployment)
@@ -179,7 +179,7 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `ccd-user-profile-importer.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
 | `ccd-user-profile-importer.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
 
-## Override Servies
+## Override Services
 
 If you have any services already dependent in yout chart, then you want to override:
 eg.,
@@ -212,7 +212,7 @@ In addition to the core services you can include some helper pods to import defi
 **How to Import Definitions and Users**
   There are two ways of importing Definitions Data and User Profiles Data into CCD
 
-a) Using Admin Web interface [see steps](#Admin Web Definition file import)
+a) Using Admin Web interface [see steps](#Admin-Web-Definition-file-import)
 
 b) Using Importer 
 
@@ -339,9 +339,11 @@ And
 ## Admin Web Definition file import
 * Open the Admin Web in a web browser, and login with the test credential.
 * Click on ``Import Case Definition`` to navigate to the importer section.
+
 ![Admin web import](/images/admin_web_import_home.png)
 
 * Click on the ``Choose file`` button and select a definition file from the file menu.
+
 ![File menu](/images/admin_web_file_menu.png)
 
 ![File chosen](/images/admin_web_file_chosen.png)
@@ -349,4 +351,5 @@ And
 * Press the ``Submit`` button.
 * The message ``Case Definition data successfully imported`` is displayed if the definition file is successfully imported.
 * A record is added to the import audit table.
+
 ![Import successful](/images/admin_web_successful_import.png)
