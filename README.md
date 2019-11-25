@@ -1,6 +1,6 @@
 # chart-ccd
 
-[![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=32096)
+[![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-bulk-scan)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=234)
 
 * [Introduction](#introduction)
 * [Configuration](#Example-Configuration)
@@ -10,8 +10,9 @@
 * [Deployment on Preview](#Preview-Deployment)
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
-* [Test Locally](#Development-and-Testing)
+* [Local Testing](#Development-and-Testing)
 * [Important Notes:](#Notes)
+    * [DM Store and Blob Store](#DM-Store-and-Blob-Store)
     * [Default Credentials](#Test-Credentials)
 
 
