@@ -1,6 +1,6 @@
 # chart-ccd
 
-[![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-bulk-scan)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=234)
+[![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=32096)
 
 * [Introduction](#introduction)
 * [Configuration](#Example-Configuration)
