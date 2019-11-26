@@ -395,6 +395,9 @@ And
 ![Profile home](/images/select_jurisdiction.png)
 
 * Click the `Create User` button 
+
+![Profile home](/images/create_user_button.png)
+
 * Enter the `User idam ID`. Select the default jurisdiction, case type and case state.
 * Click the `Create` button
 * Verify that the user profile has been created.
