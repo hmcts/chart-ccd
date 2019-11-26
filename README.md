@@ -383,7 +383,7 @@ And
 
 ![Import successful](/images/file_imported.png)
 
-## Admin Web Create User Role
+## Admin Web Create User Profile
 
 * In admin web, click on the `Manage User Profiles` link.
 
