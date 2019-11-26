@@ -11,6 +11,7 @@
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
 * [Local Testing](#Development-and-Testing)
+* [Accessing an app using this chart on a pull request](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [Important Notes:](#Notes)
     * [DM Store and Blob Store](#DM-Store-and-Blob-Store)
     * [Default Credentials](#Test-Credentials)
@@ -238,6 +239,8 @@ b) Using Importer
 DNS will be automatically registered for most of the CCD pods, the ccd component will be prefixed to the regular url,
 The prefixes can be found here:
 https://github.com/hmcts/chart-ccd/blob/master/ccd/templates/ingress.yaml#L23
+
+Note: To access these URLs you need to run F5 - VPN and enable FoxyProxy in your browser 
 
 An example url for accessing case management web would be:
 ```
