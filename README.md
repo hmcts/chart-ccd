@@ -11,7 +11,6 @@
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
 * [Local Testing](#Development-and-Testing)
-* [Accessing an app using this chart on a pull request](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [Important Notes:](#Notes)
     * [DM Store and Blob Store](#DM-Store-and-Blob-Store)
     * [Default Credentials](#Test-Credentials)
