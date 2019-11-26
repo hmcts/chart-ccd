@@ -4,7 +4,7 @@
 
 * [Introduction](#introduction)
 * [Configuration](#Example-Configuration)
-* [Overriding existings services](#Override-Servies)
+* [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
 * [Deployment on Preview](#Preview-Deployment)
@@ -179,7 +179,7 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `ccd-user-profile-importer.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
 | `ccd-user-profile-importer.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
 
-## Override Servies
+## Override Services
 
 If you have any services already dependent in yout chart, then you want to override:
 eg.,
@@ -212,7 +212,7 @@ In addition to the core services you can include some helper pods to import defi
 **How to Import Definitions and Users**
   There are two ways of importing Definitions Data and User Profiles Data into CCD
 
-a) Using Admin Web interface [see steps](#Admin Web Definition file import)
+a) Using Admin Web interface [see steps](#Admin-Web-Definition-file-import)
 
 b) Using Importer 
 
