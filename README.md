@@ -379,7 +379,7 @@ And
 
 * Click on the `Create User Role` button, and fill in the `User Role` text field.
 
-![Profile home](/images/create_user_profile.png)
+![Profile home](/images/creater_user_profile.png)
 
 * Click the `Create` button and verify that the role has been created.
 
