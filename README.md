@@ -215,7 +215,23 @@ In addition to the core services you can include some helper pods to import defi
 a) Using Admin Web interface [see steps](#Admin-Web-Definition-file-import)
 
 b) Using Importer 
+* In the `cnp-flux-config` project, add additional user profiles to the `ccd-user-profile-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
+    ```
+    ccd-user-profile-importer:
+            users:
+              - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+              - <USER_ID>|<JURISDICTION>|<CASE_TYPE>|<CASE_STATE>
+    ```
 
+* In the `cnp-flux-config` project, add additional definition files to the `ccd-definition-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
+  ```
+  ccd-definition-importer:
+        definitions:
+          - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+          - <DEFINITIION_FILE_URL>
+        userRoles:
+          - caseworker-autotest1
+  ```
 
 ## Accessing an app using this chart on a pull request
 
@@ -337,19 +353,34 @@ And
 ```  
 
 ## Admin Web Definition file import
+
 * Open the Admin Web in a web browser, and login with the test credential.
-* Click on ``Import Case Definition`` to navigate to the importer section.
+* Click on `Import Case Definition` to navigate to the importer section.
 
 ![Admin web import](/images/import_home.png)
 
-* Click on the ``Choose file`` button and select a definition file from the file menu.
+* Click on the `Choose file` button and select a definition file from the file menu.
 
 ![File menu](/images/file_menu.png)
 
 ![File chosen](/images/file_chosen.png)
 
-* Press the ``Submit`` button.
-* The message ``Case Definition data successfully imported`` is displayed if the definition file is successfully imported.
+* Press the `Submit` button.
+* The message `Case Definition data successfully imported` is displayed if the definition file is successfully imported.
 * A record is added to the import audit table.
 
 ![Import successful](/images/file_imported.png)
+
+## Admin Web Create User Profile
+
+* In admin web, click on the `Manage User Profiles` link.
+
+![Profile home](/images/user_profile_home.png)
+
+* Click on the `Create User Role` button, and fill in the `User Role` text field.
+
+![Profile home](/images/create_user_profile.png)
+
+* Click the `Create` button and verify that the role has been created.
+
+![Profile home](/images/user_profile_created.png)
