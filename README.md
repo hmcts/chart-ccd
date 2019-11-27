@@ -121,7 +121,8 @@ ccd-admin-web:
 ```
 
 **Configuration To Use CCD Front End Components**
-If you want to enable the CCD Front end, add the following Config in your chart
+If you want to enable the CCD Front end components
+Enable as below Config in your chart
 ```    
     ccd:
       managementWeb:
@@ -130,7 +131,8 @@ If you want to enable the CCD Front end, add the following Config in your chart
         enabled: true  
 ```
 **CCD Full Configuration With All Dependencies**
-If you want use CCD with full dependencies, use the following configuration:
+If you want use CCD with full dependencies, 
+Enable as below configuration in your chart:
 ```
     ccd:
       emAnnotation:
@@ -152,7 +154,7 @@ If you want use CCD with full dependencies, use the following configuration:
       printService:
         enabled: true
 ```
-Also Need to add this in service environment Config
+Also Need to add this in definition-store service environment Config
 ```
     ccd-definition-store-api:
       java:
@@ -186,7 +188,7 @@ postgresql:
   devMode: true
   ``` 
 
-## Config To Deploy on Demo
+## <u>Config To Deploy on Demo</u>
 The following configuration deploys CCD chart incluidng Front end  and depenednet services on Demo environment
 ```
     ccd:
