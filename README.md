@@ -81,8 +81,8 @@ global:
   ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.core-compute-preview.internal
 ```
 
-**Enable required services as follows:**
-eg.,
+**Enable or disable required services as follows:**
+
 ```
 ccd:
   postgresql:
@@ -101,7 +101,7 @@ ccd:
 ```
 
 **configure services:**
-eg., 
+
 ```
 ccd-definition-importer:
   definitions:
@@ -126,8 +126,8 @@ ccd-admin-web:
 ```
 
 **Configuration To Use CCD Front End Components**
-If you want to enable the CCD Front end components
-Enable as below Config in your chart
+If you want to only enable the CCD Front end components
+enable as below configuration in your chart
 ```    
     ccd:
       managementWeb:
@@ -136,8 +136,8 @@ Enable as below Config in your chart
         enabled: true  
 ```
 **CCD Full Configuration With All Dependencies**
-If you want use CCD with full dependencies, 
-Enable as below configuration in your chart:
+If you want use CCD with all dependencies, 
+enable as below configuration in your chart:
 ```
     ccd:
       emAnnotation:
@@ -159,7 +159,7 @@ Enable as below configuration in your chart:
       printService:
         enabled: true
 ```
-Also Need to add this in definition-store service environment Config
+This definition-store service secrets configuration is required:
 ```
     ccd-definition-store-api:
       java:
@@ -175,8 +175,8 @@ Also Need to add this in definition-store service environment Config
 
 ## Config To Deploy on Preview
 
-[Note :] Due to instability issues with PVCs on Preview environment.
-      PRs which deploys on Preview need to disable Postgres Persistance. 
+[Note] Due to instability issues with PVCs on Preview environment.
+      PRs which deploy to the Preview environment need to disable Postgres Persistance. 
 
 ```
 postgresql:
@@ -194,7 +194,7 @@ postgresql:
   ``` 
 
 ## <u>Config To Deploy on Demo</u>
-The following configuration deploys CCD chart incluidng Front end  and depenednet services on Demo environment
+The following configuration deploys the CCD chart including Front end and dependent services to the Demo environment
 ```
     ccd:
       emAnnotation:
@@ -238,11 +238,11 @@ The following configuration deploys CCD chart incluidng Front end  and depenedne
 
 ## Override Services
 
-If you have any services already dependent in yout chart, then you want to override:
+If you have any services already dependent in your chart, then you want to override:
 eg.,
 
 **S2S Config**
-If you already have s2s dependency in your own chart
+If you already have s2s dependencies in your own chart
 Then Overrride with below environment variables with relevant s2s uri:
 ```
 ccd:
@@ -266,6 +266,7 @@ rpe-service-auth-provider:
 
 ## Importers
 In addition to the core services you can include some helper pods to import definitions and user profiles:
+
 **How to Import Definitions and Users**
   There are two ways of importing Definitions Data and User Profiles Data into CCD
 
@@ -304,7 +305,7 @@ https://case-management-web-sscs-cor-backend-pr-189.service.core-compute-preview
 ```
 
 ### IDAM 
-**whitelisting for web components**
+**Whitelisting for web components**
 Managed using https://github.com/hmcts/chart-idam-pr (version 2.0.0 and above).
 
 To enable add following to your values.preview.yaml:
