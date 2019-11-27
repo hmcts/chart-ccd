@@ -57,10 +57,11 @@ Optional Services:
 
 ## Mandatory Config
  iDam Variabels are Mandatory on any of the environment. please set them in Global as per environment
+
 | Parameter                  | Value                               | Mnadatory  |
 | -------------------------- | ------------------------------------------ | ----- |
-| idamApiUrl          | https://idam-api.<environment>.platform.hmcts.net| true|
-| idamWebUrl          | https://idam-web-public.<environment>.platform.hmcts.net| true|
+| 'idamApiUrl'          | 'https://idam-api.<environment>.platform.hmcts.net'| true|
+| 'idamWebUrl'          | 'https://idam-web-public.<environment>.platform.hmcts.net'| true|
 
 
 ## Example configuration
