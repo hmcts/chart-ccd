@@ -3,7 +3,7 @@
 [![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=75)
 
 * [Introduction](#introduction)
-* [Mandatory Config](#Mandatory-Config)
+* [Configurable Variables](#Configurable-Variables)
 * [Configuration](#Example-Configuration)
     * [To Use CCD Front End Components](#Configuration-To-Use-CCD-Front-End-Components)
     * [To Use CCD With All Dependencies](#CCD-Full-Configuration-With-All-Dependencies)
@@ -55,13 +55,15 @@ Optional Services:
  
 (*) services owned by CCD
 
-## Mandatory Config
- iDam Variabels are Mandatory on any of the environment. please set them in Global as per environment
+## Configurable Variables
 
-| Parameter                  | Value                               | Mnadatory  |
+| Parameter                  | Value                               | Mandatory  |
 | -------------------------- | ------------------------------------------ | ----- |
 | 'idamApiUrl'          | 'https://idam-api.<environment>.platform.hmcts.net'| true|
 | 'idamWebUrl'          | 'https://idam-web-public.<environment>.platform.hmcts.net'| true|
+| 'ccdApiGatewayIngress' |             | false
+| 'ccdCaseManagementWebIngress'|       | false
+| 'ccdAdminWebIngress'         |       | false
 
 
 ## Example configuration
