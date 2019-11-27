@@ -4,6 +4,9 @@
 
 * [Introduction](#introduction)
 * [Configuration](#Example-Configuration)
+    * [To Use CCD Front End Components](#Configuration-To-Use-CCD-Front-End-Components)
+    * [To Use CCD With All Dependencies](#CCD-Full-Configuration-With-All-Dependencies)
+    * [Confgurable Variables](#Confgurable-Variables)
 * [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
@@ -113,31 +116,77 @@ ccd-admin-web:
     environment:
       ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
 ```
+
+**Configuration To Use CCD Front End Components**
+If you want to enable the CCD Front end, add the following Config in your chart
+```    
+    ccd:
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true  
+```
+**CCD Full Configuration With All Dependencies**
+If you want use CCD with full dependencies, use the following configuration:
+```
+    ccd:
+      emAnnotation:
+        enabled: true
+      ccpay:
+        enabled: true
+      draftStore:
+        enabled: true
+      dmStore:
+        enabled: true
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true
+      activityApi:
+        enabled: true
+      blobstorage:
+        enabled: true
+      printService:
+        enabled: true
+```
+Also Need to add this in service environment Config
+```
+    ccd-definition-store-api:
+      java:
+        secrets:
+          STORAGE_ACCOUNT_NAME:
+            disabled: false
+          STORAGE_ACCOUNT_KEY:
+            disabled: false
+        environment:
+          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+```
 **Confgurable Variables**
 
 The following table lists the configurable parameters of the CCD chart and their default values.
 
 If you need to change from the defaults consider sending a PR to the chart instead
+<b><u>Note:</u></b> All variables with ( ** ) are derived from Base Chart ., chart-java, if not overriding in chart-ccd, means they will be used default.
 
 | Parameter                  | Description                                | Default  |
 | -------------------------- | ------------------------------------------ | ----- |
 | `appInsightsKey`           | Application insights key for full CCD stack | `fake-key`|
-| `memoryRequests`           | Requests for memory | `512Mi`|
-| `cpuRequests`              | Requests for cpu | `100m`|
-| `memoryLimits`             | Memory limits| `1024Mi`|
-| `cpuLimits`                | CPU limits | `2500m`|
-| `ingressHost`              | Host for ingress controller to map the container to | `nil` (required, provided by the pipeline)  |
-| `ingressIP`              | Ingress controllers IP address | `nil` (required, provided by the pipeline)  |
-| `consulIP`              | Consul servers IP address | `nil` (required, provided by the pipeline) |
-| `readinessPath`            | Path of HTTP readiness probe | `/health`|
-| `readinessDelay`           | Readiness probe inital delay (seconds)| `30`|
-| `readinessTimeout`         | Readiness probe timeout (seconds)| `3`|
-| `readinessPeriod`          | Readiness probe period (seconds) | `15`|
-| `livenessPath`             | Path of HTTP liveness probe | `/health`|
-| `livenessDelay`            | Liveness probe inital delay (seconds)  | `30`|
-| `livenessTimeout`          | Liveness probe timeout (seconds) | `3`|
-| `livenessPeriod`           | Liveness probe period (seconds) | `15`|
-| `livenessFailureThreshold` | Liveness failure threshold | `3` |
+| `memoryRequests`           | Requests for memory | `512Mi` **|
+| `cpuRequests`              | Requests for cpu | `250m` **|
+| `memoryLimits`             | Memory limits| `2048Mi` **|
+| `cpuLimits`                | CPU limits | `1500m` **|
+| `ingressHost`              | Host for ingress controller to map the container to | `nil` (required, provided by the pipeline)  **|
+| `ingressIP`              | Ingress controllers IP address | `nil` (required, provided by the pipeline)  **|
+| `consulIP`              | Consul servers IP address | `nil` (required, provided by the pipeline) **|
+| `readinessPath`            | Path of HTTP readiness probe | `/health` **|
+| `readinessDelay`           | Readiness probe inital delay (seconds)| `30` **|
+| `readinessTimeout`         | Readiness probe timeout (seconds)| `3` **|
+| `readinessPeriod`          | Readiness probe period (seconds) | `15` **|
+| `livenessPath`             | Path of HTTP liveness probe | `/health` **|
+| `livenessDelay`            | Liveness probe inital delay (seconds)  | `30` **|
+| `livenessTimeout`          | Liveness probe timeout (seconds) | `3` **|
+| `livenessPeriod`           | Liveness probe period (seconds) | `15` **|
+| `livenessFailureThreshold` | Liveness failure threshold | `3`  **|
 | `s2sUrl`                | S2S api url | `http://rpe-service-auth-provider-aat.service.core-compute-aat.internal`|
 | `idamWebUrl`                | Idam web url | `https://idam.preprod.ccidam.reform.hmcts.net`|
 | `idamApiUrl`                | Idam api url | `https://preprod-idamapi.reform.hmcts.net:3511`|
