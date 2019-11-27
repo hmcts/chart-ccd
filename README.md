@@ -382,12 +382,19 @@ And
 
 * In admin web, click on the `Manage User Profiles` link.
 
-![Profile home](/images/user_profile_home.png)
+![Profile home](/images/admin_web_home.png)
 
-* Click on the `Create User Role` button, and fill in the `User Role` text field.
+* Select a jurisdiction.
+* Click on the `Submit` button.
 
-![Profile home](/images/creater_user_profile.png)
+![Profile home](/images/select_jurisdiction.png)
 
-* Click the `Create` button and verify that the role has been created.
+* Click the `Create User` button 
 
-![Profile home](/images/user_profile_created.png)
+![Profile home](/images/create_user_button.png)
+
+* Enter the `User idam ID`. Select the default jurisdiction, case type and case state.
+* Click the `Create` button
+* Verify that the user profile has been created.
+
+![Profile home](/images/create_user_profile.png)
