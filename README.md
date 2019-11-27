@@ -61,9 +61,9 @@ Optional Services:
 | -------------------------- | ------------------------------------------ | ----- |
 | 'idamApiUrl'          | 'https://idam-api.<environment>.platform.hmcts.net'| true|
 | 'idamWebUrl'          | 'https://idam-web-public.<environment>.platform.hmcts.net'| true|
-| 'ccdApiGatewayIngress' |             | false
-| 'ccdCaseManagementWebIngress'|       | false
-| 'ccdAdminWebIngress'         |       | false
+| 'ccdApiGatewayIngress' |'chart-ccd-release.service.core-compute-preview.internal' | false
+| 'ccdCaseManagementWebIngress'| 'chart-ccd-release.service.core-compute-preview.internal' | false
+| 'ccdAdminWebIngress'         | 'chart-ccd-release.service.core-compute-preview.internal' | false
 
 
 ## Example configuration
