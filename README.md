@@ -25,38 +25,35 @@
 Helm product chart for Core Case Data
 
 This chart installs Core Case Data (CCD) as a self contained product.
-All dependent services CCD collaborates with can be deployed via
-configuration. By default the main back-ends and services for the import
-of definitions are installed. By default only one database is installed
-which will be shared by all CCD services and dependent services. This
-chart can be used to deploy on various environments like Demo and
-Preview, but the configuration might have to be tweaked to meet env
-specific requirements. 
+All dependent services can be deployed via configuration. By default the
+main back-ends and services for the import of definitions are installed.
+By default only one database is installed which will be shared between
+CCD services and dependent services. This chart can be used to deploy on
+various environments like Demo and Preview, but the configuration might
+have to be tweaked to meet env specific requirements. This chart can be
+used standalone or can be included in other product charts/applications.
 
 Default Services:
 * data store * - https://github.com/hmcts/ccd-data-store-api
 * definition store * - https://github.com/hmcts/ccd-definition-store-api
 * user profile * - https://github.com/hmcts/ccd-user-profile-api
+* admin web * - https://github.com/hmcts/ccd-admin-web
 * s2s - https://github.com/hmcts/service-auth-provider-app
 * postgresql - https://github.com/helm/charts/tree/master/stable/postgresql
 * definition importer - https://github.com/hmcts/ccd-docker-definition-importer
 * user profile importer - https://github.com/hmcts/ccd-docker-user-profile-importer
-* admin web * - https://github.com/hmcts/ccd-admin-web
 
 Optional Services:
 * case management web * -
   https://github.com/hmcts/ccd-case-management-web
 * api gateway * - https://github.com/hmcts/ccd-api-gateway
-* dm store - https://github.com/hmcts/document-management-store-app
 * print service * - https://github.com/hmcts/ccd-case-print-service
 * activity service * - https://github.com/hmcts/ccd-case-activity-api
+* dm store - https://github.com/hmcts/document-management-store-app
 * payment api - https://github.com/hmcts/ccpay-payment-app
 * draft store - https://github.com/hmcts/draft-store
  
-(services with an asterisk are owned by CCD)  
-
-If you want to customise the installation, download the manifest and
-edit it in accordance with the following section before application.
+(*) services owned by CCD
 
 ## Mandatory Config
  iDam Variabels are Mandatory on any of the evironment. please set them in Global as per environment
