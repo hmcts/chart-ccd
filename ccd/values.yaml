@@ -156,6 +156,8 @@ ccd-definition-store-api:
     releaseNameOverride: "{{ .Release.Name }}-ccd-definition-store"
     readinessDelay: 180
     livenessDelay: 180
+    memoryRequests: "1G"
+    memoryLimits: "2G"
     secrets:
       STORAGE_ACCOUNT_NAME:
         secretRef: storage-secret-{{ .Release.Name }}-blobstorage
