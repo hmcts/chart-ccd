@@ -205,25 +205,6 @@ Optional Services:
           
 ``` 
 
-### Preview - default services and frontend
-
-[Note] Due to instability issues with PVCs on Preview environment.
-      PRs which deploy to the Preview environment need to disable Postgres Persistance. 
-
-```
-postgresql:
-  persistence:
-    enabled: false
-```   
-```
- global:
-  ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
-  idamApiUrl: https://idam-api.aat.platform.hmcts.net
-  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-  ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
-  ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
-  devMode: true
-  ``` 
 
 # Example Configuration
 Below is example configuration for running this chart on a PR to test
