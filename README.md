@@ -23,14 +23,21 @@
 
 Helm product chart for Core Case Data
 
-This chart installs Core Case Data (CCD) as a self contained product.
-All dependent services can be deployed via configuration. By default the
-main back-ends and services for the import of definitions are installed.
-By default only one database is installed which will be shared between
-CCD services and dependent services. This chart can be used to deploy on
-various environments like Demo and Preview, but the configuration might
-have to be tweaked to meet env specific requirements. This chart can be
-used standalone or can be included in other product charts/applications.
+This chart installs Core Case Data (CCD) as a self contained product. By
+default only one database is installed which will be shared between CCD
+services and dependent services.     
+
+Features:
+ 
+* back-ends only deployment (default)
+* back-ends and front-ends deployment
+* back-ends, front-ends and dependent services deployment
+* can be used standalone of included in other charts
+* supports deploy on multiple environment e.g. Demo, Preview 
+* supports deploy of multiple instances of CCD under the same namespace
+  or different namespaces 
+* out of the box user profiles and definition setup
+
 
 Default Services:
 * data store * - https://github.com/hmcts/ccd-data-store-api
@@ -86,6 +93,14 @@ Optional Services:
             key: key
         environment:
           ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+    ccd-user-profile-importer:
+      users:
+       - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+    ccd-definition-importer:
+      definitions:
+       - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+      userRoles:
+       - caseworker-autotest1
 ``` 
 
  
@@ -126,7 +141,14 @@ Optional Services:
           IDAM_OAUTH2_CLIENT_SECRET:
             secretRef: ccd-api-gateway-oauth2-client-secret
             key: key
-    
+    ccd-user-profile-importer:
+      users:
+       - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+    ccd-definition-importer:
+      definitions:
+       - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+      userRoles:
+       - caseworker-autotest1
 ``` 
 
 
@@ -188,7 +210,15 @@ Optional Services:
     dm-store:
       java:
         environment:
-          MAX_FILE_SIZE: '100MB'      
+          MAX_FILE_SIZE: '100MB' 
+    ccd-user-profile-importer:
+      users:
+       - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+    ccd-definition-importer:
+      definitions:
+       - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+      userRoles:
+       - caseworker-autotest1     
           
 ``` 
 
