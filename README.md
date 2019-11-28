@@ -245,15 +245,20 @@ rpe-service-auth-provider:
 ```    
 
 
-## Importers
-In addition to the core services you can include some helper pods to import definitions and user profiles:
+## Setup users profiles and ccd definitions
 
-**How to Import Definitions and Users**
-  There are two ways of importing Definitions Data and User Profiles Data into CCD
+There are two ways of setting up user profiles and importing definitions into CCD
 
 a) Using Admin Web interface [see steps](#Admin-Web-Definition-file-import)
 
-b) Using Importer 
+b) Using Importers 
+
+### Importers
+
+By default the chart will deploy some helper pods called importers.
+These are used to import some initial definitions and setup user
+profiles
+
 * In the `cnp-flux-config` project, add additional user profiles to the `ccd-user-profile-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
     ```
     ccd-user-profile-importer:
