@@ -57,13 +57,13 @@ Optional Services:
 
 ## Configurable Variables
 
-| Parameter                    | Description                                                 | Mandatory  | Global  |
-| --------------------------   | ------------------------------------------                  | ---------- | ---------- |
-| `idamApiUrl`                 | 'https://idam-api.(environment).platform.hmcts.net'         | true       | true       |
-| `ccdAdminWebIngress`         | 'chart-ccd-release.service.core-compute-preview.internal'   | true       | true       |
-| `idamWebUrl`                 | 'https://idam-web-public.(environment).platform.hmcts.net'  | true       | true       |
-| `ccdApiGatewayIngress`       |'chart-ccd-release.service.core-compute-preview.internal'    | false      | true       |
-| `ccdCaseManagementWebIngress`| 'chart-ccd-release.service.core-compute-preview.internal'   | false      | true       |
+| Parameter                    | Description                     | Mandatory                       | Global     |
+| --------------------------   | --------------------------------| ----------                      | ---------- |
+| `idamWebUrl`                 | url of Idam Web                 | true                            | true       |
+| `idamApiUrl`                 | url of Idam Api                 | true                            | true       |
+| `ccdAdminWebIngress`         | url of CCD Admin Web            | true                            | true       |
+| `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when Frontend enabled      | true       |
+| `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when Frontend enabled      | true       |
 
 
 ## Configuration
