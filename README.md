@@ -195,7 +195,7 @@ Optional Services:
           
 ``` 
 
-### Enabling upload history on Admin Web
+#### Enabling upload history on Admin Web
 
 To enable the history of definition uploads in CCD Admin Web,
 [shown here](#Admin-Web-Definition-file-import), use the following
@@ -217,37 +217,10 @@ disabled:
           AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
 
-**configure services:**
+## Using your own Services
 
-```
-ccd-definition-importer:
-  definitions:
-    - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
-  userRoles:
-    - caseworker-autotest1
-
-ccd-user-profile-importer:
-  users:
-    - auto.test.cnp@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
-  
-ccd-admin-web:
-  nodejs:
-    ingressClass: traefik-no-proxy
-    ingressHost: ccd-admin-{{ .Release.Name }}.core-compute-preview.internal
-    secrets:
-      IDAM_OAUTH2_AW_CLIENT_SECRET:
-      secretRef: ccd-admin-web-oauth2-client-secret
-      key: key
-    environment:
-      ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
-```
-
-
-
-## Override Services
-
-If you have any services already dependent in your chart, then you want to override:
-eg.,
+If you have any services already dependent in your chart, then you want
+to override: eg.,
 
 **S2S Config**
 If you already have s2s dependencies in your own chart
