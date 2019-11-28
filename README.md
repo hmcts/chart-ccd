@@ -195,11 +195,12 @@ Optional Services:
           
 ``` 
 
-### Enabling uploads history on Admin Web
+### Enabling upload history on Admin Web
 
-To enable the history of definition uploads in CCD Admin Web
-[see steps](#Admin-Web-Definition-file-import) use the following
-configuration:
+To enable the history of definition uploads in CCD Admin Web,
+[shown here](#Admin-Web-Definition-file-import), use the following
+configuration. In the configurations above the upload history is
+disabled:
 
 ```
     blobstorage:
