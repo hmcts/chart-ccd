@@ -32,7 +32,7 @@ Features:
 * back-ends only deployment (default)
 * back-ends and front-ends deployment
 * back-ends, front-ends and dependent services deployment
-* can be used standalone of included in other charts
+* can be used standalone or included in other charts
 * supports deploy on multiple environment e.g. Demo, Preview 
 * supports deploy of multiple instances of CCD under the same namespace
   or different namespaces 
