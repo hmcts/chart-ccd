@@ -78,6 +78,11 @@ Optional Services:
 
 ### Demo - default services
 
+:warning: Please note: when deploying on a vault-less environment like
+Demo secrets must be provided in the form of sealed secrets in the Flux
+config, similar to
+https://github.com/hmcts/cnp-flux-config/tree/master/k8s/demo/common/ccd/sealed-secrets
+
 ```
     global:
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
