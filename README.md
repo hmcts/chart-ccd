@@ -8,12 +8,9 @@
     * [Demo default services](#Demo---default-services)
     * [Demo default services and frontend](#Demo---default-services-and-frontend)
     * [Demo default services, frontend and dependent services](#Demo---default-services-and-frontend-and-dependent-services)
-    * [Preview - default services and frontend](#Preview---default-services-and-frontend)
-* [Example Configuration](#Example-Configuration)    
 * [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
-* [Deployment on Preview](#Config-To-Deploy-on-Preview)
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
 * [Local Testing](#Development-and-Testing)
@@ -75,9 +72,9 @@ Optional Services:
 
 ```
     global:
-      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
 
     ccd-admin-web:
       nodejs:
@@ -102,24 +99,12 @@ Optional Services:
         enabled: true
 
     global:
-      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
       
-
-    ccd-api-gateway-web:
-      nodejs:
-        ingressClass: traefik-no-proxy
-        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
-        secrets:
-          IDAM_OAUTH2_CLIENT_SECRET:
-            secretRef: ccd-api-gateway-oauth2-client-secret
-            key: key
-    ccd-case-management-web:
-      nodejs:
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     ccd-admin-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -129,7 +114,19 @@ Optional Services:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
         environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'  
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_CLIENT_SECRET:
+            secretRef: ccd-api-gateway-oauth2-client-secret
+            key: key
+    
 ``` 
 
 
@@ -157,24 +154,12 @@ Optional Services:
         enabled: true  
 
     global:
-      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
       
-
-    ccd-api-gateway-web:
-      nodejs:
-        ingressClass: traefik-no-proxy
-        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
-        secrets:
-          IDAM_OAUTH2_CLIENT_SECRET:
-            secretRef: ccd-api-gateway-oauth2-client-secret
-            key: key
-    ccd-case-management-web:
-      nodejs:
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     ccd-admin-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -184,16 +169,18 @@ Optional Services:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
         environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
-    ccd-definition-store-api:
-      java:
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
-          STORAGE_ACCOUNT_NAME:
-            disabled: false
-          STORAGE_ACCOUNT_KEY:
-            disabled: false
-        environment:
-          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+          IDAM_OAUTH2_CLIENT_SECRET:
+            secretRef: ccd-api-gateway-oauth2-client-secret
+            key: key
     ccd-case-activity-api:
       nodejs:
         environment:
@@ -205,73 +192,32 @@ Optional Services:
           
 ``` 
 
+#### Enabling upload history on Admin Web
 
-# Example Configuration
-Below is example configuration for running this chart on a PR to test
-your application with CCD, it could easily be tweaked to work locally if
-you wish, PRs to make that simpler are welcome.
-
-Add CCD chart to requirements.yaml and configure below global properties:
-
-```
-global:
-  ccdApiGatewayIngress: gateway-{{ .Release.Name }}.core-compute-preview.internal
-  idamApiUrl: https://idam-api.aat.platform.hmcts.net
-  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-  ccdCaseManagementWebIngress: www-{{ .Release.Name }}.core-compute-preview.internal
-  ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.core-compute-preview.internal
-```
-
-**Enable or disable required services as follows:**
+To enable the history of definition uploads in CCD Admin Web,
+[shown here](#Admin-Web-Definition-file-import), use the following
+configuration. In the configurations above the upload history is
+disabled:
 
 ```
-ccd:
-  postgresql:
-    enabled: false
-  s2s:
-    enabled: true
-  draftStore:
-    enabled: false
-  dmStore:
-    enabled: true
-  paymentApi:
-    enabled: false
-  managementWeb:
-    enabled: false
-    ...
+    blobstorage:
+        enabled: true
+        
+    ccd-definition-store-api:
+      java:
+        secrets:
+          STORAGE_ACCOUNT_NAME:
+            disabled: false
+          STORAGE_ACCOUNT_KEY:
+            disabled: false
+        environment:
+          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
 
-**configure services:**
+## Plugging in your own Services
 
-```
-ccd-definition-importer:
-  definitions:
-    - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
-  userRoles:
-    - caseworker-autotest1
-
-ccd-user-profile-importer:
-  users:
-    - auto.test.cnp@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
-  
-ccd-admin-web:
-  nodejs:
-    ingressClass: traefik-no-proxy
-    ingressHost: ccd-admin-{{ .Release.Name }}.core-compute-preview.internal
-    secrets:
-      IDAM_OAUTH2_AW_CLIENT_SECRET:
-      secretRef: ccd-admin-web-oauth2-client-secret
-      key: key
-    environment:
-      ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
-```
-
-
-
-## Override Services
-
-If you have any services already dependent in your chart, then you want to override:
-eg.,
+If you have any services already dependent in your chart, then you want
+to override: eg.,
 
 **S2S Config**
 If you already have s2s dependencies in your own chart
@@ -296,32 +242,55 @@ rpe-service-auth-provider:
 ```    
 
 
-## Importers
-In addition to the core services you can include some helper pods to import definitions and user profiles:
+## Setup user profiles and ccd definitions
 
-**How to Import Definitions and Users**
-  There are two ways of importing Definitions Data and User Profiles Data into CCD
+There are two ways of setting up user profiles and importing definitions into CCD
 
 a) Using Admin Web interface [see steps](#Admin-Web-Definition-file-import)
 
-b) Using Importer 
-* In the `cnp-flux-config` project, add additional user profiles to the `ccd-user-profile-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
+b) Using Importers 
+
+### Importers
+
+By default the chart will deploy some helper pods called importers.
+These are used to setup specified definitions and user profiles at
+deploy time
+
+* user profile importer setup example:
     ```
     ccd-user-profile-importer:
             users:
-              - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
               - <USER_ID>|<JURISDICTION>|<CASE_TYPE>|<CASE_STATE>
     ```
 
-* In the `cnp-flux-config` project, add additional definition files to the `ccd-definition-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
+* ccd definition importer setup example:
   ```
   ccd-definition-importer:
         definitions:
-          - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
           - <DEFINITIION_FILE_URL>
         userRoles:
-          - caseworker-autotest1
+          - <USER_ROLES>
   ```
+  
+For more advanced configuration refer to:
+- https://github.com/hmcts/ccd-docker-definition-importer
+- https://github.com/hmcts/ccd-docker-user-profile-importer
+  
+Defaults:
+
+```
+ccd-user-profile-importer:
+    users:
+      - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+```
+
+```
+ccd-definition-importer:
+    definitions:
+      - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+    userRoles:
+      - caseworker-autotest1
+```
 
 ## Accessing an app using this chart on a pull request
 
