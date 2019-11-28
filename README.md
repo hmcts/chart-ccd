@@ -256,23 +256,41 @@ By default the chart will deploy some helper pods called importers.
 These are used to setup specified definitions and user profiles at
 deploy time
 
-* In the `cnp-flux-config` project, add additional user profiles to the `ccd-user-profile-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
+* user profile importer setup example:
     ```
     ccd-user-profile-importer:
             users:
-              - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
               - <USER_ID>|<JURISDICTION>|<CASE_TYPE>|<CASE_STATE>
     ```
 
-* In the `cnp-flux-config` project, add additional definition files to the `ccd-definition-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
+* ccd definition importer setup example:
   ```
   ccd-definition-importer:
         definitions:
-          - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
           - <DEFINITIION_FILE_URL>
         userRoles:
-          - caseworker-autotest1
+          - <USER_ROLES>
   ```
+  
+For more advanced configuration refer to:
+- https://github.com/hmcts/ccd-docker-definition-importer
+- https://github.com/hmcts/ccd-docker-user-profile-importer
+  
+Defaults:
+
+```
+ccd-user-profile-importer:
+    users:
+      - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+```
+
+```
+ccd-definition-importer:
+    definitions:
+      - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+    userRoles:
+      - caseworker-autotest1
+```
 
 ## Accessing an app using this chart on a pull request
 
