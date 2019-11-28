@@ -62,31 +62,31 @@ Optional Services:
 | `idamWebUrl`                 | url of Idam Web                 | true                            | true       |
 | `idamApiUrl`                 | url of Idam Api                 | true                            | true       |
 | `ccdAdminWebIngress`         | url of CCD Admin Web            | true                            | true       |
-| `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when Frontend enabled      | true       |
-| `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when Frontend enabled      | true       |
+| `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when frontend enabled      | true       |
+| `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when frontend enabled      | true       |
 
 
 ## Configuration
 
 
-### Demo - Default services
+### Demo - default services
 
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
 
  
-### Demo - Default services and Frontend 
+### Demo - default services and frontend 
 
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
 
-### Demo - Default services, Frontend and dependent services 
+### Demo - default services, drontend and dependent services 
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
-### Preview - Default services and Frontend
+### Preview - default services and frontend
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
