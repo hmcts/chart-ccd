@@ -70,6 +70,7 @@ Optional Services:
 | `ccdAdminWebIngress`         | url of CCD Admin Web            | true                            | true       |
 | `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when frontend enabled      | true       |
 | `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when frontend enabled      | true       |
+| `devMode`                    | todo                            |                                 | true       |
 
 
 ## Configuration
@@ -82,6 +83,7 @@ Optional Services:
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
       ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      devMode: true
 
     ccd-admin-web:
       nodejs:
@@ -119,6 +121,7 @@ Optional Services:
       ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
+      devMode: true
       
     ccd-admin-web:
       nodejs:
@@ -181,6 +184,7 @@ Optional Services:
       ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
+      devMode: true
       
     ccd-admin-web:
       nodejs:
@@ -207,10 +211,6 @@ Optional Services:
       nodejs:
         environment:
           CORS_ORIGIN_WHITELIST: '{{ .Values.global.ccdCaseManagementWebIngress }}'
-    dm-store:
-      java:
-        environment:
-          MAX_FILE_SIZE: '100MB' 
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
