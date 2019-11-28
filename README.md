@@ -205,6 +205,13 @@ Optional Services:
           
 ``` 
 
+### Enabling uploads history on Admin Web
+
+To enable the history of definition uploads in CCD Admin Web use the
+following configuration:
+
+TODO
+
 
 # Example Configuration
 Below is example configuration for running this chart on a PR to test
