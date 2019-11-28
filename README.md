@@ -93,8 +93,6 @@ Optional Services:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
-        environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
@@ -130,9 +128,7 @@ Optional Services:
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             secretRef: ccd-admin-web-oauth2-client-secret
-            key: key
-        environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'  
+            key: key  
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
@@ -194,8 +190,6 @@ Optional Services:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
-        environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
