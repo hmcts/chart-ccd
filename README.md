@@ -66,7 +66,7 @@ Optional Services:
 | `ccdCaseManagementWebIngress`| 'chart-ccd-release.service.core-compute-preview.internal'   | false      | true       |
 
 
-## Example configuration
+## Configuration
 
 
 ### Demo - Default services
@@ -76,17 +76,17 @@ and test. Every required parameter must be indicated
 
 
  
-### Demo - Default services + Frontend 
+### Demo - Default services and Frontend 
 
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
 
-### Demo - Full stack CCD and dependent services 
+### Demo - Default services, Frontend and dependent services 
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
-### Preview - Default services + Frontend  
+### Preview - Default services and Frontend
 //todo: provide correct configuration yaml that can be copied and pasted
 and test. Every required parameter must be indicated
 
