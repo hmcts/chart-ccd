@@ -75,9 +75,9 @@ Optional Services:
 
 ```
     global:
-      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
 
     ccd-admin-web:
       nodejs:
@@ -102,24 +102,12 @@ Optional Services:
         enabled: true
 
     global:
-      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
       
-
-    ccd-api-gateway-web:
-      nodejs:
-        ingressClass: traefik-no-proxy
-        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
-        secrets:
-          IDAM_OAUTH2_CLIENT_SECRET:
-            secretRef: ccd-api-gateway-oauth2-client-secret
-            key: key
-    ccd-case-management-web:
-      nodejs:
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     ccd-admin-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -129,7 +117,19 @@ Optional Services:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
         environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'  
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_CLIENT_SECRET:
+            secretRef: ccd-api-gateway-oauth2-client-secret
+            key: key
+    
 ``` 
 
 
@@ -157,24 +157,12 @@ Optional Services:
         enabled: true  
 
     global:
-      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
       
-
-    ccd-api-gateway-web:
-      nodejs:
-        ingressClass: traefik-no-proxy
-        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
-        secrets:
-          IDAM_OAUTH2_CLIENT_SECRET:
-            secretRef: ccd-api-gateway-oauth2-client-secret
-            key: key
-    ccd-case-management-web:
-      nodejs:
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     ccd-admin-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -184,16 +172,18 @@ Optional Services:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
         environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
-    ccd-definition-store-api:
-      java:
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
-          STORAGE_ACCOUNT_NAME:
-            disabled: false
-          STORAGE_ACCOUNT_KEY:
-            disabled: false
-        environment:
-          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+          IDAM_OAUTH2_CLIENT_SECRET:
+            secretRef: ccd-api-gateway-oauth2-client-secret
+            key: key
     ccd-case-activity-api:
       nodejs:
         environment:
@@ -207,10 +197,24 @@ Optional Services:
 
 ### Enabling uploads history on Admin Web
 
-To enable the history of definition uploads in CCD Admin Web use the
-following configuration:
+To enable the history of definition uploads in CCD Admin Web
+[see steps](#Admin-Web-Definition-file-import) use the following
+configuration:
 
-TODO
+```
+    blobstorage:
+        enabled: true
+        
+    ccd-definition-store-api:
+      java:
+        secrets:
+          STORAGE_ACCOUNT_NAME:
+            disabled: false
+          STORAGE_ACCOUNT_KEY:
+            disabled: false
+        environment:
+          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+```
 
 
 # Example Configuration
