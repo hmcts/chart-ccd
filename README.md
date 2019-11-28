@@ -21,11 +21,11 @@
 
 ## Introduction
 
-Helm product chart for Core Case Data
+Helm product chart for Core Case Data (CCD)
 
-This chart installs Core Case Data (CCD) as a self contained product. By
-default only one database is installed which will be shared between CCD
-services and dependent services.     
+This chart installs CCD as a self contained product. By default only one
+database is installed which will be shared between CCD services and
+dependent services.
 
 Features:
  
