@@ -5,8 +5,11 @@
 * [Introduction](#introduction)
 * [Configurable Variables](#Configurable-Variables)
 * [Configuration](#Configuration)
-    * [Demo-default services](#Demo---default services)
-    * [To Use CCD With All Dependencies](#CCD-Full-Configuration-With-All-Dependencies)
+    * [Demo default services](#Demo---default-services)
+    * [Demo default services and frontend](#Demo---default-services-and-frontend)
+    * [Demo default services, frontend and dependent services](#Demo---default-services-and-frontend-and-dependent-services)
+    * [Preview - default services and frontend](#Preview---default-services-and-frontend)
+* [Example Configuration](#Example-Configuration)    
 * [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
@@ -85,11 +88,7 @@ Optional Services:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
         environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
-    ccd-definition-store-api:
-      java:
-        memoryRequests: "1G"
-        memoryLimits: "2G"
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
 ``` 
 
  
@@ -130,11 +129,7 @@ Optional Services:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
         environment:
-          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
-    ccd-definition-store-api:
-      java:
-        memoryRequests: "1G"
-        memoryLimits: "2G"
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
 ``` 
 
 
@@ -192,8 +187,6 @@ Optional Services:
           ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
     ccd-definition-store-api:
       java:
-        memoryRequests: "1G"
-        memoryLimits: "2G"
         secrets:
           STORAGE_ACCOUNT_NAME:
             disabled: false
@@ -213,10 +206,26 @@ Optional Services:
 ``` 
 
 ### Preview - default services and frontend
-//todo: provide correct configuration yaml that can be copied and pasted
-and test. Every required parameter must be indicated
 
+[Note] Due to instability issues with PVCs on Preview environment.
+      PRs which deploy to the Preview environment need to disable Postgres Persistance. 
 
+```
+postgresql:
+  persistence:
+    enabled: false
+```   
+```
+ global:
+  ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
+  idamApiUrl: https://idam-api.aat.platform.hmcts.net
+  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+  ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
+  ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
+  devMode: true
+  ``` 
+
+# Example Configuration
 Below is example configuration for running this chart on a PR to test
 your application with CCD, it could easily be tweaked to work locally if
 you wish, PRs to make that simpler are welcome.
@@ -276,25 +285,7 @@ ccd-admin-web:
       ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
 ```
 
-## Config To Deploy on Preview
 
-[Note] Due to instability issues with PVCs on Preview environment.
-      PRs which deploy to the Preview environment need to disable Postgres Persistance. 
-
-```
-postgresql:
-  persistence:
-    enabled: false
-```   
-```
- global:
-  ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
-  idamApiUrl: https://idam-api.aat.platform.hmcts.net
-  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-  ccdCaseManagementWebIngress: chart-ccd-release.service.core-compute-preview.internal
-  ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
-  devMode: true
-  ``` 
 
 ## Override Services
 
