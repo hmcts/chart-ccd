@@ -4,14 +4,13 @@
 
 * [Introduction](#introduction)
 * [Configurable Variables](#Configurable-Variables)
-* [Configuration](#Example-Configuration)
-    * [To Use CCD Front End Components](#Configuration-To-Use-CCD-Front-End-Components)
+* [Configuration](#Configuration)
+    * [Demo-default services](#Demo---default services)
     * [To Use CCD With All Dependencies](#CCD-Full-Configuration-With-All-Dependencies)
 * [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
 * [Deployment on Preview](#Config-To-Deploy-on-Preview)
-* [Deployment on Demo](#Config-To-Deploy-on-Demo)
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
 * [Local Testing](#Development-and-Testing)
@@ -71,20 +70,147 @@ Optional Services:
 
 ### Demo - default services
 
-//todo: provide correct configuration yaml that can be copied and pasted
-and test. Every required parameter must be indicated
+```
+    global:
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      idamApiUrl: https://idam-api.demo.platform.hmcts.net
+      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
 
+    ccd-admin-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_AW_CLIENT_SECRET:
+            secretRef: ccd-admin-web-oauth2-client-secret
+            key: key
+        environment:
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
+    ccd-definition-store-api:
+      java:
+        memoryRequests: "1G"
+        memoryLimits: "2G"
+``` 
 
  
 ### Demo - default services and frontend 
 
-//todo: provide correct configuration yaml that can be copied and pasted
-and test. Every required parameter must be indicated
+```
+    ccd:  
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true
+
+    global:
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      idamApiUrl: https://idam-api.demo.platform.hmcts.net
+      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+      ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
+      
+
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_CLIENT_SECRET:
+            secretRef: ccd-api-gateway-oauth2-client-secret
+            key: key
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    ccd-admin-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_AW_CLIENT_SECRET:
+            secretRef: ccd-admin-web-oauth2-client-secret
+            key: key
+        environment:
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
+    ccd-definition-store-api:
+      java:
+        memoryRequests: "1G"
+        memoryLimits: "2G"
+``` 
 
 
-### Demo - default services, drontend and dependent services 
-//todo: provide correct configuration yaml that can be copied and pasted
-and test. Every required parameter must be indicated
+### Demo - default services, frontend and dependent services 
+
+```
+    ccd:  
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true
+      emAnnotation:
+        enabled: true
+      ccpay:
+        enabled: true
+      draftStore:
+        enabled: true
+      dmStore:
+        enabled: true
+      activityApi:
+        enabled: true
+      blobstorage:
+        enabled: true
+      printService:
+        enabled: true  
+
+    global:
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      idamApiUrl: https://idam-api.demo.platform.hmcts.net
+      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+      ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
+      
+
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_CLIENT_SECRET:
+            secretRef: ccd-api-gateway-oauth2-client-secret
+            key: key
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    ccd-admin-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_AW_CLIENT_SECRET:
+            secretRef: ccd-admin-web-oauth2-client-secret
+            key: key
+        environment:
+          ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login' 
+    ccd-definition-store-api:
+      java:
+        memoryRequests: "1G"
+        memoryLimits: "2G"
+        secrets:
+          STORAGE_ACCOUNT_NAME:
+            disabled: false
+          STORAGE_ACCOUNT_KEY:
+            disabled: false
+        environment:
+          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+    ccd-case-activity-api:
+      nodejs:
+        environment:
+          CORS_ORIGIN_WHITELIST: '{{ .Values.global.ccdCaseManagementWebIngress }}'
+    dm-store:
+      java:
+        environment:
+          MAX_FILE_SIZE: '100MB'      
+          
+``` 
 
 ### Preview - default services and frontend
 //todo: provide correct configuration yaml that can be copied and pasted
@@ -150,54 +276,6 @@ ccd-admin-web:
       ADMINWEB_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
 ```
 
-**Configuration To Use CCD Front End Components**
-If you want to only enable the CCD Front end components
-enable as below configuration in your chart
-```    
-    ccd:
-      managementWeb:
-        enabled: true
-      apiGatewayWeb:
-        enabled: true  
-```
-**CCD Full Configuration With All Dependencies**
-If you want use CCD with all dependencies, 
-enable as below configuration in your chart:
-```
-    ccd:
-      emAnnotation:
-        enabled: true
-      ccpay:
-        enabled: true
-      draftStore:
-        enabled: true
-      dmStore:
-        enabled: true
-      managementWeb:
-        enabled: true
-      apiGatewayWeb:
-        enabled: true
-      activityApi:
-        enabled: true
-      blobstorage:
-        enabled: true
-      printService:
-        enabled: true
-```
-This definition-store service secrets configuration is required:
-```
-    ccd-definition-store-api:
-      java:
-        secrets:
-          STORAGE_ACCOUNT_NAME:
-            disabled: false
-          STORAGE_ACCOUNT_KEY:
-            disabled: false
-        environment:
-          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
-```
-
-
 ## Config To Deploy on Preview
 
 [Note] Due to instability issues with PVCs on Preview environment.
@@ -217,49 +295,6 @@ postgresql:
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   devMode: true
   ``` 
-
-## <u>Config To Deploy on Demo</u>
-The following configuration deploys the CCD chart including Front end and dependent services to the Demo environment
-```
-    ccd:
-      emAnnotation:
-        enabled: true
-      ccpay:
-        enabled: true
-      draftStore:
-        enabled: true
-      dmStore:
-        enabled: true
-      managementWeb:
-        enabled: true
-      apiGatewayWeb:
-        enabled: true
-      activityApi:
-        enabled: true
-      blobstorage:
-        enabled: true
-      printService:
-        enabled: true  
-
-    global:
-      ccdApiGatewayIngress: gateway-ccd-aks.demo.platform.hmcts.net
-      ccdCaseManagementWebIngress: www-ccd-aks.demo.platform.hmcts.net
-      ccdAdminWebIngress: ccd-admin-web-aks.demo.platform.hmcts.net
-      idamApiUrl: https://idam-api.demo.platform.hmcts.net
-      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
-      devMode: true
-
-    ccd-definition-store-api:
-      java:
-        secrets:
-          STORAGE_ACCOUNT_NAME:
-            disabled: false
-          STORAGE_ACCOUNT_KEY:
-            disabled: false
-        environment:
-          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true  
-```
-
 
 ## Override Services
 
