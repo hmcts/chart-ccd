@@ -1,5 +1,5 @@
 tags:
-  idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
+  idam-pr: true  #ccd-case-management-web and admin web will add IDAM redirect urls
 
 #subcharts conditions
 ccd:
@@ -184,12 +184,8 @@ ccd-definition-store-api:
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
 
-
-
 ccd-data-store-api:
   java:
-    #todo remove 'image' when RDM-5913 is released
-    image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
     readinessDelay: 240
     livenessDelay: 240
