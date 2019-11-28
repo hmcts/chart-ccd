@@ -57,18 +57,43 @@ Optional Services:
 
 ## Configurable Variables
 
-| Parameter                  | Value                               | Mandatory  |
-| -------------------------- | ------------------------------------------ | ----- |
-| 'idamApiUrl'          | 'https://idam-api.(environment).platform.hmcts.net'| true|
-| 'idamWebUrl'          | 'https://idam-web-public.(environment).platform.hmcts.net'| true|
-| 'ccdApiGatewayIngress' |'chart-ccd-release.service.core-compute-preview.internal' | false
-| 'ccdCaseManagementWebIngress'| 'chart-ccd-release.service.core-compute-preview.internal' | false
-| 'ccdAdminWebIngress'         | 'chart-ccd-release.service.core-compute-preview.internal' | false
+| Parameter                    | Description                                                 | Mandatory  | Global  |
+| --------------------------   | ------------------------------------------                  | ---------- | ---------- |
+| `idamApiUrl`                 | 'https://idam-api.(environment).platform.hmcts.net'         | true       | true       |
+| `ccdAdminWebIngress`         | 'chart-ccd-release.service.core-compute-preview.internal'   | true       | true       |
+| `idamWebUrl`                 | 'https://idam-web-public.(environment).platform.hmcts.net'  | true       | true       |
+| `ccdApiGatewayIngress`       |'chart-ccd-release.service.core-compute-preview.internal'    | false      | true       |
+| `ccdCaseManagementWebIngress`| 'chart-ccd-release.service.core-compute-preview.internal'   | false      | true       |
 
 
 ## Example configuration
 
-Below is example configuration for running this chart on a PR to test your application with CCD, it could easily be tweaked to work locally if you wish, PRs to make that simpler are welcome.
+
+### Demo - Default services
+
+//todo: provide correct configuration yaml that can be copied and pasted
+and test. Every required parameter must be indicated
+
+
+ 
+### Demo - Default services + Frontend 
+
+//todo: provide correct configuration yaml that can be copied and pasted
+and test. Every required parameter must be indicated
+
+
+### Demo - Full stack CCD and dependent services 
+//todo: provide correct configuration yaml that can be copied and pasted
+and test. Every required parameter must be indicated
+
+### Preview - Default services + Frontend  
+//todo: provide correct configuration yaml that can be copied and pasted
+and test. Every required parameter must be indicated
+
+
+Below is example configuration for running this chart on a PR to test
+your application with CCD, it could easily be tweaked to work locally if
+you wish, PRs to make that simpler are welcome.
 
 Add CCD chart to requirements.yaml and configure below global properties:
 
