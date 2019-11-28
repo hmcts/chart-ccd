@@ -70,7 +70,7 @@ Optional Services:
 | `ccdAdminWebIngress`         | url of CCD Admin Web            | true                            | true       |
 | `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when frontend enabled      | true       |
 | `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when frontend enabled      | true       |
-| `devMode`                    | todo                            |                                 | true       |
+| `devMode`                    | CCD backend apps require APPINSIGHTS_INSTRUMENTATIONKEY configuration property. Setting devMode to true provides this transparently.|| true       |
 
 
 ## Configuration
