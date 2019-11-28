@@ -287,6 +287,7 @@ dm-store:
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       IDAM_USER_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
+      MAX_FILE_SIZE: '100MB'
 
 em-anno:
   java:
