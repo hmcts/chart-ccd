@@ -217,42 +217,6 @@ disabled:
           AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
 
-
-# Example Configuration
-Below is example configuration for running this chart on a PR to test
-your application with CCD, it could easily be tweaked to work locally if
-you wish, PRs to make that simpler are welcome.
-
-Add CCD chart to requirements.yaml and configure below global properties:
-
-```
-global:
-  ccdApiGatewayIngress: gateway-{{ .Release.Name }}.core-compute-preview.internal
-  idamApiUrl: https://idam-api.aat.platform.hmcts.net
-  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-  ccdCaseManagementWebIngress: www-{{ .Release.Name }}.core-compute-preview.internal
-  ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.core-compute-preview.internal
-```
-
-**Enable or disable required services as follows:**
-
-```
-ccd:
-  postgresql:
-    enabled: false
-  s2s:
-    enabled: true
-  draftStore:
-    enabled: false
-  dmStore:
-    enabled: true
-  paymentApi:
-    enabled: false
-  managementWeb:
-    enabled: false
-    ...
-```
-
 **configure services:**
 
 ```
