@@ -8,12 +8,9 @@
     * [Demo default services](#Demo---default-services)
     * [Demo default services and frontend](#Demo---default-services-and-frontend)
     * [Demo default services, frontend and dependent services](#Demo---default-services-and-frontend-and-dependent-services)
-    * [Preview - default services and frontend](#Preview---default-services-and-frontend)
-* [Example Configuration](#Example-Configuration)    
 * [Overriding existings services](#Override-Services)
     * [S2S Config](#S2S-Config)
 * [Importers](#Importers)
-* [Deployment on Preview](#Config-To-Deploy-on-Preview)
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
 * [Local Testing](#Development-and-Testing)
@@ -217,7 +214,7 @@ disabled:
           AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
 
-## Using your own Services
+## Plugging in your own Services
 
 If you have any services already dependent in your chart, then you want
 to override: eg.,
@@ -245,7 +242,7 @@ rpe-service-auth-provider:
 ```    
 
 
-## Setup users profiles and ccd definitions
+## Setup user profiles and ccd definitions
 
 There are two ways of setting up user profiles and importing definitions into CCD
 
@@ -256,8 +253,8 @@ b) Using Importers
 ### Importers
 
 By default the chart will deploy some helper pods called importers.
-These are used to import some initial definitions and setup user
-profiles
+These are used to setup specified definitions and user profiles at
+deploy time
 
 * In the `cnp-flux-config` project, add additional user profiles to the `ccd-user-profile-importer` config in the file `/k8s/demo/common/ccd/latest-ccd-chart.yaml`:
     ```
