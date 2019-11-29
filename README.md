@@ -355,5 +355,5 @@ You can log in to CCD UI at the following url:
     www-{{ .Release.Name }}.demo.platform.hmcts.net
     
 Ask the CCD team for the default test user credentials if you want to do
-a quick sanity check that the installation is successful by logging in
-to the test case type installed by default
+a quick sanity check that the installation is successful by using the
+test case type installed by default
