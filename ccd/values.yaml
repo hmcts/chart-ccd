@@ -136,7 +136,7 @@ ccd-case-activity-api:
     environment:
       REDIS_SSL_ENABLED: false
       IDAM_BASE_URL: '{{ tpl .Values.global.idamApiUrl $}}'
-      CORS_ORIGIN_WHITELIST: '{{ .Values.global.ccdCaseManagementWebIngress }}'
+      CORS_ORIGIN_WHITELIST: '{{ tpl .Values.global.ccdCaseManagementWebIngress $}}'
 
 ccd-user-profile-api:
   java:
