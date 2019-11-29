@@ -350,6 +350,10 @@ ccd-definition-importer:
 
 ## Ready for take-off 🛫
 
-You can now log in to CCD UI at the following url:
+You can log in to CCD UI at the following url:
 
     www-{{ .Release.Name }}.demo.platform.hmcts.net
+    
+Ask the CCD team for the default test user credentials if you want to do
+a quick sanity check that the installation is successful by logging in
+to the test case type installed by default
