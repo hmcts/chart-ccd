@@ -214,10 +214,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
           IDAM_OAUTH2_CLIENT_SECRET:
             secretRef: ccd-api-gateway-oauth2-client-secret
             key: key
-    ccd-case-activity-api:
-      nodejs:
-        environment:
-          CORS_ORIGIN_WHITELIST: '{{ .Values.global.ccdCaseManagementWebIngress }}'
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
