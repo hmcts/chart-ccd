@@ -2,19 +2,20 @@
 
 [![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=75)
 
-* [Introduction](#introduction)
-* [Configurable Variables](#Configurable-Variables)
-* [Configuration](#Configuration)
-    * [Demo default services](#Demo---default-services)
-    * [Demo default services and frontend](#Demo---default-services-and-frontend)
-  *   [Demo default services, frontend and dependent services](#Demo---default-services-and-frontend-and-dependent-services)
-* [Importers](#Importers)
-* [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
-* [IDAM](#IDAM)
-* [Local Testing](#Development-and-Testing)
-* [Important Notes:](#Notes)
-    * [DM Store and Blob Store](#DM-Store-and-Blob-Store)
-* [General Information](#General-Information)
+- [chart-ccd](#chart-ccd)
+  * [Introduction](#introduction)
+  * [Configurable Variables](#configurable-variables)
+  * [Configuration](#configuration)
+    + [Demo - secrets](#demo---secrets)
+    + [Demo - default services](#demo---default-services)
+    + [Demo - default services and frontend](#demo---default-services-and-frontend)
+    + [Demo - default services, frontend and dependent services](#demo---default-services--frontend-and-dependent-services)
+      - [Enabling upload history on Admin Web](#enabling-upload-history-on-admin-web)
+  * [Setup user profiles and ccd definitions](#setup-user-profiles-and-ccd-definitions)
+    + [Importers](#importers)
+  * [Admin Web Definition file import](#admin-web-definition-file-import)
+  * [Admin Web Create User Profile](#admin-web-create-user-profile)
+  * [Ready for take-off 🛫](#ready-for-take-off---)
 
 
 ## Introduction
