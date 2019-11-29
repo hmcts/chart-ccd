@@ -231,10 +231,9 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
 
 #### Enabling upload history on Admin Web
 
-To enable the history of definition uploads in CCD Admin Web,
-[shown here](#Admin-Web-Definition-file-import), use the following
-configuration. In the configurations above the upload history is
-disabled:
+In the configurations above the history of definition uploads in CCD
+Admin Web, [shown here](#Admin-Web-Definition-file-import), is disabled.
+To enable it, use the following configuration:
 
 ```
     blobstorage:
@@ -250,6 +249,9 @@ disabled:
         environment:
           AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
+
+Note: blobstorage is used also for other purposes so it might already
+enabled on some configs
 
 ## Setup user profiles and ccd definitions
 
