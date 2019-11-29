@@ -97,11 +97,11 @@ ccd-api-gateway-web:
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ tpl .Values.global.ccdCaseManagementWebIngress $}},http://{{ tpl .Values.global.ccdCaseManagementWebIngress $}},{{ tpl .Values.global.ccdCaseManagementWebIngress $}},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
-    secrets:
-      IDAM_OAUTH2_CLIENT_SECRET:
-        secretRef: ccd-api-gateway-oauth2-client-secret
-        key: key
-        disabled: true
+#    secrets:
+#      IDAM_OAUTH2_CLIENT_SECRET:
+#        secretRef: ccd-api-gateway-oauth2-client-secret
+#        key: key
+#        disabled: true
 
 ccd-admin-web:
   nodejs:
@@ -126,11 +126,11 @@ ccd-admin-web:
       ADMINWEB_AUTHORIZATION_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/idam/adminweb/authorization'
       ADMINWEB_ROLES_WHITELIST: 'ccd-import,ccd-import-validate'
       IDAM_ADMIN_WEB_SERVICE_KEY: AAAAAAAAAAAAAAAA
-    secrets:
-      IDAM_OAUTH2_AW_CLIENT_SECRET:
-        secretRef: ccd-admin-web-oauth2-client-secret
-        key: key
-        disabled: true
+#    secrets:
+#      IDAM_OAUTH2_AW_CLIENT_SECRET:
+#        secretRef: ccd-admin-web-oauth2-client-secret
+#        key: key
+#        disabled: true
   idam-pr:
     releaseNameOverride: "{{ .Release.Name }}-ccd-admin-web-idam-pr"
     api:
