@@ -340,28 +340,3 @@ ccd-definition-importer:
 * Verify that the user profile has been created.
 
 ![Profile home](/images/create_user_profile.png)
-
-## General Information
-The following table lists the configurable parameters which comes from base chart . chart-java.
-This is just for information, as chart-ccd already set necessary attributes
-If in case need to increase due to performance issues, these params can be modified in your chart
-
-| Parameter                  | Description                                | Default  |
-| -------------------------- | ------------------------------------------ | ----- |
-| `appInsightsKey`           | Application insights key for full CCD stack | `fake-key`|
-| `memoryRequests`           | Requests for memory | `512Mi` **|
-| `cpuRequests`              | Requests for cpu | `250m` **|
-| `memoryLimits`             | Memory limits| `2048Mi` **|
-| `cpuLimits`                | CPU limits | `1500m` **|
-| `ingressHost`              | Host for ingress controller to map the container to | `nil` (required, provided by the pipeline)  **|
-| `ingressIP`              | Ingress controllers IP address | `nil` (required, provided by the pipeline)  **|
-| `consulIP`              | Consul servers IP address | `nil` (required, provided by the pipeline) **|
-| `readinessPath`            | Path of HTTP readiness probe | `/health` **|
-| `readinessDelay`           | Readiness probe inital delay (seconds)| `30` **|
-| `readinessTimeout`         | Readiness probe timeout (seconds)| `3` **|
-| `readinessPeriod`          | Readiness probe period (seconds) | `15` **|
-| `livenessPath`             | Path of HTTP liveness probe | `/health` **|
-| `livenessDelay`            | Liveness probe inital delay (seconds)  | `30` **|
-| `livenessTimeout`          | Liveness probe timeout (seconds) | `3` **|
-| `livenessPeriod`           | Liveness probe period (seconds) | `15` **|
-| `livenessFailureThreshold` | Liveness failure threshold | `3`  **|
