@@ -347,3 +347,9 @@ ccd-definition-importer:
 * Verify that the user profile has been created.
 
 ![Profile home](/images/create_user_profile.png)
+
+## Ready for take-off 🛫
+
+You can now log in to CCD UI at the following url:
+
+    www-{{ .Release.Name }}.demo.platform.hmcts.net
