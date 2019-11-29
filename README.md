@@ -250,7 +250,7 @@ To enable it, use the following configuration:
           AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
 
-Note: blobstorage is used also for other purposes so it might already
+Note: blobstorage is used also for other purposes so it might already be
 enabled on some configs
 
 ## Setup user profiles and ccd definitions
