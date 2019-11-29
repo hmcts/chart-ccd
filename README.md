@@ -80,7 +80,7 @@ Optional Services:
 
 When deploying on a vault-less environment like Demo, secrets must be
 provided in the form of sealed secrets in the flux config. For
-reference, the sealed secrets required by this chart can be found at  
+reference, the sealed secrets required by this chart can be found at:  
 https://github.com/hmcts/cnp-flux-config/tree/master/k8s/demo/common/ccd/sealed-secrets
 
 To use this chart on a certain namespace, all the required sealed
