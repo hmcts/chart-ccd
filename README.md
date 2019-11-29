@@ -262,6 +262,10 @@ definitions into CCD
 
 * Importers 
 
+While the importers are useful to create some initial desired setup at
+deploy time, the Admin Web allows to import additional definitions later
+on
+
 ### Importers
 
 By default the chart will deploy some helper pods called importers.
