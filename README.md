@@ -2,7 +2,6 @@
 
 [![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=75)
 
-- [chart-ccd](#chart-ccd)
   * [Introduction](#introduction)
   * [Configurable Variables](#configurable-variables)
   * [Configuration](#configuration)
