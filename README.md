@@ -7,9 +7,7 @@
 * [Configuration](#Configuration)
     * [Demo default services](#Demo---default-services)
     * [Demo default services and frontend](#Demo---default-services-and-frontend)
-    * [Demo default services, frontend and dependent services](#Demo---default-services-and-frontend-and-dependent-services)
-* [Overriding existings services](#Override-Services)
-    * [S2S Config](#S2S-Config)
+  *   [Demo default services, frontend and dependent services](#Demo---default-services-and-frontend-and-dependent-services)
 * [Importers](#Importers)
 * [Access PR URL](#Accessing-an-app-using-this-chart-on-a-pull-request)
 * [IDAM](#IDAM)
@@ -252,41 +250,14 @@ disabled:
           AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
 ```
 
-## Plugging in your own Services
-
-If you have any services already dependent in your chart, then you want
-to override: eg.,
-
-**S2S Config**
-If you already have s2s dependencies in your own chart
-Then Overrride with below environment variables with relevant s2s uri:
-```
-ccd:
-  rpe-service-auth-provider:
-    java:
-      ingressHost: ""
-      releaseNameOverride: "{{ .Release.Name }}-s2s"
-
-```
-And set below secrets to s2s installation:
-```
-rpe-service-auth-provider:
-  java:
-    MICROSERVICEKEYS_CCD_ADMIN: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
-      MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
-```    
-
-
 ## Setup user profiles and ccd definitions
 
-There are two ways of setting up user profiles and importing definitions into CCD
+This chart provides two ways of setting up user profiles and importing
+definitions into CCD
 
-a) Using Admin Web interface [see steps](#Admin-Web-Definition-file-import)
+* CCD Admin Web [see steps](#Admin-Web-Definition-file-import)
 
-b) Using Importers 
+* Importers 
 
 ### Importers
 
@@ -297,20 +268,20 @@ deploy time
 * user profile importer setup example:
     ```
     ccd-user-profile-importer:
-            users:
-              - <USER_ID>|<JURISDICTION>|<CASE_TYPE>|<CASE_STATE>
+        users:
+          - <USER_ID>|<JURISDICTION>|<CASE_TYPE>|<CASE_STATE>
     ```
 
 * ccd definition importer setup example:
-  ```
-  ccd-definition-importer:
+    ```
+    ccd-definition-importer:
         definitions:
           - <DEFINITIION_FILE_URL>
         userRoles:
           - <USER_ROLES>
-  ```
+    ```
   
-For more advanced configuration refer to:
+For more advanced configuration refer to the importers documentation:
 - https://github.com/hmcts/ccd-docker-definition-importer
 - https://github.com/hmcts/ccd-docker-user-profile-importer
   
