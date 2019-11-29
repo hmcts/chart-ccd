@@ -3,6 +3,7 @@
 [![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=75)
 
 ## Table of Contents
+  * [Table of Contents](#table-of-contents)
   * [Introduction](#introduction)
   * [Configurable Variables](#configurable-variables)
   * [Configuration](#configuration)
@@ -13,8 +14,9 @@
       - [Enabling upload history on Admin Web](#enabling-upload-history-on-admin-web)
   * [Setup user profiles and ccd definitions](#setup-user-profiles-and-ccd-definitions)
     + [Importers](#importers)
-  * [Admin Web Definition file import](#admin-web-definition-file-import)
-  * [Admin Web Create User Profile](#admin-web-create-user-profile)
+    + [Admin Web](#admin-web)
+      - [Admin Web Definition file import](#admin-web-definition-file-import)
+      - [Admin Web Create User Profile](#admin-web-create-user-profile)
   * [Ready for take-off 🛫](#ready-for-take-off---)
 
 
