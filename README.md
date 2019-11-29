@@ -309,7 +309,9 @@ ccd-definition-importer:
       - caseworker-autotest1
 ```
 
-## Admin Web Definition file import
+### Admin Web
+
+#### Admin Web Definition file import
 
 * Open the Admin Web in a web browser, and login with the test credential.
 * Click on `Import Case Definition` to navigate to the importer section.
@@ -328,7 +330,7 @@ ccd-definition-importer:
 
 ![Import successful](/images/file_imported.png)
 
-## Admin Web Create User Profile
+#### Admin Web Create User Profile
 
 * In admin web, click on the `Manage User Profiles` link.
 
