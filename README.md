@@ -41,21 +41,21 @@ Features:
 
 
 Default Services:
-* data store * - https://github.com/hmcts/ccd-data-store-api
-* definition store * - https://github.com/hmcts/ccd-definition-store-api
-* user profile * - https://github.com/hmcts/ccd-user-profile-api
-* admin web * - https://github.com/hmcts/ccd-admin-web
+* data store* - https://github.com/hmcts/ccd-data-store-api
+* definition store* - https://github.com/hmcts/ccd-definition-store-api
+* user profile* - https://github.com/hmcts/ccd-user-profile-api
+* admin web* - https://github.com/hmcts/ccd-admin-web
 * s2s - https://github.com/hmcts/service-auth-provider-app
 * postgresql - https://github.com/helm/charts/tree/master/stable/postgresql
 * definition importer - https://github.com/hmcts/ccd-docker-definition-importer
 * user profile importer - https://github.com/hmcts/ccd-docker-user-profile-importer
 
 Optional Services:
-* case management web * -
+* case management web* -
   https://github.com/hmcts/ccd-case-management-web
-* api gateway * - https://github.com/hmcts/ccd-api-gateway
-* print service * - https://github.com/hmcts/ccd-case-print-service
-* activity service * - https://github.com/hmcts/ccd-case-activity-api
+* api gateway* - https://github.com/hmcts/ccd-api-gateway
+* print service* - https://github.com/hmcts/ccd-case-print-service
+* activity service* - https://github.com/hmcts/ccd-case-activity-api
 * dm store - https://github.com/hmcts/document-management-store-app
 * payment api - https://github.com/hmcts/ccpay-payment-app
 * draft store - https://github.com/hmcts/draft-store
