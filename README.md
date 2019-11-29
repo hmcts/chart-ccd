@@ -107,8 +107,8 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
-            secretRef: ccd-admin-web-oauth2-client-secret
-            key: key
+            disabled: false
+
     #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
@@ -144,8 +144,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
-            secretRef: ccd-admin-web-oauth2-client-secret
-            key: key  
+            disabled: false
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
@@ -155,8 +154,8 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
           IDAM_OAUTH2_CLIENT_SECRET:
-            secretRef: ccd-api-gateway-oauth2-client-secret
-            key: key
+            disabled: false
+
     #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
@@ -206,8 +205,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
-            secretRef: ccd-admin-web-oauth2-client-secret
-            key: key
+            disabled: false
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
@@ -217,8 +215,8 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
         secrets:
           IDAM_OAUTH2_CLIENT_SECRET:
-            secretRef: ccd-api-gateway-oauth2-client-secret
-            key: key
+            disabled: false
+                        
     #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
