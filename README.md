@@ -106,6 +106,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             secretRef: ccd-admin-web-oauth2-client-secret
             key: key
+    #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
@@ -153,6 +154,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
           IDAM_OAUTH2_CLIENT_SECRET:
             secretRef: ccd-api-gateway-oauth2-client-secret
             key: key
+    #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
@@ -218,6 +220,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
       nodejs:
         environment:
           CORS_ORIGIN_WHITELIST: '{{ .Values.global.ccdCaseManagementWebIngress }}'
+    #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
@@ -270,7 +273,7 @@ on
 
 By default the chart will deploy some helper pods called importers.
 These are used to setup specified definitions and user profiles at
-deploy time
+deploy time. Make sure you properly configure them or else disable them.
 
 * user profile importer setup example:
     ```
@@ -292,7 +295,8 @@ For more advanced configuration refer to the importers documentation:
 - https://github.com/hmcts/ccd-docker-definition-importer
 - https://github.com/hmcts/ccd-docker-user-profile-importer
   
-Defaults:
+The configuration examples in this guide will import a simple test
+definition and setup a test user 'auto.test.cnp@gmail.com':
 
 ```
 ccd-user-profile-importer:
