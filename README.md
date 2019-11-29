@@ -113,6 +113,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+       
     ccd-definition-importer:
       definitions:
        - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
@@ -145,9 +146,11 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
+            
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+        
     ccd-api-gateway-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -160,6 +163,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+       
     ccd-definition-importer:
       definitions:
        - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
@@ -206,9 +210,11 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
+            
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+        
     ccd-api-gateway-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -221,6 +227,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+       
     ccd-definition-importer:
       definitions:
        - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
