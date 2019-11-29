@@ -216,10 +216,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
           IDAM_OAUTH2_CLIENT_SECRET:
             secretRef: ccd-api-gateway-oauth2-client-secret
             key: key
-    ccd-case-activity-api:
-      nodejs:
-        environment:
-          CORS_ORIGIN_WHITELIST: '{{ .Values.global.ccdCaseManagementWebIngress }}'
     #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
