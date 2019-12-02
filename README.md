@@ -320,7 +320,8 @@ ccd-definition-importer:
 
 #### Admin Web Definition file import
 
-* Open the Admin Web in a web browser, and login with the test credential.
+* Open the Admin Web in a web browser, and login with the test
+  credential (ask CCD team for the credentials).
 * Click on `Import Case Definition` to navigate to the importer section.
 
 ![Admin web import](/images/import_home.png)
