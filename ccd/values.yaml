@@ -347,10 +347,11 @@ blobstorage:
 
 ccd-definition-importer:
   releaseNameOverride: "{{ .Release.Name }}-definition-importer"
-  redirectUri: "https://{{ tpl .Values.global.ccdCaseManagementWebIngress $}}/oauth2redirect"
+  idamApiUrl: '{{ tpl .Values.global.idamApiUrl $}}'
+  idamClientId: 'ccd_admin'
+  redirectUri: "https://{{ tpl .Values.global.ccdAdminWebIngress $}}/oauth2redirect"
   definitionStoreUrl: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
   s2sUrl: '{{ tpl .Values.global.s2sUrl $}}'
-  idamApiUrl: '{{ tpl .Values.global.idamApiUrl $}}'
   verbose: true
   secrets:
     IMPORTER_USERNAME:
