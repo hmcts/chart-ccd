@@ -16,6 +16,10 @@ ccd:
     enabled: true
   userProfileImporter:
     enabled: true
+  ccpay:
+    enabled: true
+    rpe-service-auth-provider:
+      enabled: false  
 
 postgresql:
   persistence:
