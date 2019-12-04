@@ -223,16 +223,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
           IDAM_OAUTH2_CLIENT_SECRET:
             disabled: false
             
-    ccd-definition-store-api:
-      java:
-        secrets:
-          STORAGE_ACCOUNT_NAME:
-            disabled: false
-          STORAGE_ACCOUNT_KEY:
-            disabled: false
-        environment:
-          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
-          
     #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
