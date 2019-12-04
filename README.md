@@ -57,10 +57,11 @@ Optional Services:
 * print service* - https://github.com/hmcts/ccd-case-print-service
 * activity service* - https://github.com/hmcts/ccd-case-activity-api
 * dm store - https://github.com/hmcts/document-management-store-app
-* payment api - https://github.com/hmcts/ccpay-payment-app
+* payment api** - https://github.com/hmcts/ccpay-payment-app
 * draft store - https://github.com/hmcts/draft-store
  
 (*) services owned by CCD
+(**) Currently Disabled due to chart inconsistencies 
 
 ## Configurable Variables
 
