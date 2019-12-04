@@ -113,12 +113,12 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
-       
+    
     ccd-definition-importer:
       definitions:
        - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
       userRoles:
-       - caseworker-autotest1
+       - caseworker-autotest1 
 ``` 
 
  
@@ -146,11 +146,11 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
-            
+    
     ccd-case-management-web:
       nodejs:
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
-        
+    
     ccd-api-gateway-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -163,7 +163,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
     ccd-user-profile-importer:
       users:
        - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
-       
+    
     ccd-definition-importer:
       definitions:
        - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
@@ -182,8 +182,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         enabled: true
       emAnnotation:
         enabled: true
-      ccpay:
-        enabled: true
       draftStore:
         enabled: true
       dmStore:
@@ -193,7 +191,7 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
       blobstorage:
         enabled: true
       printService:
-        enabled: true  
+        enabled: true
 
     global:
       idamApiUrl: https://idam-api.demo.platform.hmcts.net
@@ -210,11 +208,12 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
-            
+    
     ccd-case-management-web:
       nodejs:
+        ingressClass: traefik-no-proxy
         ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
-        
+    
     ccd-api-gateway-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -222,7 +221,17 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         secrets:
           IDAM_OAUTH2_CLIENT_SECRET:
             disabled: false
-                        
+            
+    ccd-definition-store-api:
+      java:
+        secrets:
+          STORAGE_ACCOUNT_NAME:
+            disabled: false
+          STORAGE_ACCOUNT_KEY:
+            disabled: false
+        environment:
+          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+          
     #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
     ccd-user-profile-importer:
       users:
