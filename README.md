@@ -321,7 +321,9 @@ ccd-definition-importer:
 #### Admin Web Definition file import
 
 * Open the Admin Web in a web browser, and login with the test
-  credential (ask CCD team for the credentials).
+  credential (ask CCD team). You can log in to Admin Web at the
+  following url:   
+  https://ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
 * Click on `Import Case Definition` to navigate to the importer section.
 
 ![Admin web import](/images/import_home.png)
@@ -363,7 +365,7 @@ ccd-definition-importer:
 
 You can log in to CCD UI at the following url:
 
-    www-{{ .Release.Name }}.demo.platform.hmcts.net
+    https://www-{{ .Release.Name }}.demo.platform.hmcts.net
     
 Ask the CCD team for the default test user credentials if you want to do
 a quick sanity check that the installation is successful. You can use
