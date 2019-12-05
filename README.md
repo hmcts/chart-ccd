@@ -60,7 +60,7 @@ Optional Services:
 * payment api** - https://github.com/hmcts/ccpay-payment-app
 * draft store - https://github.com/hmcts/draft-store
  
-(*) services owned by CCD
+(*) services owned by CCD  
 (**) Currently Disabled due to chart inconsistencies 
 
 ## Configurable Variables
