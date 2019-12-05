@@ -323,7 +323,11 @@ ccd-definition-importer:
 * Open the Admin Web in a web browser, and login with the test
   credential (ask CCD team). You can log in to Admin Web at the
   following url:   
+  
+  ``` 
   https://ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+  ```
+
 * Click on `Import Case Definition` to navigate to the importer section.
 
 ![Admin web import](/images/import_home.png)
