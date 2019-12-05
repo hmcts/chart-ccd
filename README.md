@@ -61,7 +61,7 @@ Optional Services:
 * draft store - https://github.com/hmcts/draft-store
  
 (*) services owned by CCD  
-(**) Currently Disabled due to chart inconsistencies 
+(**) currently disabled due to chart inconsistencies 
 
 ## Configurable Variables
 
