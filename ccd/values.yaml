@@ -1,5 +1,5 @@
 tags:
-  idam-pr: true  #ccd-case-management-web will add IDAM redirect urls
+  idam-pr: true  #ccd-case-management-web and admin web will add IDAM redirect urls
 
 #subcharts conditions
 ccd:
@@ -97,6 +97,11 @@ ccd-api-gateway-web:
       PROXY_PRINT_SERVICE: http://ccd-case-print-service
       CORS_ORIGIN_WHITELIST: "https://{{ tpl .Values.global.ccdCaseManagementWebIngress $}},http://{{ tpl .Values.global.ccdCaseManagementWebIngress $}},{{ tpl .Values.global.ccdCaseManagementWebIngress $}},*"
       PROXY_CASE_ACTIVITY: http://ccd-case-activity-api
+    secrets:
+      IDAM_OAUTH2_CLIENT_SECRET:
+        secretRef: ccd-api-gateway-oauth2-client-secret
+        key: key
+        disabled: true
 
 ccd-admin-web:
   nodejs:
@@ -121,6 +126,11 @@ ccd-admin-web:
       ADMINWEB_AUTHORIZATION_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/idam/adminweb/authorization'
       ADMINWEB_ROLES_WHITELIST: 'ccd-import,ccd-import-validate'
       IDAM_ADMIN_WEB_SERVICE_KEY: AAAAAAAAAAAAAAAA
+    secrets:
+      IDAM_OAUTH2_AW_CLIENT_SECRET:
+        secretRef: ccd-admin-web-oauth2-client-secret
+        key: key
+        disabled: true
   idam-pr:
     releaseNameOverride: "{{ .Release.Name }}-ccd-admin-web-idam-pr"
     api:
@@ -136,6 +146,7 @@ ccd-case-activity-api:
     environment:
       REDIS_SSL_ENABLED: false
       IDAM_BASE_URL: '{{ tpl .Values.global.idamApiUrl $}}'
+      CORS_ORIGIN_WHITELIST: '{{ tpl .Values.global.ccdCaseManagementWebIngress $}}'
 
 ccd-user-profile-api:
   java:
@@ -184,11 +195,8 @@ ccd-definition-store-api:
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
 
-
-
 ccd-data-store-api:
   java:
-    #todo remove 'image' when RDM-5913 is released
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
     releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
     readinessDelay: 240
@@ -291,6 +299,7 @@ dm-store:
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       IDAM_USER_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
+      MAX_FILE_SIZE: '100MB'
 
 em-anno:
   java:
@@ -338,10 +347,11 @@ blobstorage:
 
 ccd-definition-importer:
   releaseNameOverride: "{{ .Release.Name }}-definition-importer"
-  redirectUri: "https://{{ tpl .Values.global.ccdCaseManagementWebIngress $}}/oauth2redirect"
+  idamApiUrl: '{{ tpl .Values.global.idamApiUrl $}}'
+  idamClientId: 'ccd_admin'
+  redirectUri: "https://{{ tpl .Values.global.ccdAdminWebIngress $}}/oauth2redirect"
   definitionStoreUrl: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
   s2sUrl: '{{ tpl .Values.global.s2sUrl $}}'
-  idamApiUrl: '{{ tpl .Values.global.idamApiUrl $}}'
   verbose: true
   secrets:
     IMPORTER_USERNAME:
