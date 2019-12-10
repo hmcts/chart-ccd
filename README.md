@@ -173,7 +173,9 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
 ``` 
 
 
-### Demo - default services, frontend and dependent services (Payment API is currently disabled)
+### Demo - default services, frontend and dependent services 
+
+Note: Payment API and some other services are currently disabled
 
 ```
     ccd:  
