@@ -1,284 +1,379 @@
 # chart-ccd
 
-NOTE: :warning: version 4.0.0-alpha of the chart-ccd is still not ready to be used. It was released to make testing on HMCTS Demo a faster process
+[![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/Helm%20Charts/chart-ccd)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=75)
+
+## Table of Contents
+  * [Table of Contents](#table-of-contents)
+  * [Introduction](#introduction)
+  * [Configurable Variables](#configurable-variables)
+  * [Configuration](#configuration)
+    + [Demo - secrets](#demo---secrets)
+    + [Demo - default services](#demo---default-services)
+    + [Demo - default services and frontend](#demo---default-services-and-frontend)
+    + [Demo - default services, frontend and dependent services](#demo---default-services--frontend-and-dependent-services)
+      - [Enabling upload history on Admin Web](#enabling-upload-history-on-admin-web)
+  * [Setup user profiles and ccd definitions](#setup-user-profiles-and-ccd-definitions)
+    + [Importers](#importers)
+    + [Admin Web](#admin-web)
+      - [Admin Web Definition file import](#admin-web-definition-file-import)
+      - [Admin Web Create User Profile](#admin-web-create-user-profile)
+  * [Ready for take-off 🛫](#ready-for-take-off---)
 
 
-This chart is intended for deploying the full CCD product stack.
-Including:
-* data-store-api
-* user-profile-api
-* definition-store-api
-* case-management-web (optional, enabled with a flag)
-* admin-web (optional, enabled with a flag)
-* print-api (aka case-print-service which is optional, enabled with a flag)
+## Introduction
 
-We will take small PRs and small features to this chart but more complicated needs should be handled in your own chart.
+Helm product chart for Core Case Data (CCD)
 
-## Example configuration
+This chart installs CCD as a self contained product. By default only one
+database is installed which will be shared between CCD services and
+dependent services.
 
-Below is example configuration for running this chart on a PR to test your application with CCD, it could easily be tweaked to work locally if you wish, PRs to make that simpler are welcome.
+Features:
+ 
+* back-ends only deployment (default)
+* back-ends and front-ends deployment
+* back-ends, front-ends and dependent services deployment
+* can be used standalone or included in other charts
+* supports deploy on multiple environment e.g. Demo, Preview 
+* supports deploy of multiple instances of CCD under the same namespace
+  or different namespaces 
+* out of the box user profiles and definition setup
 
-requirements.yaml
-```yaml
-dependencies:
-  - name: ccd
-    version: '2.0.0'
-    repository: '@hmctspublic'
-```
 
-The `SERVICE_FQDN`, `INGRESS_IP` and `CONSUL_LB_IP` are all provided by the pipeline, but require you to pass them through for preview environments.
+Default Services:
+* data store* - https://github.com/hmcts/ccd-data-store-api
+* definition store* - https://github.com/hmcts/ccd-definition-store-api
+* user profile* - https://github.com/hmcts/ccd-user-profile-api
+* admin web* - https://github.com/hmcts/ccd-admin-web
+* s2s - https://github.com/hmcts/service-auth-provider-app
+* postgresql - https://github.com/helm/charts/tree/master/stable/postgresql
+* definition importer - https://github.com/hmcts/ccd-docker-definition-importer
+* user profile importer - https://github.com/hmcts/ccd-docker-user-profile-importer
 
-values.preview.template.yaml
-```yaml
-ccd:
-  ingressHost: ${SERVICE_FQDN}
-  ingressIP: ${INGRESS_IP}
-  consulIP: ${CONSUL_LB_IP}
+Optional Services:
+* case management web* -
+  https://github.com/hmcts/ccd-case-management-web
+* api gateway* - https://github.com/hmcts/ccd-api-gateway
+* print service* - https://github.com/hmcts/ccd-case-print-service
+* activity service* - https://github.com/hmcts/ccd-case-activity-api
+* dm store - https://github.com/hmcts/document-management-store-app
+* payment api** - https://github.com/hmcts/ccpay-payment-app
+* draft store - https://github.com/hmcts/draft-store
+ 
+(*) services owned by CCD  
+(**) currently disabled due to chart inconsistencies 
 
-  idam-pr:
-    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
-    redirect_uris:
-      CCD:
-        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
-      CCD Admin:
-        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
+## Configurable Variables
 
-  apiGateway:
-    s2sKey: ${API_GATEWAY_S2S_KEY}
-    idamClientSecret: 
-      value: ${API_GATEWAY_IDAM_SECRET}
+| Parameter                    | Description                     | Mandatory                       | Global     |
+| --------------------------   | --------------------------------| ----------                      | ---------- |
+| `idamWebUrl`                 | url of Idam Web                 | true                            | true       |
+| `idamApiUrl`                 | url of Idam Api                 | true                            | true       |
+| `ccdAdminWebIngress`         | url of CCD Admin Web            | true                            | true       |
+| `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when frontend enabled      | true       |
+| `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when frontend enabled      | true       |
+| `devMode`                    | CCD backend apps require APPINSIGHTS_INSTRUMENTATIONKEY configuration property. Setting devMode to true provides this transparently.| true | true       |
 
-  userProfileApi:
-    authorisedServices: ccd_admin,ccd_data,ccd_definition,cmc_claim_store
-
-  dataStoreApi:
-    s2sKey: ${DATA_STORE_S2S_KEY}
-    s2sAuthorisedServices: cmc_claim_store,ccd_gw
-
-  definitionStoreApi:
-    s2sKey: ${DEFINITION_STORE_S2S_KEY}
-    s2sAuthorisedServices: ccd_admin,ccd_data,cmc_claim_store,ccd_gw
-
-  caseManagementWeb:
-    enabled: true # if you need access to the web ui then enable this, otherwise it won't be deployed
-    environment:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0
-
-  adminWeb:
-    enabled: true # if you need access to the admin web ui then enable this, otherwise it won't be deployed
-    s2sKey: ${ADMIN_S2S_KEY}
-    idamClientSecret: 
-      value: ${ADMIN_WEB_IDAM_SECRET}
-    environment:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0
-```
-
-## PostgreSQL
-
-Persistance is enabled on this chart.  Due to stability issues with PVC's in the Preview environment, please disable persistance in consumers of this chart.
-
-## Importers
-
-In addition to the core services you can include some helper pods to import definitions and user profiles:
-
-- definitions: https://github.com/hmcts/ccd-docker-definition-importer
-- user profiles: https://github.com/hmcts/ccd-docker-user-profile-importer
-
-values.preview.template.yaml
-```yaml
-ccd:
-  # above config for core services
-
-  importer:
-    userprofile:
-      enabled: true
-      jurisdictions:
-        - CMC
-      users:
-        - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|open
-      userProfileDatabaseHost: ${SERVICE_NAME}-ccd-postgres
-      userProfileDatabasePort: 5432
-      userProfileDatabaseUser: hmcts
-      userProfileDatabasePassword: hmcts
-      userProfileDatabaseName: user-profile
-    definition:
-      enabled: true
-      image: hmcts.azurecr.io/hmcts/cmc-ccd-definition-importer:1.2.6
-      definitionFilename: cmc-ccd.xlsx
-      userRoles:
-        - citizen
-        - caseworker-cmc
-        - caseworker-cmc-solicitor
-        - caseworker-cmc-systemupdate
-        - caseworker-cmc-anonymouscitizen
-```
-
-The idam secret and s2s keys need to be loaded in the pipeline,
-example config:
-
-```
-def secrets = [
-  'your-vault-${env}': [
-    secret('idam-client-secret', 'IDAM_CLIENT_SECRET') // optional, this is an example
-  ],
-  's2s-${env}'      : [
-    secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
-    secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
-    secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
-    secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
-  ],
-  'ccd-${env}'      : [
-    secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
-  ]
-]
-
-withPipeline(type, product, component) {
-  loadVaultSecrets(secrets)
-}
-```
-
-## Accessing an app using this chart on a pull request
-
-DNS will be automatically registered for most of the CCD pods, the ccd component will be prefixed to the regular url,
-The prefixes can be found here:
-https://github.com/hmcts/chart-ccd/blob/master/ccd/templates/ingress.yaml#L23
-
-An example url for accessing case management web would be:
-```
-https://case-management-web-sscs-cor-backend-pr-189.service.core-compute-preview.internal/
-```
-
-### IDAM whitelisting for web components
-
-Managed using https://github.com/hmcts/chart-idam-pr (version 2.0.0 and above).
-
-To enable add following to your values.preview.template.yaml:
-```
-tags:
-  ccd-idam-pr: true
-
-ccd:
-  # other ccd config
-
-  idam-pr:
-    releaseNameOverride: ${SERVICE_NAME}-ccd-idam-pr
-    redirect_uris:
-      CCD:
-        - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
-      CCD Admin:
-        - https://admin-web-${SERVICE_FQDN}/oauth2redirect
-```
 
 ## Configuration
 
-The following table lists the configurable parameters of the CCD chart and their default values.
+### Demo - secrets
 
-If you need to change from the defaults consider sending a PR to the chart instead
+When deploying on a vault-less environment like Demo, secrets must be
+provided in the form of sealed secrets in the flux config. For
+reference, the sealed secrets required by this chart can be found at:  
+https://github.com/hmcts/cnp-flux-config/tree/master/k8s/demo/common/ccd/sealed-secrets
 
-| Parameter                  | Description                                | Default  |
-| -------------------------- | ------------------------------------------ | ----- |
-| `appInsightsKey`                | Application insights key for full CCD stack | `fake-key`|
-| `memoryRequests`           | Requests for memory | `512Mi`|
-| `cpuRequests`              | Requests for cpu | `100m`|
-| `memoryLimits`             | Memory limits| `1024Mi`|
-| `cpuLimits`                | CPU limits | `2500m`|
-| `ingressHost`              | Host for ingress controller to map the container to | `nil` (required, provided by the pipeline)  |
-| `ingressIP`              | Ingress controllers IP address | `nil` (required, provided by the pipeline)  |
-| `consulIP`              | Consul servers IP address | `nil` (required, provided by the pipeline) |
-| `readinessPath`            | Path of HTTP readiness probe | `/health`|
-| `readinessDelay`           | Readiness probe inital delay (seconds)| `30`|
-| `readinessTimeout`         | Readiness probe timeout (seconds)| `3`|
-| `readinessPeriod`          | Readiness probe period (seconds) | `15`|
-| `livenessPath`             | Path of HTTP liveness probe | `/health`|
-| `livenessDelay`            | Liveness probe inital delay (seconds)  | `30`|
-| `livenessTimeout`          | Liveness probe timeout (seconds) | `3`|
-| `livenessPeriod`           | Liveness probe period (seconds) | `15`|
-| `livenessFailureThreshold` | Liveness failure threshold | `3` |
-| `s2sUrl`                | S2S api url | `http://rpe-service-auth-provider-aat.service.core-compute-aat.internal`|
-| `idamWebUrl`                | Idam web url | `https://idam.preprod.ccidam.reform.hmcts.net`|
-| `idamApiUrl`                | Idam api url | `https://preprod-idamapi.reform.hmcts.net:3511`|
-| `paymentsUrl`                | Payments api url | `http://payment-api-aat.service.core-compute-aat.internal`|
-| `userProfileApi.image`          | User profile api's image version | `hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest`|
-| `userProfileApi.applicationPort`                    | Port user profile api runs on | `4453` |
-| `userProfileApi.authorisedServices`              |  A list of services allowed to contact user profile api | `ccd_data,ccd_definition,ccd_admin`|
-| `dataStoreApi.image`          | Data store api's image version | `hmcts.azurecr.io/hmcts/ccd-data-store-api:latest`|
-| `dataStoreApi.applicationPort`                    | Port data store api runs on | `4452` |
-| `dataStoreApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
-| `dataStoreApi.authorisedServices`              |  A list of services allowed to contact data store api | See [values.yaml](ccd/values.yaml) (too many to list)|
-| `definitionStoreApi.image`          | Definition store api's image version | `hmcts.azurecr.io/hmcts/ccd-definition-store-api:latest`|
-| `definitionStoreApi.applicationPort`                    | Port definition store api runs on | `4451` |
-| `definitionStoreApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
-| `definitionStoreApi.authorisedServices`              |  A list of services allowed to contact definition store api | `ccd_data,ccd_gw,ccd_admin,jui_webapp,pui_webapp`|
-| `caseManagementWeb.enabled`          | If case management web (and api gateway) will be deployed | `false`
-| `caseManagementWeb.image`          | Case management web image version | `hmcts.azurecr.io/hmcts/ccd-case-management-web:latest`|
-| `caseManagementWeb.applicationPort`                    | Port case management web runs on | `3451` |
-| `adminWeb.enabled`          | If admin web will be deployed | `false`
-| `adminWeb.image`          | Admin web image version | `hmcts.azurecr.io/hmcts/ccd-admin-web:latest`|
-| `adminWeb.applicationPort`                    | Port admin web runs on | `3100` |
-| `adminWeb.s2sKey`                    | S2S key | `nil` (required must be set by user) |
-| `adminWeb.idamClientSecret`                    | Idam OAuth client secret key | `nil` (required must be set by user) |
-| `apiGateway.image`          | Api gateway's image version | `hmcts.azurecr.io/hmcts/ccd-api-gateway-web:latest`|
-| `apiGateway.applicationPort`                    | Port definition store api runs on | `3453` |
-| `apiGateway.s2sKey`                    | S2S key | `nil` (required must be set by user) |
-| `apiGateway.idamClientSecret`                    | Idam OAuth client secret | `nil` (required must be set by user) |
-| `printApi.image`          | Case print service's image version | `hmcts.azurecr.io/hmcts/ccd-case-print-service:latest`|
-| `printApi.enabled`          | If case print service will be deployed | `false`
-| `printApi.applicationPort`                    | Port definition case print service runs on | `3100` |
-| `printApi.s2sKey`                    | S2S key | `nil` (required must be set by user) |
-| `printApi.probateTemplateUrl`        | Probate callback url | `nil` (required must be set by user) |
-| `importer.definition.enabled` | Enabling Definition importer | `false` |
-| `importer.definition.image` | Definition importer image to use | `hmcts/ccd-definition-importer:latest` |
-| `importer.definition.kvSecretRef` | Secret with credentials for accessing necessary key vaults in Azure | `kvcreds` |
-| `importer.definition.gitSecretRef` | Secret with gitlab credentials for accessing defined defintions, if using gitlab urls | `kvcreds` |
-| `importer.definition.definitions` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_URLS` | `nil` |
-| `importer.definition.definitionFilename` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`CCD_DEF_FILENAME` | `nil` |
-| `importer.definition.waitHosts` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS` | `nil` |
-| `importer.definition.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`WAIT_HOSTS_TIMEOUT` | `300` |
-| `importer.definition.userRoles` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`USER_ROLES` | `- caseworker-bulkscan` |
-| `importer.definition.microservice` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`MICROSERVICE` | `ccd_gw` |
-| `importer.definition.verbose` | https://github.com/hmcts/ccd-docker-definition-importer#configuration : parameter:`VERBOSE` | `false` |
-| `importer.userprofile.enabled` | Enabling User Profile importer | `false` |
-| `importer.userprofile.image` | User Profile importer image to use | `hmcts.azurecr.io/hmcts/ccd-user-profile-importer:latest` |
-| `importer.userprofile.users` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USERS` | `nil` |
-| `importer.userprofile.jurisdictions` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_JURISDICTIONS` | `nil` |
-| `importer.userprofile.microservice` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`MICROSSERVICE` | `ccd_definition` |
-| `importer.userprofile.waitHosts` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS` | `nil` |
-| `importer.userprofile.waitHostsTimeout` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`WAIT_HOSTS_TIMEOUT` | `300` |
-| `importer.userprofile.userProfileDatabaseHost` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_HOST` | `nil` |
-| `importer.userprofile.userProfileDatabasePort` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PORT` | `nil` |
-| `importer.userprofile.userProfileDatabaseUser` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_USERNAME` | `nil` |
-| `importer.userprofile.userProfileDatabasePassword` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PASSWORD` | `nil` |
-| `importer.userprofile.userProfileDatabaseName` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_DATABASE` | `nil` |
-| `importer.userprofile.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
+To use this chart on a certain namespace, all the required sealed
+secrets must be separately provided. It's currently not possible to just
+copy the CCD ones because the namespace we used to generate them is part
+of the encryption (that might change in the future).
 
-## Development and Testing
+CCD sealed secrets can be generated by using the following script:  
+https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vault-to-sealedsecret.sh
 
-Default configuration (e.g. default image and ingress host) is setup for sandbox. This is suitable for local development and testing.
 
-- Ensure you have logged in with `az cli` and are using `sandbox` subscription (use `az account show` to display the current one).
-- For local development see the `Makefile` for available targets.
-- To execute an end-to-end build, deploy and test run `make`.
-- to clean up deployed releases, charts, test pods and local charts, run `make clean`
+### Demo - default services
 
-`helm test` will deploy a busybox container alongside the release which performs a simple HTTP request against the service health endpoint. If it doesn't return `HTTP 200` the test will fail. **NOTE:** it does NOT run with `--cleanup` so the test pod will be available for inspection.
-
-### Testing inside another chart locally
-
-You can easily include this chart in another chart for testing:
-
-requirements.yaml
 ```
-  - name: ccd
-    version: '>0.0.1'
-    repository: file://<path-to-repository-can-be-relative-or-absolute>/chart-ccd/ccd
-```
+    global:
+      idamApiUrl: https://idam-api.demo.platform.hmcts.net
+      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      devMode: true
 
-## Azure DevOps Builds
-Builds are run against the 'nonprod' AKS cluster.
+    ccd-admin-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_AW_CLIENT_SECRET:
+            disabled: false
 
-### Pull Request Validation
-A build is triggered when pull requests are created. This build will run `helm lint`, deploy the chart using `ci-values.yaml` and run `helm test`.
+    #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
+    ccd-user-profile-importer:
+      users:
+       - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+    
+    ccd-definition-importer:
+      definitions:
+       - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+      userRoles:
+       - caseworker-autotest1 
+``` 
 
-### Release Build
-Triggered when the repository is tagged (e.g. when a release is created). Also performs linting and testing, and will publish the chart to ACR on success.
  
+### Demo - default services and frontend 
+
+```
+    ccd:  
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true
+
+    global:
+      idamApiUrl: https://idam-api.demo.platform.hmcts.net
+      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+      ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
+      devMode: true
+      
+    ccd-admin-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_AW_CLIENT_SECRET:
+            disabled: false
+    
+    ccd-case-management-web:
+      nodejs:
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_CLIENT_SECRET:
+            disabled: false
+
+    #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
+    ccd-user-profile-importer:
+      users:
+       - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+    
+    ccd-definition-importer:
+      definitions:
+       - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+      userRoles:
+       - caseworker-autotest1
+``` 
+
+
+### Demo - default services, frontend and dependent services 
+
+Note: Payment API and some other services are currently disabled
+
+```
+    ccd:  
+      managementWeb:
+        enabled: true
+      apiGatewayWeb:
+        enabled: true
+      emAnnotation:
+        enabled: true
+      draftStore:
+        enabled: true
+      dmStore:
+        enabled: true
+      activityApi:
+        enabled: true
+      blobstorage:
+        enabled: true
+      printService:
+        enabled: true
+
+    global:
+      idamApiUrl: https://idam-api.demo.platform.hmcts.net
+      idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
+      ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+      ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+      ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
+      devMode: true
+      
+    ccd-admin-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_AW_CLIENT_SECRET:
+            disabled: false
+    
+    ccd-case-management-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
+    
+    ccd-api-gateway-web:
+      nodejs:
+        ingressClass: traefik-no-proxy
+        ingressHost: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
+        secrets:
+          IDAM_OAUTH2_CLIENT_SECRET:
+            disabled: false
+            
+    #importers are enabled by default. Make sure you properly configure them or else explicitly disable them           
+    ccd-user-profile-importer:
+      users:
+       - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+       
+    ccd-definition-importer:
+      definitions:
+       - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+      userRoles:
+       - caseworker-autotest1     
+          
+``` 
+
+#### Enabling upload history on Admin Web
+
+In the configurations above the history of definition uploads in CCD
+Admin Web, [shown here](#Admin-Web-Definition-file-import), is disabled.
+To enable it, use the following configuration:
+
+```
+    blobstorage:
+        enabled: true
+        
+    ccd-definition-store-api:
+      java:
+        secrets:
+          STORAGE_ACCOUNT_NAME:
+            disabled: false
+          STORAGE_ACCOUNT_KEY:
+            disabled: false
+        environment:
+          AZURE_STORAGE_DEFINITION_UPLOAD_ENABLED: true
+```
+
+Note: blobstorage is used also for other purposes so it might already be
+enabled on some configs
+
+## Setup user profiles and ccd definitions
+
+This chart provides two ways of setting up user profiles and importing
+definitions into CCD
+
+* CCD Admin Web [see steps](#Admin-Web-Definition-file-import)
+
+* Importers 
+
+While the importers are useful to create some initial desired setup at
+deploy time, the Admin Web allows to import additional definitions later
+on
+
+### Importers
+
+By default the chart will deploy some helper pods called importers.
+These are used to setup specified definitions and user profiles at
+deploy time. Make sure you properly configure them or else disable them.
+
+* user profile importer setup example:
+    ```
+    ccd-user-profile-importer:
+        users:
+          - <USER_ID>|<JURISDICTION>|<CASE_TYPE>|<CASE_STATE>
+    ```
+
+* ccd definition importer setup example:
+    ```
+    ccd-definition-importer:
+        definitions:
+          - <DEFINITIION_FILE_URL>
+        userRoles:
+          - <USER_ROLES>
+    ```
+  
+For more advanced configuration refer to the importers documentation:
+- https://github.com/hmcts/ccd-docker-definition-importer
+- https://github.com/hmcts/ccd-docker-user-profile-importer
+  
+The configuration examples in this guide will import a simple test
+definition and setup a test user 'auto.test.cnp@gmail.com':
+
+```
+ccd-user-profile-importer:
+    users:
+      - auto.test.cnp@gmail.com|AUTOTEST1|AAT|TODO
+```
+
+```
+ccd-definition-importer:
+    definitions:
+      - https://github.com/hmcts/ccd-definition-store-api/raw/master/aat/src/resource/CCD_CNP_27.xlsx
+    userRoles:
+      - caseworker-autotest1
+```
+
+### Admin Web
+
+#### Admin Web Definition file import
+
+* Open the Admin Web in a web browser, and login with the test
+  credential (ask CCD team). You can log in to Admin Web at the
+  following url:   
+  
+  ``` 
+  https://ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
+  ```
+
+* Click on `Import Case Definition` to navigate to the importer section.
+
+![Admin web import](/images/import_home.png)
+
+* Click on the `Choose file` button and select a definition file from the file menu.
+
+![File menu](/images/file_menu.png)
+
+![File chosen](/images/file_chosen.png)
+
+* Press the `Submit` button.
+* The message `Case Definition data successfully imported` is displayed if the definition file is successfully imported.
+* A record is added to the import audit table.
+
+![Import successful](/images/file_imported.png)
+
+#### Admin Web Create User Profile
+
+* In admin web, click on the `Manage User Profiles` link.
+
+![Profile home](/images/admin_web_home.png)
+
+* Select a jurisdiction.
+* Click on the `Submit` button.
+
+![Profile home](/images/select_jurisdiction.png)
+
+* Click the `Create User` button 
+
+![Profile home](/images/create_user_button.png)
+
+* Enter the `User idam ID`. Select the default jurisdiction, case type and case state.
+* Click the `Create` button
+* Verify that the user profile has been created.
+
+![Profile home](/images/create_user_profile.png)
+
+## Ready for take-off 🛫
+
+You can log in to CCD UI at the following url:
+
+    https://www-{{ .Release.Name }}.demo.platform.hmcts.net
+    
+Ask CCD team for the default test user credentials if you want to do a
+quick sanity check that the installation is successful. You can use the
+test case type installed by the importers specified in the example
+configurations
