@@ -140,6 +140,7 @@ ccd-admin-web:
     redirect_uris:
       CCD Admin:
         - 'https://{{ tpl .Values.global.ccdAdminWebIngress $}}/oauth2redirect'
+        
 ccd-case-activity-api:
   nodejs:
     releaseNameOverride: "{{ .Release.Name }}-ccd-case-activity-api"
@@ -232,7 +233,6 @@ ccd-case-print-service:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       CASE_DATA_STORE_URL: '{{ tpl .Values.global.ccdDataStoreUrl $}}'
 
-#TODO add more defaults here from the flux config
 ccd-test-stubs-service:
   java:
     livenessPath: '/health'
