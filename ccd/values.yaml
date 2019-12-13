@@ -367,19 +367,20 @@ ccd-user-profile-importer:
   userProfileUrl: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
 
 ccpay:
-  postgresql:
-    enabled: false
-  fees-register-api:
-    enabled: false
-  rpe-service-auth-provider:
-    enabled: false
-  ccpay-bubble-frontend:
-    enabled: false
-  ccpay-bulkscanning-api:
-    enabled: false
-
+  ccpay:
+    postgresql:
+      enabled: false
+    fees-register-api:
+      enabled: false
+    rpe-service-auth-provider:
+      enabled: false
+    ccpay-bubble-frontend:
+      enabled: false
+    ccpay-bulkscanning-api:
+      enabled: false
+    payment-api:
+      enabled: true
   payment-api:
-    enabled: true
     java:
       releaseNameOverride: "{{ .Release.Name }}-payment-api"
       secrets:
