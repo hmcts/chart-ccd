@@ -26,7 +26,6 @@ jobs:
       chartReleaseName: chart-ccd-ci-test
       chartNamespace: chart-tests
       helmInstallTimeout: "1000"
-      helmVersion: "2.14.3"
 
 
 - job: Release
@@ -42,7 +41,6 @@ jobs:
   steps:
   - template: steps/charts/release.yaml@cnp-library
     parameters:
-      helmVersion: "2.14.3"
       chartName: ccd
       chartReleaseName: chart-ccd
       chartNamespace: chart-tests
