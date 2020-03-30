@@ -9,7 +9,6 @@ dependencies:
     repository: '@hmctspublic'
     condition: ccd.s2s.enabled
     
-
   - name: ccd-user-profile-api
     version: ~1.4.0
     repository: '@hmctspublic'
