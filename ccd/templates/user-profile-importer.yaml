@@ -11,7 +11,7 @@ metadata:
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "5"
-    helm.sh/hook-delete-policy: before-hook-creation  # Move to hook-succeeded after first charts are done 
+    helm.sh/hook-delete-policy: before-hook-creation  # Move to hook-succeeded after first charts are done
 spec:
   template:
     metadata:
@@ -23,8 +23,8 @@ spec:
     spec:
       containers:
         - name: {{ .Release.Name }}-user-profile-importer
-          image: {{ .Values.importer.userprofile.image }} 
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.importer.userprofile.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
           - name: CCD_USER_PROFILE_URL
             value: http://{{ .Release.Name }}-user-profile-api

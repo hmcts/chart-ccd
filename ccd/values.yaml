@@ -61,6 +61,8 @@ livenessTimeout: 3
 livenessPeriod: 15
 livenessFailureThreshold: 5
 
+imagePullPolicy: IfNotPresent
+
 postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
@@ -81,7 +83,7 @@ importer:
     # users:
     # - mryan321.hmcts.claimant+1@gmail.com|CMC|MoneyClaimCase|open
     # - mryan321.hmcts.claimant+2@gmail.com|SSCS|SSCS|open
-    users: 
+    users:
     # Jurisdictions is a list of jurisdictions referenced in above users. For example:
     # jurisdictions:
     # - CMC

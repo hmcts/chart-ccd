@@ -123,5 +123,5 @@ spec:
           initialDelaySeconds: {{ .Values.readinessDelay }}
           timeoutSeconds: {{ .Values.readinessTimeout }}
           periodSeconds: {{ .Values.readinessPeriod }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 {{- end }}
