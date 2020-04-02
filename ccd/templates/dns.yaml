@@ -12,8 +12,11 @@ metadata:
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "-5"
-    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-delete-policy: {{ if .Values.debug }}before-hook-creation{{ else }}hook-succeeded{{ end }}
 spec:
+  {{- if .Values.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
   template:
     metadata:
       name: "{{ .Release.Name }}-dns"
@@ -36,7 +39,7 @@ spec:
             - /container.init/ccd-dns
             {{- if .Values.adminWeb.enabled }}
             - admin-web-{{ .Release.Name }}
-            {{- end }}          
+            {{- end }}
             {{- if .Values.caseManagementWeb.enabled }}
             - case-management-web-{{ .Release.Name }}
             - gateway-{{ .Release.Name }}
