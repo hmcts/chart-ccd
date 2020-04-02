@@ -53,7 +53,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}-definition-importer
           image: {{ .Values.importer.definition.image }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           {{- if .Values.importer.definition.kvSecretRef }}
           volumeMounts:
           - name: kvcreds

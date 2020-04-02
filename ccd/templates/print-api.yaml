@@ -41,7 +41,7 @@ spec:
         - name: HPKP_MAX_AGE
           values: "2592000"
         - name: HPKP_SHA256S
-          values: "Set-proper-SHA256s" 
+          values: "Set-proper-SHA256s"
         - name: IDAM_AUTHENTICATION_WEB_URL
           values: {{ .Values.idamWebUrl }}
         - name: IDAM_BASE_URL
@@ -83,5 +83,5 @@ spec:
           initialDelaySeconds: {{ .Values.readinessDelay }}
           timeoutSeconds: {{ .Values.readinessTimeout }}
           periodSeconds: {{ .Values.readinessPeriod }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
 {{- end }}
