@@ -11,8 +11,11 @@ metadata:
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "5"
-    helm.sh/hook-delete-policy: before-hook-creation  # Move to hook-succeeded after first charts are done
+    helm.sh/hook-delete-policy: {{ if .Values.debug }}before-hook-creation{{ else }}hook-succeeded{{ end }}
 spec:
+  {{- if .Values.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
   template:
     metadata:
       name: "{{ .Release.Name }}-user-profile-importer"

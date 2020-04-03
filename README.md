@@ -242,6 +242,8 @@ If you need to change from the defaults consider sending a PR to the chart inste
 | `importer.userprofile.userProfileDatabasePassword` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_PASSWORD` | `nil` |
 | `importer.userprofile.userProfileDatabaseName` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`CCD_USER_PROFILE_DB_DATABASE` | `nil` |
 | `importer.userprofile.verbose` | https://github.com/hmcts/ccd-docker-user-profile-importer#configuration : parameter=`VERBOSE` | `false` |
+| `debug` | Determines if the charts should be run in debug mode, currently will change hook delete policies to before-hook-creation when set to true | `false` |
+| `ttlSecondsAfterFinished` | Time after Hook Jobs should be cleared and deleted | `3600` |
 
 ## Development and Testing
 

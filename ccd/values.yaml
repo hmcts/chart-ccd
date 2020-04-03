@@ -116,3 +116,6 @@ importer:
     microservice: ccd_gw
     verbose: "false"
     redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+
+debug: false
+ttlSecondsAfterFinished: 3600
