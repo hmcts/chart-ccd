@@ -356,6 +356,7 @@ ccd-definition-importer:
   definitionStoreUrl: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
   s2sUrl: '{{ tpl .Values.global.s2sUrl $}}'
   verbose: true
+  aadIdentityName: ccd
   secrets:
     IMPORTER_USERNAME:
       disabled: false
