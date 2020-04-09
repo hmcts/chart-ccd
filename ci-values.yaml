@@ -34,7 +34,7 @@ global:
 
 ccd-definition-importer:
   definitions:
-    - https://github.com/hmcts/ccd-data-store-api/raw/master/src/aat/resources/CCD_CNP_27_AUTOTEST1.xlsx
+    - https://github.com/hmcts/befta-fw/raw/master/src/main/resources/uk/gov/hmcts/befta/dse/ccd/definitions/valid/CCD_CNP_27_AUTOTEST1.xlsx
   userRoles:
     - caseworker-autotest1
     - caseworker-autotest1-private
