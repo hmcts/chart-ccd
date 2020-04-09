@@ -67,12 +67,12 @@ dependencies:
     condition: ccd.testStubsService.enabled
 
   - name: ccd-definition-importer
-    version: ~1.2.0
+    version: ~1.2.2
     repository: '@hmctspublic'
     condition: ccd.definitionImporter.enabled
 
   - name: ccd-user-profile-importer
-    version: ~1.2.0
+    version: ~1.2.2
     repository: '@hmctspublic'
     condition: ccd.userProfileImporter.enabled
 
