@@ -1,7 +1,7 @@
 apiVersion: v1
 description: A Helm chart for the HMCTS CCD product
 name: ccd
-version: 3.3.7
+version: 3.3.8
 icon: https://github.com/hmcts/chart-ccd/raw/master/images/icons8-java-50.png
 keywords:
   - ccd
