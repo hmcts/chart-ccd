@@ -53,7 +53,7 @@ global:
 
 ccd-case-management-web:
   nodejs:
-    releaseNameOverride:  "{{ .Release.Name }}-ccd-case-mgmt-web"
+    releaseNameOverride: "{{ .Release.Name }}-ccd-case-mgmt-web"
     environment:
       IDAM_LOGIN_URL: '{{ .Values.global.idamWebUrl }}/login'
       #adding tpl allows global values to be templated  with {{.Release.name}}.
@@ -140,7 +140,6 @@ ccd-admin-web:
     redirect_uris:
       CCD Admin:
         - 'https://{{ tpl .Values.global.ccdAdminWebIngress $}}/oauth2redirect'
-        
 ccd-case-activity-api:
   nodejs:
     releaseNameOverride: "{{ .Release.Name }}-ccd-case-activity-api"
@@ -293,7 +292,7 @@ dm-store:
     environment:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
-      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/evidence?ssl=disable
+      SPRING_DATASOURCE_URL: jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/evidence?ssl=disable
       SPRING_DATASOURCE_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       SPRING_DATASOURCE_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       ENABLE_AZURE_STORAGE_CONTAINER: 'true'
@@ -311,7 +310,7 @@ em-anno:
     livenessDelay: 180
     environment:
       ENABLE_LIQUIBASE: 'true'
-      SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/annotation?ssl=disable
+      SPRING_DATASOURCE_URL: jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/annotation?ssl=disable
       SPRING_DATASOURCE_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       SPRING_DATASOURCE_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       IDAM_API_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
@@ -413,4 +412,3 @@ ccpay:
           disabled: true
         LIBERATA_KEYS_OAUTH2_PASSWORD:
           disabled: true
-
