@@ -26,7 +26,7 @@ Helm product chart for Core Case Data (CCD)
 
 This chart installs CCD as a self contained product. By default only one
 database is installed which will be shared between CCD services and
-dependent services.
+dependent services
 
 Features:
  
