@@ -1,6 +1,3 @@
-#todo test idam-pr
-tags:
-  idam-pr: false
 
 ingressHost: chart-ccd-release.service.core-compute-preview.internal
 ingressIP: "10.97.17.51"
@@ -31,6 +28,14 @@ global:
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
   devMode: true
+
+ccd-case-management-web:
+  tags:
+    idam-pr: false
+
+ccd-admin-web:
+  tags:
+    idam-pr: false
 
 ccd-definition-importer:
   definitions:
