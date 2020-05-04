@@ -29,10 +29,6 @@ global:
   environment: aat
   devMode: true
 
-ccd-admin-web:
-    idam-pr: 
-      enabled: true
-
 ccd-definition-importer:
   definitions:
     - https://github.com/hmcts/befta-fw/raw/master/src/main/resources/uk/gov/hmcts/befta/dse/ccd/definitions/valid/CCD_CNP_27_AUTOTEST1.xlsx
