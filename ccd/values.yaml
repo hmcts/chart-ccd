@@ -183,7 +183,7 @@ ccd-definition-store-api:
         disabled: true
     environment:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
-      IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
+      IDAM_USER_URL: '{{ tpl .Values.global.idamWebUrl $}}'
       DEFINITION_STORE_DB_NAME: definition-store
       DEFINITION_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       DEFINITION_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
