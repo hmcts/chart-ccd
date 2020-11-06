@@ -1,7 +1,7 @@
 dependencies:
   - name: postgresql
-    version: ~6.3.5
-    repository: '@stable'
+    version: 8.9.8
+    repository: https://charts.bitnami.com/bitnami
     condition: ccd.postgresql.enabled
 
   - name: rpe-service-auth-provider
