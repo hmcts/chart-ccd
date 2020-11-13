@@ -1,6 +1,8 @@
 tags:
   idam-pr: true  #ccd-case-management-web and admin web will add IDAM redirect urls
 
+imagePullPolicy: Always
+
 #subcharts conditions
 ccd:
   postgresql:
