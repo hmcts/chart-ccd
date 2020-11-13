@@ -151,6 +151,7 @@ ccd-case-activity-api:
 
 ccd-user-profile-api:
   java:
+    imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-user-profile-api"
     readinessDelay: 120
@@ -166,6 +167,7 @@ ccd-user-profile-api:
 
 ccd-definition-store-api:
   java:
+    imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-definition-store"
     readinessDelay: 180
@@ -201,6 +203,7 @@ ccd-definition-store-api:
 ccd-data-store-api:
   java:
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
+    imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
     readinessDelay: 240
