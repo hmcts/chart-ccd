@@ -1,8 +1,6 @@
 tags:
   idam-pr: true  #ccd-case-management-web and admin web will add IDAM redirect urls
 
-imagePullPolicy: Always
-
 #subcharts conditions
 ccd:
   postgresql:
@@ -168,6 +166,7 @@ ccd-user-profile-api:
 
 ccd-definition-store-api:
   java:
+    imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-definition-store"
     readinessDelay: 180
@@ -203,6 +202,7 @@ ccd-definition-store-api:
 ccd-data-store-api:
   java:
     image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
+    imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
     readinessDelay: 240
