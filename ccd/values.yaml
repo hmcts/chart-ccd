@@ -435,7 +435,7 @@ elasticsearch:
       kubernetes.io/ingress.class: traefik
     path: /
     hosts:
-      - es-${SERVICE_FQDN}
+      - "es-{{ .Release.Name }}"
 
 logstash:
   image:
