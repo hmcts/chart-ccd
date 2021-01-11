@@ -434,8 +434,8 @@ elasticsearch:
     annotations:
       kubernetes.io/ingress.class: traefik
     path: /
-#     hosts:
-#       - "es-{{ .Release.Name }}"
+    hosts:
+      - ""
 
 logstash:
   image:
