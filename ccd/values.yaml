@@ -201,7 +201,6 @@ ccd-definition-store-api:
       AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net"
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
-      FLYWAY_NOOP_STRATEGY: false
 
 ccd-data-store-api:
   java:
