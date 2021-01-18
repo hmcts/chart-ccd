@@ -453,7 +453,7 @@ logstash:
     port: 9200
   configTpl:
     xpack.monitoring.enabled: "false"
-    db.url: "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/javadatabase?stringtype=unspecified"
+    db.url: "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
     db.user: "hmcts"
     db.pwd: "hmcts"
     es.data.nodes.url: "http://{{ .Release.Name }}-es-master:9200"
