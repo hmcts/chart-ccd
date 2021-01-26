@@ -126,6 +126,8 @@ ccd-admin-web:
       ADMINWEB_WHOAMI_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/idam/profile'
       ADMINWEB_IMPORT_AUDITS_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/import-audits'
       ADMINWEB_AUTHORIZATION_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/idam/adminweb/authorization'
+      ADMINWEB_DELETE_DEFINITION_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/draft'
+      ADMINWEB_ELASTIC_INDEX_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/elastic-support/index'
       ADMINWEB_ROLES_WHITELIST: 'ccd-import,ccd-import-validate'
       IDAM_ADMIN_WEB_SERVICE_KEY: AAAAAAAAAAAAAAAA
     secrets:
