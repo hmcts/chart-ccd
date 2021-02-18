@@ -33,6 +33,8 @@ ccd:
     enabled: false
   ccpay:
     enabled: false
+  elastic:
+    enabled: false
 
 global:
   ccdApiGatewayIngress: ""
@@ -124,6 +126,8 @@ ccd-admin-web:
       ADMINWEB_WHOAMI_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/idam/profile'
       ADMINWEB_IMPORT_AUDITS_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/import-audits'
       ADMINWEB_AUTHORIZATION_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/idam/adminweb/authorization'
+      ADMINWEB_DELETE_DEFINITION_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/api/draft'
+      ADMINWEB_ELASTIC_INDEX_URL: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}/elastic-support/index'
       ADMINWEB_ROLES_WHITELIST: 'ccd-import,ccd-import-validate'
       IDAM_ADMIN_WEB_SERVICE_KEY: AAAAAAAAAAAAAAAA
     secrets:
@@ -199,6 +203,7 @@ ccd-definition-store-api:
       AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net"
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
+      FLYWAY_NOOP_STRATEGY: false
 
 ccd-data-store-api:
   java:
@@ -417,3 +422,40 @@ ccpay:
         LIBERATA_KEYS_OAUTH2_PASSWORD:
           disabled: true
 
+elasticsearch:
+  clusterName: "es"
+  imageTag: "6.4.2"
+  replicas: 1
+  minimumMasterNodes: 1
+  antiAffinity: "soft"
+  esJavaOpts: "-Xmx512m -Xms512m"
+  persistence:
+    enabled: false
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: traefik
+    path: /
+    hosts:
+      - ""
+
+logstash:
+  image:
+    repository: hmctspublic.azurecr.io/ccd/logstash
+    tag: latest
+    pullPolicy: IfNotPresent
+  logstashJavaOpts: -Xmx1g -Xms512M
+  persistence:
+    enabled: false
+  volumeMounts:
+    - name: pipeline
+      mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
+  elasticsearch:
+    host: "{{ .Release.Name }}-es-master"
+    port: 9200
+  configTpl:
+    xpack.monitoring.enabled: "false"
+    db.url: "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
+    db.user: "hmcts"
+    db.pwd: "hmcts"
+    es.data.nodes.url: "http://{{ .Release.Name }}-es-master:9200"
