@@ -11,7 +11,7 @@ keywords:
   - case-data-management
 dependencies:
   - name: postgresql
-    version: 8.9.8
+    version: 8.10.14
     repository: https://charts.bitnami.com/bitnami
     condition: ccd.postgresql.enabled
 
