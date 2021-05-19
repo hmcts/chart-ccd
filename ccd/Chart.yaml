@@ -43,7 +43,7 @@ dependencies:
     condition: ccd.adminWeb.enabled
 
   - name: ccd-case-management-web
-    version: 2.1.4
+    version: 2.1.5
     repository: '@hmctspublic'
     condition: ccd.managementWeb.enabled
 
