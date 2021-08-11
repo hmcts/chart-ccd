@@ -230,6 +230,19 @@ ccd-data-store-api:
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
       ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
+    secrets:
+      IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET:
+        secretRef: idam-data-store-client-secret
+        key: key
+        disabled: true
+      IDAM_DATA_STORE_SYSTEM_USER_USERNAME:
+        secretRef: idam-data-store-system-user-username
+        key: key
+        disabled: true
+      IDAM_DATA_STORE_SYSTEM_USER_PASSWORD:
+        secretRef: idam-data-store-system-user-password
+        key: key
+        disabled: true
 
 
 ccd-case-print-service:
