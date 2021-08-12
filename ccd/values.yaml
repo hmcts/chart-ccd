@@ -231,6 +231,7 @@ ccd-data-store-api:
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
       ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
+      MANAGEMENT_HEALTH_CASE_DOCUMENT_AM_API_ENABLED: false
     secrets:
       IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET:
         secretRef: idam-data-store-client-secret
