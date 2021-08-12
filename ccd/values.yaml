@@ -221,7 +221,8 @@ ccd-data-store-api:
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
       DATA_STORE_DB_MAX_POOL_SIZE: 10
       CCD_DOCUMENT_URL_PATTERN: https?://(dm-store.*|em-hrs-api.*)
-      IDAM_USER_URL: '{{ tpl .Values.global.idamWebUrl $}}'
+      IDAM_OIDC_URL: '{{ tpl .Values.global.idamWebUrl $}}'
+      IDAM_API_BASE_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DEFINITION_STORE_HOST: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
@@ -230,6 +231,20 @@ ccd-data-store-api:
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
       ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
+      MANAGEMENT_HEALTH_CASE_DOCUMENT_AM_API_ENABLED: false
+    secrets:
+      IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET:
+        secretRef: idam-data-store-client-secret
+        key: key
+        disabled: true
+      IDAM_DATA_STORE_SYSTEM_USER_USERNAME:
+        secretRef: idam-data-store-system-user-username
+        key: key
+        disabled: true
+      IDAM_DATA_STORE_SYSTEM_USER_PASSWORD:
+        secretRef: idam-data-store-system-user-password
+        key: key
+        disabled: true
 
 
 ccd-case-print-service:
