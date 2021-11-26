@@ -45,6 +45,7 @@ Default Services:
 * definition store* - https://github.com/hmcts/ccd-definition-store-api
 * user profile* - https://github.com/hmcts/ccd-user-profile-api
 * admin web* - https://github.com/hmcts/ccd-admin-web
+* role assignment service - https://github.com/hmcts/am-role-assignment-service
 * s2s - https://github.com/hmcts/service-auth-provider-app
 * postgresql - https://github.com/helm/charts/tree/master/stable/postgresql
 * definition importer - https://github.com/hmcts/ccd-docker-definition-importer
