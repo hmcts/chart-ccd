@@ -43,6 +43,7 @@ global:
   idamApiUrl: ""
   idamWebUrl: ""
   ccdDataStoreUrl: "http://{{ .Release.Name }}-ccd-data-store-api"
+  amRoleAssignmentServiceUrl: "http://{{ .Release.Name }}-am-role-assignment-service"
   ccdDefinitionStoreUrl: "http://{{ .Release.Name }}-ccd-definition-store"
   ccdUserProfileUrl: "http://{{ .Release.Name }}-ccd-user-profile-api"
   draftStoreUrl: "http://{{ .Release.Name }}-draft-store"
@@ -52,6 +53,28 @@ global:
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
   postgresPassword: hmcts
+
+am-role-assignment-service:
+  java:
+    image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
+    imagePullPolicy: Always
+    ingressHost: ""
+    releaseNameOverride: "{{ .Release.Name }}-am-role-assignment-service"
+    readinessDelay: 240
+    livenessDelay: 240
+    environment:
+      ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
+      ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
+      ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
+      ROLE_ASSIGNMENT_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
+      IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
+      IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
+      OPEN_ID_API_BASE_URI: '{{ tpl .Values.global.idamWebUrl $}}'
+      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
+      APPLICATION_LOGGING_LEVEL: INFO
+      BYPASS_ORG_DROOL_RULE: true
+      LAUNCH_DARKLY_ENV: pr
 
 ccd-case-management-web:
   nodejs:
@@ -228,6 +251,7 @@ ccd-data-store-api:
       DEFINITION_STORE_HOST: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
       USER_PROFILE_HOST: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
       CCD_DRAFT_STORE_URL: '{{ tpl .Values.global.draftStoreUrl $}}'
+      ROLE_ASSIGNMENT_URL: '{{ tpl .Values.global.amRoleAssignmentServiceUrl $}}'
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
       ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
@@ -280,6 +304,7 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_AM_ROLE_ASSIGNMENT_SERVICE: AAAAAAAAAAAAAAAA
 
 draft-store-service:
   java:
