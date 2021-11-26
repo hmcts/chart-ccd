@@ -70,7 +70,7 @@ am-role-assignment-service:
       AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
-      OPEN_ID_API_BASE_URI: '{{ tpl .Values.global.idamWebUrl $}}'
+      OPEN_ID_API_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
       ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
       APPLICATION_LOGGING_LEVEL: INFO
       BYPASS_ORG_DROOL_RULE: true
