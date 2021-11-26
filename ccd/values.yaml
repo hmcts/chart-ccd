@@ -76,6 +76,7 @@ am-role-assignment-service:
       APPLICATION_LOGGING_LEVEL: INFO
       BYPASS_ORG_DROOL_RULE: true
       LAUNCH_DARKLY_ENV: pr
+      ENABLE_DB_MIGRATE: true
 
 ccd-case-management-web:
   nodejs:
