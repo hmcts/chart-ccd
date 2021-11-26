@@ -67,6 +67,7 @@ am-role-assignment-service:
       ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
       ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       ROLE_ASSIGNMENT_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
+      ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
       AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
