@@ -7,6 +7,12 @@ ccd:
     enabled: true
   s2s:
     enabled: true
+  userProfile:
+    enabled: true
+  definitionStore:
+    enabled: true
+  dataStore:
+    enabled: true
   draftStore:
     enabled: false
   dmStore:
@@ -35,6 +41,8 @@ ccd:
     enabled: false
   elastic:
     enabled: false
+  ras:
+    enabled: true
 
 global:
   ccdApiGatewayIngress: ""
@@ -43,6 +51,7 @@ global:
   idamApiUrl: ""
   idamWebUrl: ""
   ccdDataStoreUrl: "http://{{ .Release.Name }}-ccd-data-store-api"
+  amRoleAssignmentServiceUrl: "http://{{ .Release.Name }}-am-role-assignment-service"
   ccdDefinitionStoreUrl: "http://{{ .Release.Name }}-ccd-definition-store"
   ccdUserProfileUrl: "http://{{ .Release.Name }}-ccd-user-profile-api"
   draftStoreUrl: "http://{{ .Release.Name }}-draft-store"
@@ -52,6 +61,43 @@ global:
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
   postgresPassword: hmcts
+
+am-role-assignment-service:
+  java:
+    image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
+    imagePullPolicy: Always
+    ingressHost: ""
+    releaseNameOverride: "{{ .Release.Name }}-am-role-assignment-service"
+    readinessDelay: 240
+    livenessDelay: 240
+    environment:
+      ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
+      ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
+      ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
+      ROLE_ASSIGNMENT_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
+      ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
+      IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
+      IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
+      OPEN_ID_API_BASE_URI: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o"
+      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
+      APPLICATION_LOGGING_LEVEL: INFO
+      BYPASS_ORG_DROOL_RULE: true
+      LAUNCH_DARKLY_ENV: pr
+      ENABLE_DB_MIGRATE: true
+    secrets:
+      LD_SDK_KEY:
+        secretRef: role-assignment-service-LD-SDK-KEY
+        key: key
+        disabled: true
+      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:
+        secretRef: role-assignment-service-IDAM-CLIENT-SECRET
+        key: key
+        disabled: true
+      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:
+        secretRef: role-assignment-service-IDAM-ADMIN-SECRET
+        key: key
+        disabled: true
 
 ccd-case-management-web:
   nodejs:
@@ -228,6 +274,7 @@ ccd-data-store-api:
       DEFINITION_STORE_HOST: '{{ tpl .Values.global.ccdDefinitionStoreUrl $}}'
       USER_PROFILE_HOST: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
       CCD_DRAFT_STORE_URL: '{{ tpl .Values.global.draftStoreUrl $}}'
+      ROLE_ASSIGNMENT_URL: '{{ tpl .Values.global.amRoleAssignmentServiceUrl $}}'
       ENABLE_DB_MIGRATE: true
       ELASTIC_SEARCH_ENABLED: false
       ELASTIC_SEARCH_NODES_DISCOVERY_ENABLED: false
@@ -280,6 +327,7 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_PS: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_AM_ROLE_ASSIGNMENT_SERVICE: AAAAAAAAAAAAAAAA
 
 draft-store-service:
   java:
@@ -357,6 +405,7 @@ postgresql:
       CREATE DATABASE "payment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
