@@ -7,6 +7,12 @@ ccd:
     enabled: true
   s2s:
     enabled: true
+  userProfile:
+    enabled: true
+  definitionStore:
+    enabled: true
+  dataStore:
+    enabled: true
   draftStore:
     enabled: false
   dmStore:
