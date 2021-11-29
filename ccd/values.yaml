@@ -35,6 +35,8 @@ ccd:
     enabled: false
   elastic:
     enabled: false
+  ras:
+    enabled: true
 
 global:
   ccdApiGatewayIngress: ""
