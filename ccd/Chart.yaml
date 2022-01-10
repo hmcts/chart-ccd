@@ -60,11 +60,6 @@ dependencies:
     repository: '@hmctspublic'
     condition: ccd.dmStore.enabled
 
-  - name: ccpay
-    version: 0.1.21-alpha
-    repository: '@hmctspublic'
-    condition: ccd.ccpay.enabled
-
   - name: ccd-case-print-service
     version: 1.2.2
     repository: '@hmctspublic'
