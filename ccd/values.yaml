@@ -37,8 +37,6 @@ ccd:
     enabled: false
   emAnnotation:
     enabled: false
-  ccpay:
-    enabled: false
   elastic:
     enabled: false
   ras:
@@ -440,51 +438,6 @@ ccd-user-profile-importer:
   releaseNameOverride: "{{ tpl .Release.Name $}}-user-profile-importer"
   s2sUrl: '{{ tpl .Values.global.s2sUrl $}}'
   userProfileUrl: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
-
-ccpay:
-  ccpay:
-    postgresql:
-      enabled: false
-    fees-register-api:
-      enabled: false
-    rpe-service-auth-provider:
-      enabled: false
-    ccpay-bubble-frontend:
-      enabled: false
-    ccpay-bulkscanning-api:
-      enabled: false
-    payment-api:
-      enabled: true
-  payment-api:
-    java:
-      releaseNameOverride: "{{ .Release.Name }}-payment-api"
-      secrets:
-        PCI_PAL_ACCOUNT_ID_CMC:
-          disabled: true
-        PCI_PAL_ACCOUNT_ID_PROBATE:
-          disabled: true
-        PCI_PAL_ACCOUNT_ID_DIVORCE:
-          disabled: true
-        PCI_PAL_API_URL:
-          disabled: true
-        PCI_PAL_API_KEY:
-          disabled: true
-        GOV_PAY_KEYS_PROBATE:
-          disabled: true
-        GOV_PAY_KEYS_DIVORCE:
-          disabled: true
-        GOV_PAY_KEYS_CMC:
-          disabled: true
-        GOV_PAY_KEYS_REFERENCE:
-          disabled: true
-        LIBERATA_KEYS_OAUTH2_CLIENT_ID:
-          disabled: true
-        LIBERATA_KEYS_OAUTH2_CLIENT_SECRET:
-          disabled: true
-        LIBERATA_KEYS_OAUTH2_USERNAME:
-          disabled: true
-        LIBERATA_KEYS_OAUTH2_PASSWORD:
-          disabled: true
 
 elasticsearch:
   clusterName: "es"
