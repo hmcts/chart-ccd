@@ -52,8 +52,6 @@ Default Services:
 * user profile importer - https://github.com/hmcts/ccd-docker-user-profile-importer
 
 Optional Services:
-* case management web* -
-  https://github.com/hmcts/ccd-case-management-web
 * api gateway* - https://github.com/hmcts/ccd-api-gateway
 * print service* - https://github.com/hmcts/ccd-case-print-service
 * activity service* - https://github.com/hmcts/ccd-case-activity-api
@@ -148,10 +146,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
     
-    ccd-case-management-web:
-      nodejs:
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
-    
     ccd-api-gateway-web:
       nodejs:
         ingressClass: traefik-no-proxy
@@ -211,11 +205,6 @@ Note: Payment API and some other services are currently disabled
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
-    
-    ccd-case-management-web:
-      nodejs:
-        ingressClass: traefik-no-proxy
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     
     ccd-api-gateway-web:
       nodejs:
