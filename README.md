@@ -52,8 +52,6 @@ Default Services:
 * user profile importer - https://github.com/hmcts/ccd-docker-user-profile-importer
 
 Optional Services:
-* case management web* -
-  https://github.com/hmcts/ccd-case-management-web
 * api gateway* - https://github.com/hmcts/ccd-api-gateway
 * print service* - https://github.com/hmcts/ccd-case-print-service
 * activity service* - https://github.com/hmcts/ccd-case-activity-api
@@ -71,7 +69,6 @@ Optional Services:
 | `idamApiUrl`                 | url of Idam Api                 | true                            | true       |
 | `ccdAdminWebIngress`         | url of CCD Admin Web            | true                            | true       |
 | `ccdApiGatewayIngress`       | url of CCD API Gateway          | true when frontend enabled      | true       |
-| `ccdCaseManagementWebIngress`| url of CCD Management Web       | true when frontend enabled      | true       |
 | `devMode`                    | CCD backend apps require APPINSIGHTS_INSTRUMENTATIONKEY configuration property. Setting devMode to true provides this transparently.| true | true       |
 
 
@@ -127,8 +124,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
 
 ```
     ccd:  
-      managementWeb:
-        enabled: true
       apiGatewayWeb:
         enabled: true
 
@@ -137,7 +132,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
       ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
-      ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
       devMode: true
       
     ccd-admin-web:
@@ -147,10 +141,6 @@ https://github.com/hmcts/cnp-flux-config/blob/master/k8s/demo/common/ccd/bin/vau
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
-    
-    ccd-case-management-web:
-      nodejs:
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     
     ccd-api-gateway-web:
       nodejs:
@@ -179,8 +169,6 @@ Note: Payment API and some other services are currently disabled
 
 ```
     ccd:  
-      managementWeb:
-        enabled: true
       apiGatewayWeb:
         enabled: true
       emAnnotation:
@@ -201,7 +189,6 @@ Note: Payment API and some other services are currently disabled
       idamWebUrl: https://idam-web-public.demo.platform.hmcts.net
       ccdAdminWebIngress: ccd-admin-{{ .Release.Name }}.demo.platform.hmcts.net
       ccdApiGatewayIngress: gateway-{{ .Release.Name }}.demo.platform.hmcts.net
-      ccdCaseManagementWebIngress: www-{{ .Release.Name }}.demo.platform.hmcts.net
       devMode: true
       
     ccd-admin-web:
@@ -211,11 +198,6 @@ Note: Payment API and some other services are currently disabled
         secrets:
           IDAM_OAUTH2_AW_CLIENT_SECRET:
             disabled: false
-    
-    ccd-case-management-web:
-      nodejs:
-        ingressClass: traefik-no-proxy
-        ingressHost: www-{{ .Release.Name }}.demo.platform.hmcts.net
     
     ccd-api-gateway-web:
       nodejs:
