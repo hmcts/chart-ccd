@@ -101,6 +101,6 @@ dependencies:
     condition: ccd.elastic.enabled
 
   - name: am-role-assignment-service
-    version: 0.0.49
+    version: 0.0.54
     repository: '@hmctspublic'
     condition: ccd.ras.enabled
