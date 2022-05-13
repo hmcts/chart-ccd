@@ -57,6 +57,7 @@ Optional Services:
 * activity service* - https://github.com/hmcts/ccd-case-activity-api
 * dm store - https://github.com/hmcts/document-management-store-app
 * draft store - https://github.com/hmcts/draft-store
+* message publisher - https://github.com/hmcts/ccd-message-publisher
  
 (*) services owned by CCD  
 (**) currently disabled due to chart inconsistencies 
