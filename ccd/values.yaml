@@ -39,6 +39,8 @@ ccd:
     enabled: false
   ras:
     enabled: true
+  mps:
+    enabled: false
 
 global:
   ccdApiGatewayIngress: ""
@@ -56,7 +58,25 @@ global:
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
   postgresPassword: hmcts
-
+  
+ccd-message-publisher:
+  java:
+    image: 'hmctspublic.azurecr.io/ccd/message-publisher:latest'
+    imagePullPolicy: Always
+    releaseNameOverride: "{{ .Release.Name }}-message-publisher"
+    ingressHost: ""
+    environment:
+      DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DATA_STORE_DB_NAME: "ccd_data_store"
+      DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
+      DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
+      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+      CCD_CASE_EVENTS_DESTINATION: ccd-case-events
+    secrets:
+      SERVICE_BUS_CONNECTION_STRING:
+        secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
+        key: connectionString
+      
 am-role-assignment-service:
   java:
     image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
