@@ -72,10 +72,6 @@ ccd-message-publisher:
       DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
       CCD_CASE_EVENTS_DESTINATION: ccd-case-events
-    secrets:
-      SERVICE_BUS_CONNECTION_STRING:
-        secretRef: servicebus-secret-topic-{{ .Release.Name }}-servicebus-ccd-case-events
-        key: connectionString
       
 am-role-assignment-service:
   java:
