@@ -104,3 +104,8 @@ dependencies:
     version: 0.0.49
     repository: '@hmctspublic'
     condition: ccd.ras.enabled
+  
+  - name: ccd-message-publisher
+    version: 0.1.2
+    repository: '@hmctspublic'
+    condition: ccd.mps.enabled
