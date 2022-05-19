@@ -388,6 +388,7 @@ postgresql:
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "ccd_data_store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: ccd
