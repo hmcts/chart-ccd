@@ -67,7 +67,7 @@ ccd-message-publisher:
     ingressHost: ""
     environment:
       DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
-      DATA_STORE_DB_NAME: "ccd_data_store"
+      DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
