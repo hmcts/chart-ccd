@@ -355,29 +355,29 @@ em-anno:
       S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
       DM_STORE_APP_URL: '{{ tpl .Values.global.dmStoreUrl $}}'
 
-  postgresql:
-    # Due to stability issues in the Preview environment, please disable persistance in the consuming chart for the Preview environment.
-    persistence:
-      enabled: true
-    resources:
-      requests:
-        cpu: 25m
-    auth:
-      username: hmcts
-      password: hmcts
-      database: ccd
-    primary:
-      initdb:
-        scripts:
-          create.sql: |
-            CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "payment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-            CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+postgresql:
+  # Due to stability issues in the Preview environment, please disable persistance in the consuming chart for the Preview environment.
+  persistence:
+    enabled: true
+  resources:
+    requests:
+      cpu: 25m
+  auth:
+    username: hmcts
+    password: hmcts
+    database: ccd
+  primary:
+    initdb:
+      scripts:
+        create.sql: |
+          CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "payment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
  blobstorage:
   releaseNameOverride: "{{ .Release.Name }}-blobstorage"
