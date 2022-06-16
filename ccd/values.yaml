@@ -379,7 +379,8 @@ postgresql:
           CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
           CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
- blobstorage:
+
+blobstorage:
   releaseNameOverride: "{{ .Release.Name }}-blobstorage"
   resourceGroup: ccd-aks
   teamName: "CCD"
