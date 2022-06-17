@@ -16,6 +16,9 @@ ccd:
     enabled: true
   userProfileImporter:
     enabled: true
+  # Disabled to fix Azure Pipeline
+  ras:
+    enabled: false
 
 postgresql:
   persistence:
