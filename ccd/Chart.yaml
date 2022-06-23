@@ -41,7 +41,7 @@ dependencies:
     condition: ccd.apiGatewayWeb.enabled
 
   - name: ccd-admin-web
-    version: 2.2.1
+    version: 2.2.2
     repository: '@hmctspublic'
     condition: ccd.adminWeb.enabled
 
