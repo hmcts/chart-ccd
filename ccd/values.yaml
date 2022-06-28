@@ -96,6 +96,7 @@ am-role-assignment-service:
       BYPASS_ORG_DROOL_RULE: true
       LAUNCH_DARKLY_ENV: pr
       ENABLE_DB_MIGRATE: true
+      RUN_DB_MIGRATION_ON_STARTUP: true
     secrets:
       LD_SDK_KEY:
         secretRef: role-assignment-service-LD-SDK-KEY
