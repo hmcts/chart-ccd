@@ -36,7 +36,7 @@ dependencies:
     condition: ccd.dataStore.enabled
 
   - name: ccd-api-gateway-web
-    version: 1.2.1
+    version: 1.2.2
     repository: '@hmctspublic'
     condition: ccd.apiGatewayWeb.enabled
 
