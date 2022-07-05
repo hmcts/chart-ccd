@@ -357,9 +357,17 @@ em-anno:
       DM_STORE_APP_URL: '{{ tpl .Values.global.dmStoreUrl $}}'
 
 postgresql:
-  # Due to stability issues in the Preview environment, please disable persistance in the consuming chart for the Preview environment.
-  persistence:
-    enabled: true
+  enabled: true
+  image:
+    tag: '11.16.0'
+  auth:
+    username: hmcts
+    password: hmcts
+    database: ccd
+  ## Disable Postgres Persistence
+  primary:
+    persistence:
+      enabled: false
   resources:
     requests:
       cpu: 25m
@@ -373,9 +381,7 @@ postgresql:
       CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: hmcts
-  postgresqlPassword: hmcts
-  postgresqlDatabase: ccd
+
 
 blobstorage:
   releaseNameOverride: "{{ .Release.Name }}-blobstorage"
