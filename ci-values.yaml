@@ -13,7 +13,7 @@ ccd:
   testStubsService:
     enabled: false
   definitionImporter:
-    enabled: true
+    enabled: false
   userProfileImporter:
     enabled: true
 # Disabled to fix Azure Pipeline
