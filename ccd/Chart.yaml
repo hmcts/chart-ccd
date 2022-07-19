@@ -11,7 +11,7 @@ keywords:
   - case-data-management
 dependencies:
   - name: postgresql
-    version: 10.16.2
+    version: 11.6.10
     repository: https://charts.bitnami.com/bitnami
     condition: ccd.postgresql.enabled
 
@@ -21,27 +21,27 @@ dependencies:
     condition: ccd.s2s.enabled
 
   - name: ccd-user-profile-api
-    version: 1.6.3
+    version: 1.6.5
     repository: '@hmctspublic'
     condition: ccd.userProfile.enabled
 
   - name: ccd-definition-store-api
-    version: 1.6.5
+    version: 1.6.7
     repository: '@hmctspublic'
     condition: ccd.definitionStore.enabled
 
   - name: ccd-data-store-api
-    version: 2.0.2
+    version: 2.0.6
     repository: '@hmctspublic'
     condition: ccd.dataStore.enabled
 
   - name: ccd-api-gateway-web
-    version: 1.2.1
+    version: 1.2.2
     repository: '@hmctspublic'
     condition: ccd.apiGatewayWeb.enabled
 
   - name: ccd-admin-web
-    version: 2.2.1
+    version: 2.2.3
     repository: '@hmctspublic'
     condition: ccd.adminWeb.enabled
 
@@ -56,22 +56,22 @@ dependencies:
     condition: ccd.dmStore.enabled
 
   - name: ccd-case-print-service
-    version: 1.3.1
+    version: 1.3.2
     repository: '@hmctspublic'
     condition: ccd.printService.enabled
 
   - name: ccd-case-activity-api
-    version: 1.3.2
+    version: 1.3.4
     repository: '@hmctspublic'
     condition: ccd.activityApi.enabled
 
   - name: ccd-test-stubs-service
-    version: 1.2.3
+    version: 1.2.5
     repository: '@hmctspublic'
     condition: ccd.testStubsService.enabled
 
   - name: ccd-definition-importer
-    version: 1.3.1
+    version: 1.3.3
     repository: '@hmctspublic'
     condition: ccd.definitionImporter.enabled
 
