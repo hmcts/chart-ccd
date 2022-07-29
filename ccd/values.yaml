@@ -415,6 +415,7 @@ ccd-user-profile-importer:
   userProfileUrl: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
 
 elasticsearch:
+  nameOverride: "{{ .Release.Name }}-es"
   clusterName: "es"
   imageTag: "6.4.2"
   replicas: 1
