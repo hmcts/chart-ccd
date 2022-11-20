@@ -51,7 +51,7 @@ dependencies:
     condition: ccd.draftStore.enabled
 
   - name: dm-store
-    version: 2.1.31
+    version: 2.1.39
     repository: '@hmctspublic'
     condition: ccd.dmStore.enabled
 
