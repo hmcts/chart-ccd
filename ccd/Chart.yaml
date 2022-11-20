@@ -16,7 +16,7 @@ dependencies:
     condition: ccd.postgresql.enabled
 
   - name: rpe-service-auth-provider
-    version: 0.3.79
+    version: 0.3.83
     repository: '@hmctspublic'
     condition: ccd.s2s.enabled
 
