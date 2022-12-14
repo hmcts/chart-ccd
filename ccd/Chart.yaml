@@ -21,27 +21,27 @@ dependencies:
     condition: ccd.s2s.enabled
 
   - name: ccd-user-profile-api
-    version: 1.6.6
+    version: 1.6.7
     repository: '@hmctspublic'
     condition: ccd.userProfile.enabled
 
   - name: ccd-definition-store-api
-    version: 1.6.8
+    version: 1.6.10
     repository: '@hmctspublic'
     condition: ccd.definitionStore.enabled
 
   - name: ccd-data-store-api
-    version: 2.0.7
+    version: 2.0.16
     repository: '@hmctspublic'
     condition: ccd.dataStore.enabled
 
   - name: ccd-api-gateway-web
-    version: 1.2.3
+    version: 1.2.4
     repository: '@hmctspublic'
     condition: ccd.apiGatewayWeb.enabled
 
   - name: ccd-admin-web
-    version: 2.2.4
+    version: 2.2.5
     repository: '@hmctspublic'
     condition: ccd.adminWeb.enabled
 
@@ -56,17 +56,17 @@ dependencies:
     condition: ccd.dmStore.enabled
 
   - name: ccd-case-print-service
-    version: 1.3.3
+    version: 1.3.4
     repository: '@hmctspublic'
     condition: ccd.printService.enabled
 
   - name: ccd-case-activity-api
-    version: 1.3.5
+    version: 1.3.6
     repository: '@hmctspublic'
     condition: ccd.activityApi.enabled
 
   - name: ccd-test-stubs-service
-    version: 1.2.6
+    version: 1.2.7
     repository: '@hmctspublic'
     condition: ccd.testStubsService.enabled
 
