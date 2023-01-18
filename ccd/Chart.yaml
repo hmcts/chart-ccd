@@ -91,7 +91,7 @@ dependencies:
     condition: ccd.emAnnotation.enabled
 
   - name: elasticsearch
-    version: 7.16.3
+    version: 7.17.3
     repository: 'https://helm.elastic.co'
     condition: ccd.elastic.enabled
 
