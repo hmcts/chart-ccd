@@ -19,6 +19,8 @@ ccd:
 # Disabled to fix Azure Pipeline
   ras:
     enabled: false
+  elastic:
+    enabled: true
 
 postgresql:
   persistence:
