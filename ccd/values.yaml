@@ -432,7 +432,6 @@ ccd-user-profile-importer:
 
 elasticsearch:
   clusterName: "es"
-  imageTag: "6.4.2"
   replicas: 1
   minimumMasterNodes: 1
   antiAffinity: "soft"
