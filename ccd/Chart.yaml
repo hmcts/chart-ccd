@@ -21,17 +21,17 @@ dependencies:
     condition: ccd.s2s.enabled
 
   - name: ccd-user-profile-api
-    version: 1.6.7
+    version: 1.6.8
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.userProfile.enabled
 
   - name: ccd-definition-store-api
-    version: 1.6.10
+    version: 1.6.11
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.definitionStore.enabled
 
   - name: ccd-data-store-api
-    version: 2.0.16
+    version: 2.0.17
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.dataStore.enabled
 
@@ -66,7 +66,7 @@ dependencies:
     condition: ccd.activityApi.enabled
 
   - name: ccd-test-stubs-service
-    version: 1.2.7
+    version: 1.2.8
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.testStubsService.enabled
 
@@ -106,6 +106,6 @@ dependencies:
     condition: ccd.ras.enabled
   
   - name: ccd-message-publisher
-    version: 0.1.8
+    version: 0.1.9
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.mps.enabled
