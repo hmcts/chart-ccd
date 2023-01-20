@@ -79,8 +79,6 @@ am-role-assignment-service:
     imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-am-role-assignment-service"
-    readinessDelay: 240
-    livenessDelay: 240
     environment:
       ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
       ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
@@ -187,8 +185,6 @@ ccd-user-profile-api:
     imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-user-profile-api"
-    readinessDelay: 120
-    livenessDelay: 120
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
@@ -203,8 +199,6 @@ ccd-definition-store-api:
     imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-definition-store"
-    readinessDelay: 180
-    livenessDelay: 180
     memoryRequests: "1G"
     memoryLimits: "2G"
     secrets:
@@ -240,8 +234,6 @@ ccd-data-store-api:
     imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
-    readinessDelay: 240
-    livenessDelay: 240
     environment:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
@@ -300,8 +292,6 @@ rpe-service-auth-provider:
   java:
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-s2s"
-    readinessDelay: 180
-    livenessDelay: 180
     keyVaults:
     environment:
       TESTING_SUPPORT_ENABLED: 'true'
@@ -316,8 +306,6 @@ draft-store-service:
   java:
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-draft-store"
-    readinessDelay: 240
-    livenessDelay: 240
     keyVaults:
     environment:
       DRAFT_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
@@ -334,8 +322,6 @@ draft-store-service:
 dm-store:
   java:
     releaseNameOverride: "{{ .Release.Name }}-dm-store"
-    readinessDelay: 180
-    livenessDelay: 180
     secrets:
       STORAGE_ACCOUNT_NAME:
         secretRef: storage-secret-{{ .Release.Name }}-blobstorage
@@ -361,8 +347,6 @@ dm-store:
 em-anno:
   java:
     releaseNameOverride: "{{ .Release.Name }}-em-annotation"
-    readinessDelay: 180
-    livenessDelay: 180
     environment:
       ENABLE_LIQUIBASE: 'true'
       SPRING_DATASOURCE_URL:  jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/annotation?ssl=disable
