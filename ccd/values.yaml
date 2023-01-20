@@ -292,7 +292,7 @@ rpe-service-auth-provider:
   java:
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-s2s"
-    keyVaults:
+    disableKeyVaults: true
     environment:
       TESTING_SUPPORT_ENABLED: 'true'
       MICROSERVICEKEYS_CCD_ADMIN: AAAAAAAAAAAAAAAA
@@ -306,7 +306,7 @@ draft-store-service:
   java:
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-draft-store"
-    keyVaults:
+    disableKeyVaults: true
     environment:
       DRAFT_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
       DRAFT_STORE_DB_NAME: draftstore
@@ -329,7 +329,7 @@ dm-store:
       STORAGE_ACCOUNT_KEY:
         secretRef: storage-secret-{{ .Release.Name }}-blobstorage
         key: accessKey
-    keyVaults: {}
+    disableKeyVaults: true
     environment:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
