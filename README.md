@@ -245,7 +245,7 @@ To enable it, use the following configuration:
 Note: blobstorage is used also for other purposes so it might already be
 enabled on some configs
 
-## Migrating to Latest version of *logstash* Helm chart 
+## Migrating to latest version of *logstash* Helm chart 
 
 In the old version Image and tag are referenced as 
 
