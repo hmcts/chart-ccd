@@ -437,7 +437,6 @@ elasticsearch:
 logstash:
   image: hmctspublic.azurecr.io/imported/logstash/logstash
   imageTag: 8.5.1
-  imagePullSecrets: true
   logstashJavaOpts: -Xmx1g -Xms512M
   persistence:
     enabled: false
