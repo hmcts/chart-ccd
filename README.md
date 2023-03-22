@@ -245,6 +245,32 @@ To enable it, use the following configuration:
 Note: blobstorage is used also for other purposes so it might already be
 enabled on some configs
 
+## Migrating to latest version of *logstash* Helm chart 
+
+In the old version Image and tag are referenced as 
+
+```
+logstash:
+  image:
+    repository: hmctspublic.azurecr.io/ccd/logstash
+    tag: latest
+    pullPolicy: IfNotPresent
+
+```
+
+In latest version they are referenced as 
+
+```
+  logstash:
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
+    imageTag: 8.5.1
+    imagePullPolicy: "IfNotPresent"
+    logstashJavaOpts: -Xmx1g -Xms512M
+```
+
+Note: For a full list of values that can be used, refer to [logstash](https://github.com/elastic/helm-charts/tree/main/logstash) documentation.  
+
+
 ## Setup user profiles and ccd definitions
 
 This chart provides two ways of setting up user profiles and importing
