@@ -96,8 +96,8 @@ dependencies:
     condition: ccd.elastic.enabled
 
   - name: logstash
-    version: 2.4.1
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 8.5.1
+    repository: 'https://helm.elastic.co'
     condition: ccd.elastic.enabled
 
   - name: am-role-assignment-service
