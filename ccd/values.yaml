@@ -435,10 +435,9 @@ elasticsearch:
     #       - path: /
 
 logstash:
-  image:
-    repository: hmctspublic.azurecr.io/imported/logstash/logstash
-    tag: 8.5.1
-    pullPolicy: IfNotPresent
+  image: hmctspublic.azurecr.io/imported/logstash/logstash
+  imageTag: 8.5.1
+  imagePullSecrets: IfNotPresent
   logstashJavaOpts: -Xmx1g -Xms512M
   persistence:
     enabled: false
