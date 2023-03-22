@@ -436,7 +436,7 @@ elasticsearch:
 
 logstash:
   image:
-    repository: hmctspublic.azurecr.io/ccd/logstash
+    repository: hmctspublic.azurecr.io/imported/logstash/logstash
     tag: 8.5.1
     pullPolicy: IfNotPresent
   logstashJavaOpts: -Xmx1g -Xms512M
