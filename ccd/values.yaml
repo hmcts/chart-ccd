@@ -436,7 +436,7 @@ elasticsearch:
 
 logstash:
   image: hmctspublic.azurecr.io/imported/logstash/logstash
-  imageTag: 8.5.1
+  imageTag: "7.16.1" # pinned to this version. Override in flux if required.
   logstashJavaOpts: -Xmx1g -Xms512M
   persistence:
     enabled: false
