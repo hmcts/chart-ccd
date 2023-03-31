@@ -435,8 +435,8 @@ elasticsearch:
     #       - path: /
 
 logstash:
-  image: hmctspublic.azurecr.io/imported/logstash/logstash
-  imageTag: "7.16.1" # this should be kept in sync with https://github.com/hmcts/cnp-flux-config/blob/HEAD/apps/ccd/ccd-logstash/ccd-logstash.yaml#L9
+  image: hmctspublic.azurecr.io/ccd/logstash
+  imageTag: "latest"
   logstashJavaOpts: -Xmx1g -Xms512M
   persistence:
     enabled: false
