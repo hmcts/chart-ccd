@@ -20,7 +20,7 @@ ccd:
   ras:
     enabled: false
   elastic:
-    enabled: true
+    enabled: false
 
 postgresql:
   persistence:
