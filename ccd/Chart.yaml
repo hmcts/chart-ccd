@@ -46,7 +46,7 @@ dependencies:
     condition: ccd.adminWeb.enabled
 
   - name: draft-store-service
-    version: 2.1.1
+    version: 2.1.5
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.draftStore.enabled
 
