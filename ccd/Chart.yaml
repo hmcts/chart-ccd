@@ -51,7 +51,7 @@ dependencies:
     condition: ccd.draftStore.enabled
 
   - name: dm-store
-    version: 2.1.39
+    version: 2.2.4
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.dmStore.enabled
 
