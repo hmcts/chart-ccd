@@ -32,6 +32,7 @@ global:
   ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+  postgresHostname: "sscs-flexibleserver-postgres-preview.postgres.database.azure.com"
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
   devMode: true
