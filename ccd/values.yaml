@@ -57,7 +57,7 @@ global:
   emAnnotationUrl: "http://{{ .Release.Name }}-em-annotation"
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
-  postgresPassword: hmcts
+  postgresPassword: ""
   postgresHostname: ""
   
 ccd-message-publisher:
@@ -74,7 +74,7 @@ ccd-message-publisher:
       CCD_CASE_EVENTS_DESTINATION: ccd-case-events
       secrets:
         DATA_STORE_DB_PASSWORD:
-          secretRef: chart-test-postgres-password
+          secretRef: "{{ .Values.global.postgresPassword }}"
           key: PASSWORD
           disabled: false
 
@@ -113,7 +113,7 @@ am-role-assignment-service:
         key: key
         disabled: true
       ROLE_ASSIGNMENT_DB_PASSWORD:
-        secretRef: chart-test-postgres-password
+        secretRef: "{{ .Values.global.postgresPassword }}"
         key: PASSWORD
         disabled: false
 
@@ -202,7 +202,7 @@ ccd-user-profile-api:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
     secrets:
       USER_PROFILE_DB_PASSWORD:
-        secretRef: chart-test-postgres-password
+        secretRef: "{{ .Values.global.postgresPassword }}"
         key: PASSWORD
         disabled: false
 
@@ -223,7 +223,7 @@ ccd-definition-store-api:
         key: accessKey
         disabled: true
       DEFINITION_STORE_DB_PASSWORD:
-        secretRef: chart-test-postgres-password
+        secretRef: "{{ .Values.global.postgresPassword }}"
         key: PASSWORD
         disabled: false
     environment:
@@ -282,7 +282,7 @@ ccd-data-store-api:
         key: key
         disabled: true
       DATA_STORE_DB_PASSWORD:
-        secretRef: chart-test-postgres-password
+        secretRef: "{{ .Values.global.postgresPassword }}"
         key: PASSWORD
         disabled: false
 
@@ -337,7 +337,7 @@ draft-store-service:
       S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
     secrets:
       DRAFT_STORE_DB_PASSWORD:
-        secretRef: chart-test-postgres-password
+        secretRef: "{{ .Values.global.postgresPassword }}"
         key: PASSWORD
         disabled: false
 
