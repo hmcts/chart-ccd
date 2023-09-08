@@ -445,12 +445,12 @@ elasticsearch:
     #     paths:
     #       - path: /
 
-# logstash:
-#   image: hmctspublic.azurecr.io/ccd/logstash
-#   imageTag: "latest"
-#   logstashJavaOpts: -Xmx1g -Xms512M
-#   persistence:
-#     enabled: false
-#   volumeMounts:
-#     - name: pipeline
-#       mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
+logstash:
+  image: hmctspublic.azurecr.io/ccd/logstash
+  imageTag: "latest"
+  logstashJavaOpts: -Xmx1g -Xms512M
+  persistence:
+    enabled: false
+  volumeMounts:
+    - name: pipeline
+      mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
