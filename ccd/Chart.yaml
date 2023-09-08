@@ -90,10 +90,10 @@ dependencies:
     repository: 'https://helm.elastic.co'
     condition: ccd.elastic.enabled
 
-  - name: logstash
-    version: 8.5.1
-    repository: 'https://helm.elastic.co'
-    condition: ccd.elastic.enabled
+  # - name: logstash
+  #   version: 8.5.1
+  #   repository: 'https://helm.elastic.co'
+  #   condition: ccd.logstash.enabled
 
   - name: am-role-assignment-service
     version: 0.0.62
