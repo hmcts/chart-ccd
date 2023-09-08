@@ -33,7 +33,7 @@ global:
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
   postgresHostname: "chart-tests-flexibleserver-postgres-preview.postgres.database.azure.com"
-  postgresPassword: chart-test-postgres-password
+  postgresSecret: chart-test-postgres-password
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
   devMode: true
