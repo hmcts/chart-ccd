@@ -9,6 +9,8 @@ consulIP: "10.97.11.254"
 readinessDelay: 90
 livenessDelay: 90
 
+
+
 ccd:
   testStubsService:
     enabled: false
@@ -22,9 +24,7 @@ ccd:
   elastic:
     enabled: true
 
-postgresql:
-  persistence:
-    enabled: false
+
 
 global:
   subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
@@ -32,7 +32,7 @@ global:
   ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-  postgresHostname: "sscs-flexibleserver-postgres-preview.postgres.database.azure.com"
+  postgresHostname: "chart-tests-flexibleserver-postgres-preview.postgres.database.azure.com"
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
   devMode: true
