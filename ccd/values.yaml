@@ -379,20 +379,6 @@ em-anno:
       S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
       DM_STORE_APP_URL: '{{ tpl .Values.global.dmStoreUrl $}}'
 
-postgresql:
-  enabled: true
-  flexibleserver: chart-tests-flexibleserver-postgres-preview
-  setup:
-    databases:
-    - name: data-store
-    - name: definition-store
-    - name: user-profile
-    - name: draftstore
-    - name: evidence
-    - name: annotation
-    - name: role-assignment
-    - name: hmc-cft-hearing-service
-    - name: sscsjobscheduler
 
 blobstorage:
   releaseNameOverride: "{{ .Release.Name }}-blobstorage"
