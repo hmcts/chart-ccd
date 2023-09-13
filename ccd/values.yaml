@@ -58,6 +58,8 @@ global:
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
   postgresPassword: hmcts
+  postgresHostname: ""
+  postgresSecret: ""
   
 ccd-message-publisher:
   java:
@@ -66,13 +68,17 @@ ccd-message-publisher:
     releaseNameOverride: "{{ .Release.Name }}-message-publisher"
     ingressHost: ""
     environment:
-      DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-      DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CCD_CASE_EVENTS_DESTINATION: ccd-case-events
-      
+      secrets:
+        DATA_STORE_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: false
+
 am-role-assignment-service:
   java:
     image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
@@ -80,11 +86,10 @@ am-role-assignment-service:
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-am-role-assignment-service"
     environment:
-      ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
-      ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
+      ROLE_ASSIGNMENT_DB_HOST: "{{ .Values.global.postgresHostname }}"
+      ROLE_ASSIGNMENT_DB_NAME: "role-assignment"
       ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-      ROLE_ASSIGNMENT_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-      ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+      ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
@@ -108,6 +113,10 @@ am-role-assignment-service:
         secretRef: role-assignment-service-IDAM-ADMIN-SECRET
         key: key
         disabled: true
+      ROLE_ASSIGNMENT_DB_PASSWORD:
+        secretRef: "{{ .Values.global.postgresSecret }}"
+        key: PASSWORD
+        disabled: false
 
 ccd-api-gateway-web:
   nodejs:
@@ -188,11 +197,15 @@ ccd-user-profile-api:
     environment:
       USER_PROFILE_DB_NAME: "user-profile"
       USER_PROFILE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-      USER_PROFILE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-      USER_PROFILE_DB_HOST: "{{ .Release.Name }}-postgresql"
-      USER_PROFILE_DB_OPTIONS: "?stringtype=unspecified"
+      USER_PROFILE_DB_HOST: "{{ .Values.global.postgresHostname }}"
+      USER_PROFILE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       ENABLE_DB_MIGRATE: true
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
+    secrets:
+      USER_PROFILE_DB_PASSWORD:
+        secretRef: "{{ .Values.global.postgresSecret }}"
+        key: PASSWORD
+        disabled: false
 
 ccd-definition-store-api:
   java:
@@ -210,14 +223,17 @@ ccd-definition-store-api:
         secretRef: storage-secret-{{ .Release.Name }}-blobstorage
         key: accessKey
         disabled: true
+      DEFINITION_STORE_DB_PASSWORD:
+        secretRef: "{{ .Values.global.postgresSecret }}"
+        key: PASSWORD
+        disabled: false
     environment:
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       IDAM_USER_URL: '{{ tpl .Values.global.idamWebUrl $}}'
       DEFINITION_STORE_DB_NAME: definition-store
       DEFINITION_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-      DEFINITION_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-      DEFINITION_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
-      DEFINITION_STORE_DB_OPTIONS: ""
+      DEFINITION_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
+      DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       DEFINITION_STORE_DB_MAX_POOL_SIZE: 5
       USER_PROFILE_HOST: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
       # Storage Account
@@ -237,9 +253,8 @@ ccd-data-store-api:
     environment:
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-      DATA_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
-      DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
-      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+      DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
+      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       DATA_STORE_DB_MAX_POOL_SIZE: 10
       CCD_DOCUMENT_URL_PATTERN: https?://(dm-store.*|em-hrs-api.*)
       IDAM_OIDC_URL: '{{ tpl .Values.global.idamWebUrl $}}'
@@ -267,6 +282,10 @@ ccd-data-store-api:
         secretRef: idam-data-store-system-user-password
         key: key
         disabled: true
+      DATA_STORE_DB_PASSWORD:
+        secretRef: "{{ .Values.global.postgresSecret }}"
+        key: PASSWORD
+        disabled: false
 
 
 ccd-case-print-service:
@@ -308,16 +327,20 @@ draft-store-service:
     releaseNameOverride: "{{ .Release.Name }}-draft-store"
     keyVaults:
     environment:
-      DRAFT_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DRAFT_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
       DRAFT_STORE_DB_USER_NAME: '{{ tpl .Values.global.postgresUsername $}}'
-      DRAFT_STORE_DB_PASSWORD: '{{ tpl .Values.global.postgresPassword $}}'
       RUN_DB_MIGRATION_ON_STARTUP: 'true'
-      DRAFT_STORE_DB_CONN_OPTIONS: ""
+      DRAFT_STORE_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       SPRING_CLOUD_PROPERTIESVOLUME_ENABLED: false
       IDAM_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
+    secrets:
+      DRAFT_STORE_DB_PASSWORD:
+        secretRef: "{{ .Values.global.postgresSecret }}"
+        key: PASSWORD
+        disabled: false
 
 dm-store:
   java:
@@ -356,32 +379,7 @@ em-anno:
       S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
       DM_STORE_APP_URL: '{{ tpl .Values.global.dmStoreUrl $}}'
 
-postgresql:
-  enabled: true
-  image:
-    tag: '11.16.0'
-  auth:
-    username: hmcts
-    password: hmcts
-    database: ccd
-  ## Disable Postgres Persistence
-  primary:
-    persistence:
-      enabled: false
-    resources:
-      requests:
-        cpu: 25m
-    initdb:
-      scripts:
-        init.sql: |
-          CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "payment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "annotation" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-          CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+
 
 blobstorage:
   releaseNameOverride: "{{ .Release.Name }}-blobstorage"

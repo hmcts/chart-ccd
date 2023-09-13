@@ -10,11 +10,6 @@ keywords:
   - cdm
   - case-data-management
 dependencies:
-  - name: postgresql
-    version: 11.6.10
-    repository: https://charts.bitnami.com/bitnami
-    condition: ccd.postgresql.enabled
-
   - name: rpe-service-auth-provider
     version: 0.3.85
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
@@ -109,3 +104,8 @@ dependencies:
     version: 0.1.11
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.mps.enabled
+  
+  - name: postgresql
+    version: 0.0.4
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: postgresql.enabled

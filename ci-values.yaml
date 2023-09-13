@@ -9,6 +9,8 @@ consulIP: "10.97.11.254"
 readinessDelay: 90
 livenessDelay: 90
 
+
+
 ccd:
   testStubsService:
     enabled: false
@@ -20,11 +22,9 @@ ccd:
   ras:
     enabled: false
   elastic:
-    enabled: true
-
-postgresql:
-  persistence:
     enabled: false
+
+
 
 global:
   subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
@@ -32,6 +32,8 @@ global:
   ccdApiGatewayIngress: chart-ccd-release.service.core-compute-preview.internal
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+  postgresHostname: "chart-tests-flexibleserver-postgres-preview.postgres.database.azure.com"
+  postgresSecret: chart-test-postgres-password
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
   devMode: true
@@ -55,3 +57,18 @@ ccd-user-profile-importer:
     - auto.test12.cnp+private@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
     - auto.test12.cnp+solc@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
     - auto.test12.cnp+senior@gmail.com|AUTOTEST1|AAT_PRIVATE|TODO
+
+postgresql:
+  enabled: true
+  flexibleserver: chart-tests-flexibleserver-postgres-preview
+  setup:
+    databases:
+    - name: data-store
+    - name: definition-store
+    - name: user-profile
+    - name: draftstore
+    - name: evidence
+    - name: annotation
+    - name: role-assignment
+    - name: hmc-cft-hearing-service
+    - name: sscsjobscheduler
