@@ -57,6 +57,7 @@ global:
   emAnnotationUrl: "http://{{ .Release.Name }}-em-annotation"
   s2sUrl: "http://{{ .Release.Name }}-s2s"
   postgresUsername: hmcts
+  postgresUsernameTest: hmctstest
   postgresPassword: hmcts
   postgresHostname: ""
   postgresSecret: ""
@@ -87,8 +88,8 @@ am-role-assignment-service:
     releaseNameOverride: "{{ .Release.Name }}-am-role-assignment-service"
     environment:
       ROLE_ASSIGNMENT_DB_HOST: "{{ .Values.global.postgresHostname }}"
-      ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
-      ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
+      ROLE_ASSIGNMENT_DB_NAME: "role-assignment"
+      ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsernameTest $}}'
       ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
@@ -378,6 +379,7 @@ em-anno:
       IDAM_API_BASE_URI: '{{ tpl .Values.global.idamApiUrl $}}'
       S2S_BASE_URI: '{{ tpl .Values.global.s2sUrl $}}'
       DM_STORE_APP_URL: '{{ tpl .Values.global.dmStoreUrl $}}'
+
 
 
 blobstorage:
