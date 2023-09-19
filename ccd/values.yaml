@@ -108,14 +108,18 @@ am-role-assignment-service:
       ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:
         secretRef: role-assignment-service-IDAM-CLIENT-SECRET
         key: key
-        disabled: true
+        disabled: false
       ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:
         secretRef: role-assignment-service-IDAM-ADMIN-SECRET
         key: key
-        disabled: true
+        disabled: false
       ROLE_ASSIGNMENT_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
+        disabled: false
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET:
+        secretRef: am-role-assignment-service-s2s-secret
+        key: key
         disabled: false
 
 ccd-api-gateway-web:
