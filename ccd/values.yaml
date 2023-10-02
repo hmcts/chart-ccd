@@ -90,7 +90,6 @@ am-role-assignment-service:
       ROLE_ASSIGNMENT_DB_NAME: "role-assignment"
       ROLE_ASSIGNMENT_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
       ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
       IDAM_USER_URL: '{{ tpl .Values.global.idamApiUrl $}}'
       IDAM_S2S_URL: '{{ tpl .Values.global.s2sUrl $}}'
       OPEN_ID_API_BASE_URI: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o"
@@ -105,14 +104,6 @@ am-role-assignment-service:
         secretRef: role-assignment-service-LD-SDK-KEY
         key: key
         disabled: true
-      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:
-        secretRef: role-assignment-service-IDAM-CLIENT-SECRET
-        key: key
-        disabled: false
-      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:
-        secretRef: role-assignment-service-IDAM-ADMIN-SECRET
-        key: key
-        disabled: false
       ROLE_ASSIGNMENT_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
