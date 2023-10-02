@@ -117,10 +117,6 @@ am-role-assignment-service:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
         disabled: false
-      AM_ROLE_ASSIGNMENT_SERVICE_SECRET:
-        secretRef: am-role-assignment-service-s2s-secret
-        key: key
-        disabled: false
 
 ccd-api-gateway-web:
   nodejs:
