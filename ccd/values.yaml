@@ -4,6 +4,9 @@ tags:
 #subcharts conditions
 ccd:
   postgresql:
+    image:
+      registry: hmctspublic.azurecr.io
+      repository: imported/bitnami/postgresql
     enabled: true
   s2s:
     enabled: true
@@ -36,6 +39,9 @@ ccd:
   emAnnotation:
     enabled: false
   elastic:
+    image:
+      registry: hmctspublic.azurecr.io
+      repository: imported/elasticsearch/elasticsearch
     enabled: false
   ras:
     enabled: true
