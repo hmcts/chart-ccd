@@ -450,3 +450,9 @@ logstash:
   volumeMounts:
     - name: pipeline
       mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
+
+ccd:
+  elastic:
+    enabled: true
+  postgresql:
+    enabled: true
