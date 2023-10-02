@@ -3,11 +3,11 @@ tags:
 
 #subcharts conditions
 ccd:
-  postgresql:
-    image:
-      registry: hmctspublic.azurecr.io
-      repository: imported/bitnami/postgresql
-    enabled: true
+  # postgresql:
+  #   image:
+  #     registry: hmctspublic.azurecr.io
+  #     repository: imported/bitnami/postgresql
+  #   enabled: true
   s2s:
     enabled: true
   userProfile:
@@ -450,3 +450,9 @@ logstash:
   volumeMounts:
     - name: pipeline
       mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
+
+postgresql:
+  image:
+    registry: hmctspublic.azurecr.io
+    repository: imported/bitnami/postgresql
+  enabled: true
