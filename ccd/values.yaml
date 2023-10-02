@@ -104,14 +104,6 @@ am-role-assignment-service:
         secretRef: role-assignment-service-LD-SDK-KEY
         key: key
         disabled: true
-      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:
-        secretRef: role-assignment-service-IDAM-CLIENT-SECRET
-        key: key
-        disabled: false
-      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:
-        secretRef: role-assignment-service-IDAM-ADMIN-SECRET
-        key: key
-        disabled: false
       ROLE_ASSIGNMENT_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
