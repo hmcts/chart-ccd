@@ -3,11 +3,8 @@ tags:
 
 #subcharts conditions
 ccd:
-  # postgresql:
-  #   image:
-  #     registry: hmctspublic.azurecr.io
-  #     repository: imported/bitnami/postgresql
-  #   enabled: true
+  postgresql:
+    enabled: true
   s2s:
     enabled: true
   userProfile:
@@ -38,11 +35,11 @@ ccd:
     enabled: false
   emAnnotation:
     enabled: false
-  elastic:
-    image:
-      registry: hmctspublic.azurecr.io
-      repository: imported/elasticsearch/elasticsearch
-    enabled: true
+  # elastic:
+  #   image:
+  #     registry: hmctspublic.azurecr.io
+  #     repository: imported/elasticsearch/elasticsearch
+  #   enabled: true
   ras:
     enabled: true
   mps:
@@ -451,8 +448,8 @@ logstash:
     - name: pipeline
       mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
 
-postgresql:
+elastic:
   image:
     registry: hmctspublic.azurecr.io
-    repository: imported/bitnami/postgresql
+    repository: imported/elasticsearch/elasticsearch
   enabled: true
