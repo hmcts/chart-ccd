@@ -85,14 +85,9 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.emAnnotation.enabled
 
-  # - name: elasticsearch
-  #   version: 7.17.3
-  #   repository: 'https://helm.elastic.co'
-  #   condition: ccd.elastic.enabled
   - name: elasticsearch
     version: 7.17.3
-    registry: hmctspublic.azurecr.io
-    repository: imported/elasticsearch/elasticsearch
+    repository: 'https://helm.elastic.co'
     condition: ccd.elastic.enabled
 
   - name: logstash
