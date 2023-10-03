@@ -36,9 +36,7 @@ ccd:
   emAnnotation:
     enabled: false
   elastic:
-    image:
-      registry: hmctspublic.azurecr.io
-      repository: imported/elasticsearch/elasticsearch
+    image: hmctspublic.azurecr.io/imported/elasticsearch/elasticsearch
     enabled: true
   ras:
     enabled: true
