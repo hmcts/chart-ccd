@@ -257,7 +257,7 @@ logstash:
     pullPolicy: IfNotPresent
 
 ```
-
+ 
 In latest version they are referenced as 
 
 ```
