@@ -64,12 +64,12 @@ postgresql:
   flexibleserver: chart-tests-flexibleserver-postgres-preview
   setup:
     databases:
-    - name: {{ tpl .Values.global.databaseNamePrefix }}data-store
-    - name: {{ tpl .Values.global.databaseNamePrefix }}definition-store
-    - name: {{ tpl .Values.global.databaseNamePrefix }}user-profile
-    - name: {{ tpl .Values.global.databaseNamePrefix }}draftstore
-    - name: {{ tpl .Values.global.databaseNamePrefix }}evidence
-    - name: {{ tpl .Values.global.databaseNamePrefix }}annotation
-    - name: {{ tpl .Values.global.databaseNamePrefix }}role-assignment
-    - name: {{ tpl .Values.global.databaseNamePrefix }}hmc-cft-hearing-service
-    - name: {{ tpl .Values.global.databaseNamePrefix }}sscsjobscheduler
+    - name: "{{ .Values.global.databaseNamePrefix }}data-store"
+    - name: "{{ .Values.global.databaseNamePrefix }}definition-store"
+    - name: "{{ .Values.global.databaseNamePrefix }}user-profile"
+    - name: "{{ .Values.global.databaseNamePrefix }}draftstore"
+    - name: "{{ .Values.global.databaseNamePrefix }}evidence"
+    - name: "{{ .Values.global.databaseNamePrefix }}annotation"
+    - name: "{{ .Values.global.databaseNamePrefix }}role-assignment"
+    - name: "{{ .Values.global.databaseNamePrefix }}hmc-cft-hearing-service"
+    - name: "{{ .Values.global.databaseNamePrefix }}sscsjobscheduler"
