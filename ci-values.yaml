@@ -37,6 +37,7 @@ global:
   ccdAdminWebIngress: chart-ccd-release.service.core-compute-preview.internal
   environment: aat
   devMode: true
+  databaseNamePrefix: "chart-test-"
 
 ccd-definition-importer:
   definitions:
@@ -63,12 +64,12 @@ postgresql:
   flexibleserver: chart-tests-flexibleserver-postgres-preview
   setup:
     databases:
-    - name: ${CHANGE_ID}-data-store
-    - name: ${CHANGE_ID}-definition-store
-    - name: ${CHANGE_ID}-user-profile
-    - name: ${CHANGE_ID}-draftstore
-    - name: ${CHANGE_ID}-evidence
-    - name: ${CHANGE_ID}-annotation
-    - name: ${CHANGE_ID}-role-assignment
-    - name: ${CHANGE_ID}-hmc-cft-hearing-service
-    - name: ${CHANGE_ID}-sscsjobscheduler
+    - name: "{{ .Values.global.databaseNamePrefix }}data-store"
+    - name: "{{ .Values.global.databaseNamePrefix }}definition-store"
+    - name: "{{ .Values.global.databaseNamePrefix }}user-profile"
+    - name: "{{ .Values.global.databaseNamePrefix }}draftstore"
+    - name: "{{ .Values.global.databaseNamePrefix }}evidence"
+    - name: "{{ .Values.global.databaseNamePrefix }}annotation"
+    - name: "{{ .Values.global.databaseNamePrefix }}role-assignment"
+    - name: "{{ .Values.global.databaseNamePrefix }}hmc-cft-hearing-service"
+    - name: "{{ .Values.global.databaseNamePrefix }}sscsjobscheduler"
