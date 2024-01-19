@@ -9,7 +9,7 @@ pr:
     - master
 resources:
   repositories:
-  - repository: cnp-library
+  - repository: cnp-azuredevops-libraries
     type: github
     ref: master
     name: hmcts/cnp-azuredevops-libraries
@@ -20,7 +20,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - template: steps/charts/validate.yaml@cnp-library
+  - template: steps/charts/validate.yaml@cnp-azuredevops-libraries
     parameters:
       chartName: ccd
       chartReleaseName: chart-ccd-ci-test
@@ -39,7 +39,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - template: steps/charts/release.yaml@cnp-library
+  - template: steps/charts/release.yaml@cnp-azuredevops-libraries
     parameters:
       chartName: ccd
       chartReleaseName: chart-ccd
