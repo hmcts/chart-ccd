@@ -46,7 +46,7 @@ dependencies:
     condition: ccd.draftStore.enabled
 
   - name: dm-store
-    version: 2.2.20
+    version: 2.2.21
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.dmStore.enabled
 
@@ -81,7 +81,7 @@ dependencies:
     condition: ccd.blobstorage.enabled
 
   - name: em-anno
-    version: 2.0.20
+    version: 2.0.21
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.emAnnotation.enabled
 
@@ -96,7 +96,7 @@ dependencies:
     condition: ccd.elastic.enabled
 
   - name: am-role-assignment-service
-    version: 0.0.77
+    version: 0.0.78
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.ras.enabled
   
