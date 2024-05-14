@@ -2,45 +2,45 @@ name: chart-ccd pipeline
 trigger:
   branches:
     include:
-    - refs/tags/*
+      - refs/tags/*
 pr:
   branches:
     include:
-    - master
+      - master
 resources:
   repositories:
-  - repository: cnp-library
-    type: github
-    ref: master
-    name: hmcts/cnp-azuredevops-libraries
-    endpoint: 'hmcts'
+    - repository: cnp-azuredevops-libraries
+      type: github
+      ref: master
+      name: hmcts/cnp-azuredevops-libraries
+      endpoint: 'hmcts'
 
 jobs:
-- job: Validate
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: steps/charts/validate.yaml@cnp-library
-    parameters:
-      chartName: ccd
-      chartReleaseName: chart-ccd-ci-test
-      chartNamespace: chart-tests
-      helmInstallTimeout: "1000"
+  - job: Validate
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - template: steps/charts/validate.yaml@cnp-azuredevops-libraries
+        parameters:
+          chartName: ccd
+          chartReleaseName: chart-ccd-ci-test
+          chartNamespace: chart-tests
+          helmInstallTimeout: "1000"
 
 
-- job: Release
-  # Make sure we have a tag to run this job
-  condition: >
-    and(
-        succeeded(),
-        startsWith(variables['Build.SourceBranch'], 'refs/tags/')
-      )
-  dependsOn: Validate
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: steps/charts/release.yaml@cnp-library
-    parameters:
-      chartName: ccd
-      chartReleaseName: chart-ccd
-      chartNamespace: chart-tests
+  - job: Release
+    # Make sure we have a tag to run this job
+    condition: >
+      and(
+          succeeded(),
+          startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+        )
+    dependsOn: Validate
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - template: steps/charts/release.yaml@cnp-azuredevops-libraries
+        parameters:
+          chartName: ccd
+          chartReleaseName: chart-ccd
+          chartNamespace: chart-tests
