@@ -11,7 +11,7 @@ keywords:
   - case-data-management
 dependencies:
   - name: rpe-service-auth-provider
-    version: 0.3.111
+    version: 0.3.112
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.s2s.enabled
 
