@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS CCD product.
 name: ccd
 # Static chart version, as uses tag
-version: 0.1.0 # Do not change
+version: 0.1.1
 icon: https://github.com/hmcts/chart-ccd/raw/master/images/icons8-java-50.png
 keywords:
   - ccd
@@ -11,7 +11,7 @@ keywords:
   - case-data-management
 dependencies:
   - name: rpe-service-auth-provider
-    version: 0.3.112
+    version: 0.3.113
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.s2s.enabled
 
@@ -26,7 +26,7 @@ dependencies:
     condition: ccd.definitionStore.enabled
 
   - name: ccd-data-store-api
-    version: 2.0.28
+    version: 2.0.29
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.dataStore.enabled
 
@@ -46,7 +46,7 @@ dependencies:
     condition: ccd.draftStore.enabled
 
   - name: dm-store
-    version: 2.2.22
+    version: 2.2.24
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.dmStore.enabled
 
@@ -56,7 +56,7 @@ dependencies:
     condition: ccd.printService.enabled
 
   - name: ccd-case-activity-api
-    version: 1.3.9
+    version: 1.3.10
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.activityApi.enabled
 
@@ -101,7 +101,7 @@ dependencies:
     condition: ccd.ras.enabled
   
   - name: ccd-message-publisher
-    version: 0.1.17
+    version: 0.1.19
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.mps.enabled
   
