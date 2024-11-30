@@ -36,7 +36,8 @@ ccd:
   emAnnotation:
     enabled: false
   elastic:
-    enabled: false
+    image: hmctspublic.azurecr.io/imported/elasticsearch/elasticsearch
+    enabled: true
   ras:
     enabled: true
   mps:
@@ -436,3 +437,9 @@ logstash:
   volumeMounts:
     - name: pipeline
       mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
+
+# elastic:
+#   image:
+#     registry: hmctspublic.azurecr.io
+#     repository: imported/elasticsearch/elasticsearch
+#   enabled: true
