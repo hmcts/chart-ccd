@@ -16,28 +16,28 @@ dependencies:
     condition: ccd.s2s.enabled
 
   - name: ccd-user-profile-api
-    version: 1.6.15
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.6.16
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.userProfile.enabled
 
   - name: ccd-definition-store-api
-    version: 1.6.18
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.6.21
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.definitionStore.enabled
 
   - name: ccd-data-store-api
-    version: 2.0.29
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 2.0.33
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.dataStore.enabled
 
   - name: ccd-api-gateway-web
-    version: 1.2.7
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.2.8
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.apiGatewayWeb.enabled
 
   - name: ccd-admin-web
-    version: 2.2.8
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 2.2.9
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.adminWeb.enabled
 
   - name: draft-store-service
@@ -51,18 +51,18 @@ dependencies:
     condition: ccd.dmStore.enabled
 
   - name: ccd-case-print-service
-    version: 1.3.7
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.3.8
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.printService.enabled
 
   - name: ccd-case-activity-api
-    version: 1.3.10
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.3.12
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.activityApi.enabled
 
   - name: ccd-test-stubs-service
-    version: 1.2.12
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.2.13
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.testStubsService.enabled
 
   - name: ccd-definition-importer
@@ -101,11 +101,11 @@ dependencies:
     condition: ccd.ras.enabled
   
   - name: ccd-message-publisher
-    version: 0.1.19
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 0.1.22
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: ccd.mps.enabled
   
   - name: postgresql
-    version: 1.0.2
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.1.0
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: postgresql.enabled
