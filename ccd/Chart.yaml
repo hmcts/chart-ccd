@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS CCD product.
 name: ccd
 # Static chart version, as uses tag
-version: 0.1.0 # Do not change
+version: 0.1.1
 icon: https://github.com/hmcts/chart-ccd/raw/master/images/icons8-java-50.png
 keywords:
   - ccd
@@ -86,7 +86,7 @@ dependencies:
     condition: ccd.emAnnotation.enabled
 
   - name: elasticsearch
-    version: 7.17.3
+    version: 8.5.1
     repository: 'https://helm.elastic.co'
     condition: ccd.elastic.enabled
 
