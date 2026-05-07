@@ -408,7 +408,12 @@ ccd-user-profile-importer:
   userProfileUrl: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
 
 elasticsearch:
+  image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
+  imageTag: 9.2.3
+  nameOverride: ${SERVICE_NAME}-es
   clusterName: "es"
+  createCert: false
+  protocol: http
   replicas: 1
   minimumMasterNodes: 1
   antiAffinity: "soft"
@@ -417,22 +422,25 @@ elasticsearch:
   # The tests do pass, at least as of 2023-01-19
   tests:
     enabled: false
-  persistence:
-    enabled: false
-  ingress:
-    enabled: false
-    className: traefik
-    # hosts:
-    #   - host: es-${SERVICE_FQDN}
-    #     paths:
-    #       - path: /
+  esConfig:
+    elasticsearch.yml: |
+      action.auto_create_index: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,ccd-logstash-dead-letter
+      xpack.security.enabled: false
 
 logstash:
-  image: hmctspublic.azurecr.io/ccd/logstash
-  imageTag: "latest"
-  logstashJavaOpts: -Xmx1g -Xms512M
-  persistence:
-    enabled: false
-  volumeMounts:
-    - name: pipeline
-      mountPath: /usr/share/logstash/files # hack to prevent override of default pipeline in the custom image hmcts/ccd-logstash
+  image: "hmctsprod.azurecr.io/imported/elastic/logstash"
+  imageTag: "9.2.4"
+  logstashJavaOpts: "-Xmx1g -Xms512M"
+  extraInitContainers: |
+    - name: download-postgres-jdbc
+      image: hmctsprod.azurecr.io/curl:7.70.0
+      command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.7.9.jar', '-o', '/logstash-lib/postgresql.jar']
+      volumeMounts:
+      - name: logstash-lib
+        mountPath: /logstash-lib
+  extraVolumes: |
+    - name: logstash-lib
+      emptyDir: {}
+  extraVolumeMounts: |
+    - name: logstash-lib
+      mountPath: /usr/share/logstash/ccd
