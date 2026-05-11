@@ -64,7 +64,7 @@ global:
 
 ccd-message-publisher:
   java:
-    image: 'hmctspublic.azurecr.io/ccd/message-publisher:latest'
+    image: 'hmctsprod.azurecr.io/ccd/message-publisher:latest'
     imagePullPolicy: Always
     releaseNameOverride: "{{ .Release.Name }}-message-publisher"
     ingressHost: ""
@@ -82,7 +82,7 @@ ccd-message-publisher:
 
 am-role-assignment-service:
   java:
-    image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
+    image: 'hmctsprod.azurecr.io/am/role-assignment-service:latest'
     imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-am-role-assignment-service"
@@ -241,7 +241,7 @@ ccd-definition-store-api:
 
 ccd-data-store-api:
   java:
-    image: 'hmctspublic.azurecr.io/ccd/data-store-api:latest'
+    image: 'hmctsprod.azurecr.io/ccd/data-store-api:latest'
     imagePullPolicy: Always
     ingressHost: ""
     releaseNameOverride: "{{ .Release.Name }}-ccd-data-store-api"
