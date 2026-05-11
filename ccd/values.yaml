@@ -408,7 +408,7 @@ ccd-user-profile-importer:
   userProfileUrl: '{{ tpl .Values.global.ccdUserProfileUrl $}}'
 
 elasticsearch:
-  image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
+  image: 'hmctsprod.azurecr.io/imported/elastic/elasticsearch'
   imageTag: 9.2.3
   nameOverride: ${SERVICE_NAME}-es
   clusterName: "es"
@@ -428,7 +428,7 @@ elasticsearch:
       xpack.security.enabled: false
 
 logstash:
-  image: "hmctsprod.azurecr.io/imported/elastic/logstash"
+  image: 'hmctsprod.azurecr.io/imported/elastic/logstash'
   imageTag: "9.2.4"
   logstashJavaOpts: "-Xmx1g -Xms512M"
   extraInitContainers: |
