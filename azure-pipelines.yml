@@ -26,6 +26,8 @@ jobs:
       chartReleaseName: chart-ccd-ci-test
       chartNamespace: chart-tests
       helmInstallTimeout: "1000"
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
 
 
 - job: Release
