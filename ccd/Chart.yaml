@@ -97,7 +97,7 @@ dependencies:
 
   - name: am-role-assignment-service
     version: 0.0.84
-    repository: 'https://hmctsprod.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: ccd.ras.enabled
 
   - name: ccd-message-publisher
