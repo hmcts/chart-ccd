@@ -12,6 +12,7 @@
     + [Demo - default services and frontend](#demo---default-services-and-frontend)
     + [Demo - default services, frontend and dependent services](#demo---default-services--frontend-and-dependent-services)
       - [Enabling upload history on Admin Web](#enabling-upload-history-on-admin-web)
+  * [Elasticsearch persistence](#elasticsearch-persistence)
   * [Setup user profiles and ccd definitions](#setup-user-profiles-and-ccd-definitions)
     + [Importers](#importers)
     + [Admin Web](#admin-web)
@@ -244,6 +245,22 @@ To enable it, use the following configuration:
 
 Note: blobstorage is used also for other purposes so it might already be
 enabled on some configs
+
+## Elasticsearch persistence
+
+Elasticsearch persists its data to a claim, so it survives the pod restarting. The claim, and the
+Azure disk behind it, is deleted with the StatefulSet, so deleting the release takes the data too.
+
+To run without a disk, where the data goes when the pod does:
+
+```
+  elasticsearch:
+    persistence:
+      enabled: false
+```
+
+Note: `volumeClaimTemplates` cannot be changed on an existing StatefulSet, so this only affects
+releases created afterwards.
 
 ## Migrating to latest version of *logstash* Helm chart 
 
