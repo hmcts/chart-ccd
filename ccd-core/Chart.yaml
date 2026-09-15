@@ -76,8 +76,8 @@ dependencies:
     condition: ccd.emAnnotation.enabled
 
   - name: elasticsearch
-    version: 8.5.1
-    repository: 'https://helm.elastic.co'
+    version: 9.2.3
+    repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: ccd.elastic.enabled
 
   - name: logstash
