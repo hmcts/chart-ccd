@@ -30,6 +30,32 @@ jobs:
       aksResourceGroup: cft-preview-00-rg
 
 
+- job: ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: HelmInstaller@1
+    displayName: 'Install Helm 4.2.4'
+    inputs:
+      helmVersionToInstall: 4.2.4
+
+  - task: AzureCLI@2
+    displayName: 'Lint and package ccd-core'
+    inputs:
+      azureSubscription: azurerm-prod
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        set -e
+        az acr login --name hmctsprod
+        helm dependency update ccd-core
+        helm lint ccd-core
+        helm package ccd-core
+
+
 - job: Release
   # Make sure we have a tag to run this job
   condition: >
@@ -37,7 +63,9 @@ jobs:
         succeeded(),
         startsWith(variables['Build.SourceBranch'], 'refs/tags/')
       )
-  dependsOn: Validate
+  dependsOn:
+  - Validate
+  - ValidateCore
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -45,6 +73,27 @@ jobs:
     parameters:
       chartName: ccd
       chartReleaseName: chart-ccd
+      chartNamespace: chart-tests
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
+
+- job: ReleaseCore
+  # Make sure we have a tag to run this job
+  condition: >
+    and(
+        succeeded(),
+        startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+      )
+  dependsOn:
+  - Validate
+  - ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: steps/charts/release.yaml@cnp-azuredevops-libraries
+    parameters:
+      chartName: ccd-core
+      chartReleaseName: chart-ccd-core
       chartNamespace: chart-tests
       aksCluster: cft-preview-00-aks
       aksResourceGroup: cft-preview-00-rg
