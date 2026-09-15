@@ -30,6 +30,20 @@ jobs:
       aksResourceGroup: cft-preview-00-rg
 
 
+- job: ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: steps/charts/validate.yaml@cnp-azuredevops-libraries
+    parameters:
+      chartName: ccd-core
+      chartReleaseName: chart-ccd-core-ci-test
+      chartNamespace: chart-tests
+      helmInstallTimeout: "1000"
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
+
+
 - job: Release
   # Make sure we have a tag to run this job
   condition: >
@@ -45,6 +59,25 @@ jobs:
     parameters:
       chartName: ccd
       chartReleaseName: chart-ccd
+      chartNamespace: chart-tests
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
+
+- job: ReleaseCore
+  # Make sure we have a tag to run this job
+  condition: >
+    and(
+        succeeded(),
+        startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+      )
+  dependsOn: ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: steps/charts/release.yaml@cnp-azuredevops-libraries
+    parameters:
+      chartName: ccd-core
+      chartReleaseName: chart-ccd-core
       chartNamespace: chart-tests
       aksCluster: cft-preview-00-aks
       aksResourceGroup: cft-preview-00-rg
