@@ -20,13 +20,15 @@ resources:
 
 jobs:
 
-# ------------------------------------------------------------------
+# ================================================================
 # TEMPORARY DEBUG JOB
-# Used to investigate Helm lint failure for ccd-data-store-api chart.
-# Remove once the issue has been identified.
-# ------------------------------------------------------------------
+#
+# Tests the same CCD chart using Helm 3 and Helm 4.
+# This is intended to determine whether the 5 MiB chart-size
+# failure is specific to Helm 4.
+# ================================================================
 - job: DebugCCD
-  displayName: 'Debug CCD Helm chart'
+  displayName: 'Compare CCD lint with Helm 3 and Helm 4'
   pool:
     vmImage: 'ubuntu-latest'
 
@@ -34,13 +36,16 @@ jobs:
     - checkout: self
       clean: true
 
+    # ------------------------------------------------------------
+    # HELM 3
+    # ------------------------------------------------------------
     - task: HelmInstaller@1
-      displayName: 'Install Helm 4.2.4'
+      displayName: 'Install Helm 3.18.6'
       inputs:
-        helmVersionToInstall: 4.2.4
+        helmVersionToInstall: 3.18.6
 
     - task: AzureCLI@2
-      displayName: 'Debug CCD Helm dependencies'
+      displayName: 'Download dependencies and test with Helm 3'
       inputs:
         azureSubscription: azurerm-prod
         scriptLocation: inlineScript
@@ -49,83 +54,112 @@ jobs:
           set -e
 
           echo "========================================"
-          echo "Helm version"
+          echo "HELM 3 TEST"
           echo "========================================"
+
+          echo
+          echo "Helm version:"
           helm version
 
           echo
           echo "========================================"
           echo "Login to HMCTS ACR"
           echo "========================================"
+
           az acr login --name hmctsprod
 
           echo
           echo "========================================"
           echo "CCD directory BEFORE dependency update"
           echo "========================================"
+
           ls -lah ccd
+
+          echo
+          echo "Existing charts directory:"
           ls -lah ccd/charts || true
 
           echo
           echo "========================================"
           echo "CCD Chart.yaml"
           echo "========================================"
+
           cat ccd/Chart.yaml
 
           echo
           echo "========================================"
           echo "Updating CCD dependencies"
           echo "========================================"
+
           helm dependency update ccd
 
           echo
           echo "========================================"
-          echo "CCD charts AFTER dependency update"
+          echo "All downloaded chart dependencies"
           echo "========================================"
+
           ls -lah ccd/charts
 
           echo
           echo "========================================"
-          echo "Data Store chart packages"
+          echo "All downloaded chart sizes"
           echo "========================================"
-          find ccd \
-            -name 'ccd-data-store-api-*.tgz' \
-            -exec ls -lh {} \;
+
+          du -h ccd/charts/*.tgz | sort -rh
 
           echo
           echo "========================================"
-          echo "Largest files under CCD"
-          echo "========================================"
-          find ccd -type f -exec du -h {} + \
-            | sort -rh \
-            | head -30
-
-          echo
-          echo "========================================"
-          echo "Inspect ccd-data-store-api-2.0.44"
+          echo "Data Store chart"
           echo "========================================"
 
-          DATASTORE_CHART=$(find ccd \
-            -name 'ccd-data-store-api-2.0.44.tgz' \
-            | head -1)
+          DATASTORE_CHART="ccd/charts/ccd-data-store-api-2.0.44.tgz"
 
-          if [ -n "$DATASTORE_CHART" ]; then
+          if [ -f "$DATASTORE_CHART" ]; then
 
-            echo "Found chart:"
+            echo "Found:"
             echo "$DATASTORE_CHART"
 
             echo
-            echo "Chart size:"
+            echo "Human-readable size:"
             ls -lh "$DATASTORE_CHART"
 
             echo
-            echo "Largest files contained in chart:"
-            tar -tzvf "$DATASTORE_CHART" \
-              | sort -k3 -nr \
-              | head -30
+            echo "Exact file information:"
+            ls -l "$DATASTORE_CHART"
+
+            DATASTORE_SIZE=$(stat -c%s "$DATASTORE_CHART")
 
             echo
-            echo "Extracting chart for inspection..."
+            echo "Actual chart size:"
+            echo "${DATASTORE_SIZE} bytes"
+
+            echo
+            echo "Helm error limit:"
+            echo "5242880 bytes"
+
+            if [ "$DATASTORE_SIZE" -gt 5242880 ]; then
+              echo
+              echo "CONFIRMED: Data Store chart exceeds 5 MiB"
+              echo "Amount over limit:"
+              echo "$((DATASTORE_SIZE - 5242880)) bytes"
+            else
+              echo
+              echo "Data Store chart does NOT exceed 5 MiB"
+            fi
+
+            echo
+            echo "========================================"
+            echo "Largest files inside Data Store chart"
+            echo "========================================"
+
+            tar -tzvf "$DATASTORE_CHART" \
+              | sort -k3 -nr \
+              | head -30 || true
+
+            echo
+            echo "========================================"
+            echo "Extract Data Store chart"
+            echo "========================================"
 
             rm -rf /tmp/ccd-data-store-chart
             mkdir -p /tmp/ccd-data-store-chart
@@ -135,27 +169,154 @@ jobs:
 
             echo
             echo "Largest extracted files/directories:"
+
             du -ah /tmp/ccd-data-store-chart \
               | sort -rh \
-              | head -30
+              | head -30 || true
 
           else
 
-            echo "ccd-data-store-api-2.0.44.tgz was NOT found."
+            echo
+            echo "ERROR: Data Store chart was not found:"
+            echo "$DATASTORE_CHART"
+
+            echo
+            echo "Searching for any Data Store chart..."
+
+            find ccd \
+              -name 'ccd-data-store-api-*.tgz' \
+              -exec ls -lh {} \;
 
           fi
 
           echo
           echo "========================================"
-          echo "Running Helm lint"
+          echo "RUNNING HELM 3 LINT"
           echo "========================================"
+
+          helm version
+
+          set +e
 
           helm lint ccd
 
+          HELM3_RESULT=$?
 
-# ------------------------------------------------------------------
+          set -e
+
+          echo
+          echo "========================================"
+          echo "HELM 3 RESULT"
+          echo "========================================"
+
+          echo "Helm 3 lint exit code: $HELM3_RESULT"
+
+          if [ "$HELM3_RESULT" -eq 0 ]; then
+            echo "HELM 3 RESULT: PASS"
+          else
+            echo "HELM 3 RESULT: FAIL"
+          fi
+
+          # Do not fail the diagnostic job here because we also
+          # want to run the Helm 4 test.
+          exit 0
+
+
+    # ------------------------------------------------------------
+    # HELM 4
+    #
+    # Install Helm 4, but DO NOT run dependency update again.
+    # This means Helm 4 tests exactly the same ccd/charts files
+    # downloaded during the Helm 3 test above.
+    # ------------------------------------------------------------
+    - task: HelmInstaller@1
+      displayName: 'Install Helm 4.2.4'
+      inputs:
+        helmVersionToInstall: 4.2.4
+
+    - task: AzureCLI@2
+      displayName: 'Test same CCD chart with Helm 4'
+      inputs:
+        azureSubscription: azurerm-prod
+        scriptLocation: inlineScript
+        scriptType: bash
+        inlineScript: |
+          set -e
+
+          echo "========================================"
+          echo "HELM 4 TEST"
+          echo "========================================"
+
+          echo
+          echo "Helm version:"
+          helm version
+
+          echo
+          echo "========================================"
+          echo "Confirm existing Data Store chart"
+          echo "========================================"
+
+          DATASTORE_CHART="ccd/charts/ccd-data-store-api-2.0.44.tgz"
+
+          if [ -f "$DATASTORE_CHART" ]; then
+
+            echo "Using SAME chart downloaded previously:"
+            ls -lh "$DATASTORE_CHART"
+
+            DATASTORE_SIZE=$(stat -c%s "$DATASTORE_CHART")
+
+            echo
+            echo "Exact size:"
+            echo "${DATASTORE_SIZE} bytes"
+
+          else
+
+            echo "ERROR: Expected Data Store chart is missing."
+            exit 1
+
+          fi
+
+          echo
+          echo "========================================"
+          echo "RUNNING HELM 4 LINT"
+          echo "========================================"
+
+          set +e
+
+          helm lint ccd
+
+          HELM4_RESULT=$?
+
+          set -e
+
+          echo
+          echo "========================================"
+          echo "HELM 4 RESULT"
+          echo "========================================"
+
+          echo "Helm 4 lint exit code: $HELM4_RESULT"
+
+          if [ "$HELM4_RESULT" -eq 0 ]; then
+            echo "HELM 4 RESULT: PASS"
+          else
+            echo "HELM 4 RESULT: FAIL"
+          fi
+
+          echo
+          echo "========================================"
+          echo "DEBUG TEST COMPLETE"
+          echo "========================================"
+
+          echo "Check the Helm 3 and Helm 4 results above."
+
+          # Keep this diagnostic job green so that both results
+          # can be inspected without this temporary job blocking.
+          exit 0
+
+
+# ================================================================
 # EXISTING CCD VALIDATION
-# ------------------------------------------------------------------
+# ================================================================
 - job: Validate
   pool:
     vmImage: 'ubuntu-latest'
@@ -171,9 +332,9 @@ jobs:
         aksResourceGroup: cft-preview-00-rg
 
 
-# ------------------------------------------------------------------
+# ================================================================
 # EXISTING CCD CORE VALIDATION
-# ------------------------------------------------------------------
+# ================================================================
 - job: ValidateCore
   pool:
     vmImage: 'ubuntu-latest'
@@ -201,9 +362,9 @@ jobs:
           helm package ccd-core
 
 
-# ------------------------------------------------------------------
+# ================================================================
 # EXISTING CCD RELEASE
-# ------------------------------------------------------------------
+# ================================================================
 - job: Release
   # Make sure we have a tag to run this job
   condition: >
@@ -229,9 +390,9 @@ jobs:
         aksResourceGroup: cft-preview-00-rg
 
 
-# ------------------------------------------------------------------
+# ================================================================
 # EXISTING CCD CORE RELEASE
-# ------------------------------------------------------------------
+# ================================================================
 - job: ReleaseCore
   # Make sure we have a tag to run this job
   condition: >
