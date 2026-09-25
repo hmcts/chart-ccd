@@ -1,111 +1,99 @@
-apiVersion: v2
-description: A Helm chart for the HMCTS CCD product.
-name: ccd
-# Static chart version, as uses tag
-version: 0.1.0 # Do not change
-icon: https://github.com/hmcts/chart-ccd/raw/master/images/icons8-java-50.png
-keywords:
-  - ccd
-  - core-case-data
-  - cdm
-  - case-data-management
-dependencies:
-  - name: rpe-service-auth-provider
-    version: 0.3.137
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.s2s.enabled
+name: chart-ccd pipeline
+trigger:
+  branches:
+    include:
+    - refs/tags/*
+pr:
+  branches:
+    include:
+    - master
+resources:
+  repositories:
+  - repository: cnp-azuredevops-libraries
+    type: github
+    ref: master
+    name: hmcts/cnp-azuredevops-libraries
+    endpoint: 'hmcts'
 
-  - name: ccd-user-profile-api
-    version: 1.6.18
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.userProfile.enabled
+jobs:
+- job: Validate
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: steps/charts/validate.yaml@cnp-azuredevops-libraries
+    parameters:
+      chartName: ccd
+      chartReleaseName: chart-ccd-ci-test
+      chartNamespace: chart-tests
+      helmInstallTimeout: "1000"
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
 
-  - name: ccd-definition-store-api
-    version: 1.6.31
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.definitionStore.enabled
 
-  - name: ccd-data-store-api
-    version: 2.0.47
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.dataStore.enabled
+- job: ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    clean: true
 
-  - name: ccd-api-gateway-web
-    version: 1.2.11
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.apiGatewayWeb.enabled
+  - task: HelmInstaller@1
+    displayName: 'Install Helm 4.2.4'
+    inputs:
+      helmVersionToInstall: 4.2.4
 
-  - name: ccd-admin-web
-    version: 2.2.17
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.adminWeb.enabled
+  - task: AzureCLI@2
+    displayName: 'Lint and package ccd-core'
+    inputs:
+      azureSubscription: azurerm-prod
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        set -e
+        az acr login --name hmctsprod
+        helm dependency update ccd-core
+        helm lint ccd-core
+        helm package ccd-core
 
-  - name: draft-store-service
-    version: 2.2.5
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.draftStore.enabled
 
-  - name: dm-store
-    version: 2.2.7
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.dmStore.enabled
+- job: Release
+  # Make sure we have a tag to run this job
+  condition: >
+    and(
+        succeeded(),
+        startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+      )
+  dependsOn:
+  - Validate
+  - ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: steps/charts/release.yaml@cnp-azuredevops-libraries
+    parameters:
+      chartName: ccd
+      chartReleaseName: chart-ccd
+      chartNamespace: chart-tests
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
 
-  - name: ccd-case-print-service
-    version: 1.3.12
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.printService.enabled
-
-  - name: ccd-case-activity-api
-    version: 1.3.21
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.activityApi.enabled
-
-  - name: ccd-test-stubs-service
-    version: 1.2.14
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.testStubsService.enabled
-
-  - name: ccd-definition-importer
-    version: 1.4.0
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.definitionImporter.enabled
-
-  - name: ccd-user-profile-importer
-    version: 1.2.3
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.userProfileImporter.enabled
-
-  - name: blobstorage
-    version: 2.1.1
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.blobstorage.enabled
-
-  - name: em-anno
-    version: 2.0.22
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.emAnnotation.enabled
-
-  - name: elasticsearch
-    version: 9.2.3
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.elastic.enabled
-
-  - name: logstash
-    version: 8.5.1
-    repository: 'https://helm.elastic.co'
-    condition: ccd.elastic.enabled
-
-  - name: am-role-assignment-service
-    version: 0.0.85
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.ras.enabled
-
-  - name: ccd-message-publisher
-    version: 0.1.28
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: ccd.mps.enabled
-
-  - name: postgresql
-    version: 1.1.1
-    repository: 'oci://hmctsprod.azurecr.io/helm'
-    condition: postgresql.enabled
+- job: ReleaseCore
+  # Make sure we have a tag to run this job
+  condition: >
+    and(
+        succeeded(),
+        startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+      )
+  dependsOn:
+  - Validate
+  - ValidateCore
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: steps/charts/release.yaml@cnp-azuredevops-libraries
+    parameters:
+      chartName: ccd-core
+      chartReleaseName: chart-ccd-core
+      chartNamespace: chart-tests
+      aksCluster: cft-preview-00-aks
+      aksResourceGroup: cft-preview-00-rg
