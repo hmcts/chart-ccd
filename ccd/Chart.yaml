@@ -101,7 +101,7 @@ dependencies:
     condition: ccd.ras.enabled
 
   - name: ccd-message-publisher
-    version: 0.1.26
+    version: 0.1.29
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: ccd.mps.enabled
 
