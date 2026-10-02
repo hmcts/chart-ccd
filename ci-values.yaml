@@ -39,6 +39,12 @@ global:
   devMode: true
   databaseNamePrefix: "chart-test-"
 
+ccd-admin-web:
+  nodejs:
+    environment:
+      NODE_CONFIG: >-
+        {"secrets":{"ccd":{"session-keys":["ci-only-signing-key-1","ci-only-signing-key-2"]}}}
+
 ccd-definition-importer:
   definitions:
     - https://github.com/hmcts/ccd-test-definitions/raw/master/src/main/resources/uk/gov/hmcts/ccd/test_definitions/excel/CCD_CNP_27_AUTOTEST1.xlsx
