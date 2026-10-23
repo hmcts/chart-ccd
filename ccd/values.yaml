@@ -448,3 +448,8 @@ logstash:
   extraVolumeMounts: |
     - name: logstash-lib
       mountPath: /usr/share/logstash/ccd
+  rbac:
+    # Use an existing account; do not create or manage it.
+    create: false
+    # Evaluated by our overridden helper.
+    serviceAccountName: '{{ .Release.Namespace }}'
