@@ -287,6 +287,23 @@ In latest version they are referenced as
 
 Note: For a full list of values that can be used, refer to [logstash](https://github.com/elastic/helm-charts/tree/main/logstash) documentation.  
 
+### Logstash service account
+
+Logstash pods previously used the namespace's `default` ServiceAccount instead of the
+namespace-specific account. This chart now configures Logstash to use the existing ServiceAccount
+named after the release namespace. For example, a release in the `sptribs` namespace uses the
+`sptribs` ServiceAccount. The chart does not create this account, so it must already exist in the
+namespace.
+
+To use a different existing ServiceAccount, set `logstash.rbac.serviceAccountName` in the values
+passed to the chart:
+
+```yaml
+logstash:
+  rbac:
+    serviceAccountName: my-service-account
+```
+
 
 ## Setup user profiles and ccd definitions
 
