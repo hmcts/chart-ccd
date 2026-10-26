@@ -28,6 +28,7 @@ jobs:
       helmInstallTimeout: "1000"
       aksCluster: cft-preview-00-aks
       aksResourceGroup: cft-preview-00-rg
+      helmDeleteWait: "120"
 
 
 - job: ValidateCore
