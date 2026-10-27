@@ -42,6 +42,8 @@ global:
 ccd-admin-web:
   nodejs:
     environment:
+      # Must be non-empty: node-config ignores empty env vars and admin-web then fails to start.
+      IDAM_OAUTH2_AW_CLIENT_SECRET: ci-only-client-secret
       NODE_CONFIG: >-
         {"secrets":{"ccd":{"session-keys":["ci-only-signing-key-1","ci-only-signing-key-2"]}}}
 
