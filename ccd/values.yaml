@@ -59,7 +59,7 @@ global:
   postgresUsername: hmcts
   postgresPassword: hmcts
   postgresHostname: ""
-  postgresSecret: ""
+  postgresSecret: "postgres"
   databaseNamePrefix: ""
 
 ccd-message-publisher:
